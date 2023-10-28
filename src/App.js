@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import DashBoard from "./Screens/DashBoard/DashBoard";
+import Product from "./Screens/Product/Product";
+import ImportOrder from "./Screens/ImportOrder/ImportOrder";
+import ImportOrderData from "./Screens/ImportData/ImportData";
+import CheckOut from "./Screens/CheckOut/CheckOut";
+import Login from "./Screens/Login/Login";
 
-function App() {
+function Router() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes basename="/DoAnTotNghiep">
+      <Route path="/DashBoard" element={<DashBoard />} />
+      <Route path="/Product" element={<Product />} />
+      <Route path="/ImportOrder" element={<ImportOrder />} />
+      <Route path="/ImportOrderData" element={<ImportOrderData />} />
+      <Route path="/CheckOut" element={<CheckOut />} />
+
+      <Route path="/" element={<Login />} />
+    </Routes>
   );
 }
 
-export default App;
+export default Router;
