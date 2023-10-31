@@ -5,6 +5,7 @@ import ImportOrder from "./Screens/ImportOrder/ImportOrder";
 import ImportOrderData from "./Screens/ImportData/ImportData";
 import CheckOut from "./Screens/CheckOut/CheckOut";
 import Login from "./Screens/Login/Login";
+import InvoiceDetails from "./Screens/InvoiceDetails/InvoiceDetails";
 
 function Router() {
   return (
@@ -14,7 +15,7 @@ function Router() {
       <Route path="/ImportOrder" element={<ImportOrder />} />
       <Route path="/ImportOrderData" element={<ImportOrderData />} />
       <Route path="/CheckOut" element={<CheckOut />} />
-
+      <Route path="/CheckOut/:id" element={<InvoiceDetails />} />
       <Route path="/" element={<Login />} />
     </Routes>
   );

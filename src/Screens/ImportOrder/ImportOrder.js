@@ -5,12 +5,18 @@ import Header from "../../Component/Header";
 import Left from "../../Component/Left";
 
 import { TextInputAd } from "../../Component/Style";
+import ModalNcc from "./ModalNcc";
+import Table from "./Table";
 
 const ImportOrder = () => {
   const [show, setShow] = useState(true);
-  const [asd, setAsd] = useState(false);
+  const [asd, setAsd] = useState(true);
   const [checkQ, setCheckQ] = useState(false);
   const [quantity, setQuantity] = useState("");
+  const [open, setOpen] = useState(false);
+  const [product, setProduct] = useState("");
+
+  const [products, setProducts] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,8 +29,24 @@ const ImportOrder = () => {
       setQuantity(e);
     }
   };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    setProducts((prev) => {
+      const newJob = [
+        ...prev,
+        { id: product + quantity, name: product, quantity: quantity },
+      ];
+      return newJob;
+    });
+
+    setProduct("");
+    setQuantity("");
+  };
+
   return (
     <Box sx={{ justifyContent: "center" }}>
+      <ModalNcc setModal={setOpen} modal={open} />
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%", minWidth: "70%" }}>
@@ -58,29 +80,26 @@ const ImportOrder = () => {
                     <Button
                       variant="contained"
                       sx={{ width: 120, height: 50 }}
-                      onClick={() => setAsd(!asd)}
+                      onClick={() => setOpen(!open)}
                     >
                       Tìm
                     </Button>
                   </Stack>
                   {asd ? (
-                    <>
-                      <TextInputAd
-                        variant="outlined"
-                        fullWidth
-                        value="Tên nhà cung cấp"
-                      />
-                      <TextInputAd
-                        variant="outlined"
-                        fullWidth
-                        value="Email nhà cung cấp"
-                      />
-                      <TextInputAd
-                        variant="outlined"
-                        fullWidth
-                        value="SDT nhà cung cấp"
-                      />
-                    </>
+                    <Box sx={{ marginTop: 2 }}>
+                      <Typography variant="body1">
+                        Địa chỉ nhà cung cấp
+                      </Typography>
+                      <Typography variant="body1">
+                        email nhà cung cấp
+                      </Typography>
+                      <Typography variant="body1">sdt nhà cung cấp</Typography>
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
+                  {products !== "" ? (
+                    <Table products={products} setProducts={setProducts} />
                   ) : (
                     <></>
                   )}
@@ -104,11 +123,13 @@ const ImportOrder = () => {
                 </form>
               </Box>
               <Box sx={{ flex: 1, marginTop: 2 }}>
-                <form noValidate onSubmit={handleSubmit}>
+                <form noValidate onSubmit={handleAdd}>
                   <TextInputAd
                     label="Tên sản phẩm"
                     variant="outlined"
                     fullWidth
+                    value={product}
+                    onChange={(e) => setProduct(e.target.value)}
                   />
 
                   <TextInputAd
@@ -116,6 +137,7 @@ const ImportOrder = () => {
                     variant="outlined"
                     type="number"
                     error={checkQ}
+                    value={quantity}
                     fullWidth
                     onChange={(e) => checkQuantity(e.target.value)}
                   />

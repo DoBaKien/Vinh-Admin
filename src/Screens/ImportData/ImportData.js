@@ -1,30 +1,14 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
-import AddIcon from "@mui/icons-material/Add";
+
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import axios from "axios";
-import { useEffect } from "react";
-import { ExpandableCell } from "../../Component/Style";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import { dataOrder } from "../../Component/data";
 const ImportData = () => {
   const [show, setShow] = useState(true);
-
-  const [tags, setTags] = useState("");
-  const [value, setValue] = useState("");
 
   const handleOnCellClick = (params) => {};
 
@@ -45,7 +29,7 @@ const ImportData = () => {
             columns={columns}
             pageSizeOptions={[10, 50, 100]}
             initialState={{
-              ...tags.initialState,
+              ...dataOrder.initialState,
               pagination: { paginationModel: { pageSize: 10 } },
             }}
             componentsProps={{
@@ -114,7 +98,7 @@ const ImportData = () => {
             }}
           >
             <Box sx={{ padding: "5px 5px 5px" }}>
-              <Typography variant="h4">Quản lý sản phẩm</Typography>
+              <Typography variant="h4">Quản lý đơn nhập</Typography>
             </Box>
 
             {datatable()}

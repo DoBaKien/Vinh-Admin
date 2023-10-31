@@ -99,6 +99,7 @@ function LeftAdmin() {
               </ListItemButton>
             </ListItem>
             <Divider />
+            <Divider />
             <ListItemButton onClick={handleClick}>
               <ListItemIcon>
                 <InputIcon />
@@ -106,6 +107,8 @@ function LeftAdmin() {
               <ListItemText primary="Quản lý nhập hàng" />
               {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
+            <Divider />
+            <Divider />
             <Collapse in={open} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <ListItemButton sx={{ pl: 4 }} onClick={handleUser}>
@@ -114,6 +117,8 @@ function LeftAdmin() {
                   </ListItemIcon>
                   <ListItemText primary="Phiếu nhập" />
                 </ListItemButton>
+                <Divider />
+                <Divider />
                 <ListItemButton sx={{ pl: 4 }} onClick={handleReportC}>
                   <ListItemIcon>
                     <Inventory2Icon />
@@ -122,6 +127,8 @@ function LeftAdmin() {
                 </ListItemButton>
               </List>
             </Collapse>
+            <Divider />
+            <Divider />
             <ListItem disablePadding>
               <ListItemButton onClick={handleSP}>
                 <ListItemIcon>
@@ -130,6 +137,8 @@ function LeftAdmin() {
                 <ListItemText primary="Quản lý sản phẩm" />
               </ListItemButton>
             </ListItem>
+            <Divider />
+            <Divider />
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon>

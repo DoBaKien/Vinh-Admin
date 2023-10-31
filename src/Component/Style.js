@@ -34,7 +34,6 @@ export const Search = styled("div")(({ theme }) => ({
 }));
 export const ItemList = styled(Paper)(() => ({
   backgroundColor: "#fff",
-
   padding: 20,
 }));
 export const Item = (props) => (
@@ -124,6 +123,7 @@ export const style = {
   boxShadow: 24,
   color: "text.primary",
   p: 4,
+  borderRadius: 5,
 };
 export const styleProduct = {
   position: "absolute",
@@ -131,6 +131,18 @@ export const styleProduct = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
+  bgcolor: "background.default",
+  border: "2px solid gray",
+  boxShadow: 24,
+  color: "text.primary",
+  p: 4,
+};
+export const styleDetail = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
   bgcolor: "background.default",
   border: "2px solid gray",
   boxShadow: 24,
@@ -146,4 +158,14 @@ export const ValueDate = ({ value }) => {
   const minutes = dateObject.getMinutes(); // Lấy phút
   const date = `${hours}:${minutes} - ${day}/${month}/${year}`;
   return <div>{date}</div>;
+};
+export const ValueDate2 = (value) => {
+  const dateObject = new Date(value);
+  const day = dateObject.getDate(); // Lấy ngày
+  const month = dateObject.getMonth() + 1; // Lấy tháng (lưu ý: tháng trong JavaScript bắt đầu từ 0 nên phải cộng thêm 1)
+  const year = dateObject.getFullYear(); // Lấy năm
+  const hours = dateObject.getHours(); // Lấy giờ
+  const minutes = dateObject.getMinutes(); // Lấy phút
+  const date = `${hours}:${minutes} - ${day}/${month}/${year}`;
+  return date;
 };

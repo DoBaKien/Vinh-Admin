@@ -1,31 +1,18 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import Header from "../../Component/Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import AddIcon from "@mui/icons-material/Add";
+import React, { useEffect, useState } from "react";
 
-import { useEffect, useState } from "react";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { ExpandableCell, ValueDate } from "../../Component/Style";
+import { ValueDate } from "../../Component/Style";
 import Left from "../../Component/Left";
-import { dataOrder } from "../../Component/data";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CheckOut() {
   const [show, setShow] = useState(true);
-
-  const [data, setData] = useState("");
   const [modal, setModal] = useState(false);
-
-  const handleEdit = (value) => {};
+  const [data, setData] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`/api/v1/orders/getAllOrder`)
@@ -34,7 +21,11 @@ function CheckOut() {
       })
       .catch((error) => console.log(error));
   }, []);
-  const handleOnCellClick = (params) => {};
+
+  const handleOnCellClick = (params) => {
+    // navigate(`/CheckOut/${params.id}`);
+    window.open(`/DoAnTotNghiep/#/CheckOut/${params.id}`, "_blank");
+  };
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -54,30 +45,6 @@ function CheckOut() {
       flex: 1,
       renderCell: (params) => <ValueDate {...params} />,
     },
-    {
-      field: "actions",
-      headerName: "Chức năng",
-      type: "actions",
-      flex: 0.6,
-      getActions: (params) => {
-        let actions = [
-          <>
-            <Tooltip title="Xóa " placement="left">
-              <IconButton>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Sửa " placement="right">
-              <IconButton>
-                <DriveFileRenameOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </>,
-        ];
-
-        return actions;
-      },
-    },
   ];
 
   const datatable = () => {
@@ -88,7 +55,6 @@ function CheckOut() {
             rowHeight={50}
             rows={data.map((item) => ({
               id: item.id,
-              status: item.title,
               name: item.customer.firstName + " " + item.customer.lastName,
               status: item.statusOrder,
               date: item.date,
@@ -159,7 +125,7 @@ function CheckOut() {
             }}
           >
             <Box sx={{ padding: "5px 5px 5px" }}>
-              <Typography variant="h4">Quản lý thẻ</Typography>
+              <Typography variant="h4">Quản lý hóa đơn</Typography>
             </Box>
 
             {datatable()}
