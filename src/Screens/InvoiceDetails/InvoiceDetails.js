@@ -27,7 +27,6 @@ const InvoiceDetails = () => {
       .get(`http://localhost:8521/api/v1/orders/getOrderById/${id.id}`)
       .then((res) => {
         setData(res.data);
-        console.log(res.data);
       })
       .catch((error) => console.log(error));
   }, [id.id]);
@@ -51,6 +50,21 @@ const InvoiceDetails = () => {
       flex: 0.5,
     },
   ];
+  const checkS = (value) => {
+    if (value === "1") {
+      return (
+        <Typography variant="subtitle1">Trạng thái: Đang xử lý </Typography>
+      );
+    } else if (value === "2") {
+      return (
+        <Typography variant="subtitle1">Trạng thái: Đang vận chuyển</Typography>
+      );
+    } else if (value === "3") {
+      return (
+        <Typography variant="subtitle1">Trạng thái: Hoàn thành</Typography>
+      );
+    }
+  };
 
   const checkData = () => {
     if (data !== "") {
@@ -59,7 +73,7 @@ const InvoiceDetails = () => {
           <Stack direction="column" spacing={1} sx={{ height: 1 }}>
             <Typography variant="h6">{`Hóa đơn ${id.id}`}</Typography>
             <Stack direction={"row"} sx={{ gap: 20 }}>
-              <Typography variant="subtitle1">{`Trạng thái: ${data.statusOrder}`}</Typography>
+              {checkS(data.statusOrder)}
               <Typography variant="subtitle1">
                 Ngày lập: {ValueDate2(data.date)}
               </Typography>
@@ -96,6 +110,12 @@ const InvoiceDetails = () => {
             </Grid>
             {data !== "" ? (
               <DataGrid
+                localeText={{
+                  toolbarColumns: "Cột",
+                  toolbarDensity: "Khoảng cách",
+                  toolbarFilters: "Lọc",
+                  toolbarExport: "Xuất ",
+                }}
                 rows={data.orderDetails.map((item) => ({
                   id: item.id,
                   name: item.product.productName,

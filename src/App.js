@@ -6,6 +6,9 @@ import ImportOrderData from "./Screens/ImportData/ImportData";
 import CheckOut from "./Screens/CheckOut/CheckOut";
 import Login from "./Screens/Login/Login";
 import InvoiceDetails from "./Screens/InvoiceDetails/InvoiceDetails";
+import CreateBill from "./Screens/CreateBill/CreateBill";
+import ProductCreate from "./Screens/ProductCreate/ProductCreate";
+import ProductEdit from "./Screens/ProductEdit/ProductEdit";
 
 function Router() {
   return (
@@ -16,6 +19,9 @@ function Router() {
       <Route path="/ImportOrderData" element={<ImportOrderData />} />
       <Route path="/CheckOut" element={<CheckOut />} />
       <Route path="/CheckOut/:id" element={<InvoiceDetails />} />
+      <Route path="/CreateBill" element={<CreateBill />} />
+      <Route path="/ProductCreate" element={<ProductCreate />} />
+      <Route path="/ProductEdit/:id" element={<ProductEdit />} />
       <Route path="/" element={<Login />} />
     </Routes>
   );

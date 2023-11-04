@@ -12,7 +12,15 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
+} from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect } from "react";
 import { ExpandableCell } from "../../Component/Style";
@@ -20,16 +28,18 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalBox from "./AddProduct";
 import ModalProduct from "./ModalProduct";
+import { useNavigate } from "react-router-dom";
+
 const Product = () => {
   const [show, setShow] = useState(true);
   const [modal, setModal] = useState(false);
   const [modalP, setModalP] = useState(false);
-  const [modalE, setModalE] = useState(false);
   const [tags, setTags] = useState("");
   const [value, setValue] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:8521/api/v1/products/getAll")
+      .get("/api/v1/products/getAll")
       .then(function (response) {
         setTags(response.data);
         console.log(response.data);
@@ -68,14 +78,17 @@ const Product = () => {
       getActions: (params) => {
         let actions = [
           <>
-            <Tooltip title="Xóa" placement="left">
-              <IconButton>
-                <DeleteIcon />
+            <Tooltip title="Sửa" placement="left">
+              <IconButton
+                onClick={() => navigate(`/ProductEdit/${params.id}`)}
+                color="primary"
+              >
+                <DriveFileRenameOutlineIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Sửa" placement="right">
+            <Tooltip title="Xóa" placement="right">
               <IconButton>
-                <DriveFileRenameOutlineIcon />
+                <DeleteIcon sx={{ color: "red" }} />
               </IconButton>
             </Tooltip>
           </>,
@@ -85,6 +98,30 @@ const Product = () => {
       },
     },
   ];
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer
+        sx={{
+          width: "100%",
+
+          justifyContent: "space-evenly",
+        }}
+      >
+        <Button
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={() => navigate("/ProductCreate")}
+        >
+          Thêm sản phẩm
+        </Button>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+        <GridToolbarQuickFilter />
+      </GridToolbarContainer>
+    );
+  }
 
   const datatable = () => {
     if (Array.isArray(tags) && tags.length !== 0) {
@@ -101,8 +138,13 @@ const Product = () => {
               quantity: item.quantity,
               price: item.price,
               importPrice: item.priceImport,
-              supplier: item.supplier,
             }))}
+            localeText={{
+              toolbarColumns: "Cột",
+              toolbarDensity: "Khoảng cách",
+              toolbarFilters: "Lọc",
+              toolbarExport: "Xuất ",
+            }}
             columns={columns}
             pageSizeOptions={[10, 50, 100]}
             initialState={{
@@ -129,7 +171,7 @@ const Product = () => {
               },
             }}
             slots={{
-              toolbar: GridToolbar,
+              toolbar: CustomToolbar,
             }}
             onCellDoubleClick={handleOnCellClick}
             getRowHeight={() => "auto"}
@@ -183,14 +225,6 @@ const Product = () => {
             <Box sx={{ padding: "5px 5px 5px" }}>
               <Typography variant="h4">Quản lý sản phẩm</Typography>
             </Box>
-
-            <Button
-              size="small"
-              startIcon={<AddIcon />}
-              onClick={() => setModal(!modal)}
-            >
-              Thêm sản phẩm
-            </Button>
 
             {datatable()}
           </Box>

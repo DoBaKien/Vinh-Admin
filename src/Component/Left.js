@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import InputIcon from "@mui/icons-material/Input";
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 function LeftAdmin() {
   const navigate = useNavigate();
   const BoxSide = styled(Box)(() => ({
@@ -27,9 +28,13 @@ function LeftAdmin() {
   }));
 
   const [open, setOpen] = useState(true);
+  const [openA, setOpenA] = useState(true);
 
   const handleClick = () => {
     setOpen(!open);
+  };
+  const handleClickA = () => {
+    setOpenA(!openA);
   };
   const handleHome = () => {
     navigate("/");
@@ -40,6 +45,9 @@ function LeftAdmin() {
   const handleQuestion = () => {
     navigate("/Checkout");
   };
+  const handleQuestionA = () => {
+    navigate("/CreateBill");
+  };
 
   const handleUser = () => {
     navigate("/ImportOrder");
@@ -47,8 +55,7 @@ function LeftAdmin() {
   const handleSP = () => {
     navigate("/Product");
   };
-  const handleReportA = () => {};
-  const handleReportQ = () => {};
+
   const handleReportC = () => {
     navigate("/ImportOrderData");
   };
@@ -90,14 +97,37 @@ function LeftAdmin() {
             <Divider />
 
             <Divider />
-            <ListItem disablePadding>
-              <ListItemButton onClick={handleQuestion}>
-                <ListItemIcon>
-                  <PaidIcon />
-                </ListItemIcon>
-                <ListItemText primary="Quản lý hóa đơn" />
-              </ListItemButton>
-            </ListItem>
+
+            <Divider />
+            <Divider />
+            <ListItemButton onClick={handleClickA}>
+              <ListItemIcon>
+                <PaidIcon />
+              </ListItemIcon>
+              <ListItemText primary="Quản lý hóa đơn" />
+              {openA ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Divider />
+            <Divider />
+            <Collapse in={openA} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 3 }} onClick={handleQuestionA}>
+                  <ListItemIcon>
+                    <NoteAddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Tạo hóa đơn" />
+                </ListItemButton>
+                <Divider />
+                <Divider />
+                <ListItemButton sx={{ pl: 3 }} onClick={handleQuestion}>
+                  <ListItemIcon>
+                    <RequestQuoteIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Danh sách hóa đơn" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+
             <Divider />
             <Divider />
             <ListItemButton onClick={handleClick}>
@@ -111,7 +141,7 @@ function LeftAdmin() {
             <Divider />
             <Collapse in={open} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 4 }} onClick={handleUser}>
+                <ListItemButton sx={{ pl: 3 }} onClick={handleUser}>
                   <ListItemIcon>
                     <NoteAddIcon />
                   </ListItemIcon>
@@ -119,11 +149,11 @@ function LeftAdmin() {
                 </ListItemButton>
                 <Divider />
                 <Divider />
-                <ListItemButton sx={{ pl: 4 }} onClick={handleReportC}>
+                <ListItemButton sx={{ pl: 3 }} onClick={handleReportC}>
                   <ListItemIcon>
                     <Inventory2Icon />
                   </ListItemIcon>
-                  <ListItemText primary="Quản lý đơn nhập" />
+                  <ListItemText primary="Danh sách đơn nhập" />
                 </ListItemButton>
               </List>
             </Collapse>

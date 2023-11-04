@@ -1,17 +1,13 @@
 import {
   Box,
-  CardActionArea,
-  CardContent,
   Divider,
   IconButton,
   InputAdornment,
-  Link,
-  Stack,
   TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { BoxGG, BtnLog, BoxLogin } from "./Style";
+import { BtnLog, BoxLogin } from "./Style";
 
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -38,6 +34,8 @@ function Login() {
         passWordA: "123",
       })
       .then(function (response) {
+        localStorage.setItem("id", response.data.id);
+
         navigate("/DashBoard");
       })
       .catch(function (error) {

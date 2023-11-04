@@ -26,6 +26,12 @@ const ImportData = () => {
           <DataGrid
             rowHeight={50}
             rows={dataOrder}
+            localeText={{
+              toolbarColumns: "Cột",
+              toolbarDensity: "Khoảng cách",
+              toolbarFilters: "Lọc",
+              toolbarExport: "Xuất ",
+            }}
             columns={columns}
             pageSizeOptions={[10, 50, 100]}
             initialState={{

@@ -14,6 +14,12 @@ const Table = (props) => {
 
   const columns = [
     {
+      field: "id",
+      headerName: "ID",
+      width: 50,
+      editable: true,
+    },
+    {
       field: "name",
       headerName: "Tên",
       flex: 1,
@@ -22,7 +28,7 @@ const Table = (props) => {
     {
       field: "quantity",
       headerName: "Số lượng",
-      flex: 0.5,
+      width: 80,
       editable: true,
     },
     {
@@ -53,11 +59,17 @@ const Table = (props) => {
     );
     return updatedRow;
   };
-  console.log(props.products);
+
   return (
     <Box sx={{ marginTop: 2, height: 400, width: "100%" }}>
       <DataGrid
         rowHeight={50}
+        localeText={{
+          toolbarColumns: "Cột",
+          toolbarDensity: "Khoảng cách",
+          toolbarFilters: "Lọc",
+          toolbarExport: "Xuất ",
+        }}
         rows={props.products}
         columns={columns}
         editMode="row"

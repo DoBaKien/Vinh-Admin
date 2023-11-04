@@ -6,22 +6,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
 import { useState } from "react";
 import { TextInputAd, style } from "../../Component/Style";
 
-function ModalNcc({ setModal, modal }) {
-  const [name, setName] = useState("");
-  const [adress, setAdress] = useState("");
-  const [phone, setPhone] = useState("");
+function ModalUser({ setModal, modal }) {
+  const [first, setFirst] = useState("");
+  const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
-
+  const [sdt, setSdt] = useState("");
+  const [dc, setDc] = useState("");
   const toggleModal = () => {
     setModal(false);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name, adress, email, phone);
   };
 
   return (
@@ -36,37 +34,48 @@ function ModalNcc({ setModal, modal }) {
           sx={{ display: "flex", justifyContent: "center", marginBottom: 2 }}
         >
           <Typography id="modal-modal-title" variant="h6">
-            Không tồn tại nhà cung cấp này, bạn có muốn thêm
+            Khách hàng mới, vui lòng thêm thông tin
           </Typography>
         </Box>
         <Box>
           <form noValidate onSubmit={handleSubmit}>
-            <TextField
-              label="Tên nhà sản xuất"
-              variant="outlined"
-              fullWidth
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Stack direction={"row"} gap={3}>
+              <TextField
+                label="Họ"
+                variant="outlined"
+                fullWidth
+                value={first}
+                onChange={(e) => setFirst(e.target.value)}
+              />
+              <TextField
+                label="Tên"
+                variant="outlined"
+                fullWidth
+                value={last}
+                onChange={(e) => setLast(e.target.value)}
+              />
+            </Stack>
             <TextInputAd
-              label="Địa chỉ"
+              label="Email"
               variant="outlined"
               fullWidth
-              onChange={(e) => setAdress(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextInputAd
               label="Số điện thoại"
               variant="outlined"
               fullWidth
-              onChange={(e) => setPhone(e.target.value)}
+              value={sdt}
+              onChange={(e) => setSdt(e.target.value)}
             />
-
             <TextInputAd
-              label="Email"
+              label="Số điện thoại"
               variant="outlined"
               fullWidth
-              onChange={(e) => setEmail(e.target.value)}
+              value={dc}
+              onChange={(e) => setDc(e.target.value)}
             />
-
             <Stack
               direction="row"
               spacing={10}
@@ -95,4 +104,4 @@ function ModalNcc({ setModal, modal }) {
   );
 }
 
-export default ModalNcc;
+export default ModalUser;

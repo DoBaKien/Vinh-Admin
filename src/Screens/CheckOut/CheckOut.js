@@ -3,16 +3,15 @@ import Header from "../../Component/Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 
-import { ValueDate } from "../../Component/Style";
+import { CheckStatus, ValueDate } from "../../Component/Style";
 import Left from "../../Component/Left";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function CheckOut() {
   const [show, setShow] = useState(true);
-  const [modal, setModal] = useState(false);
+
   const [data, setData] = useState("");
-  const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get(`/api/v1/orders/getAllOrder`)
@@ -37,6 +36,7 @@ function CheckOut() {
     {
       field: "status",
       headerName: "Trạng thái",
+      renderCell: (params) => <CheckStatus {...params} />,
       flex: 1,
     },
     {
@@ -52,6 +52,12 @@ function CheckOut() {
       return (
         <Box height="80vh" width="99%">
           <DataGrid
+            localeText={{
+              toolbarColumns: "Cột",
+              toolbarDensity: "Khoảng cách",
+              toolbarFilters: "Lọc",
+              toolbarExport: "Xuất ",
+            }}
             rowHeight={50}
             rows={data.map((item) => ({
               id: item.id,
