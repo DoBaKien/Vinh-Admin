@@ -9,10 +9,10 @@ function TableChoose(props) {
         <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <Typography>Tên</Typography>
         </Box>
-        <Box sx={{ width: 80, display: "flex", justifyContent: "center" }}>
+        <Box sx={{ width: 70, display: "flex", justifyContent: "center" }}>
           <Typography>Số lượng</Typography>
         </Box>
-        <Box sx={{ width: 100, display: "flex", justifyContent: "center" }}>
+        <Box sx={{ width: 150, display: "flex", justifyContent: "center" }}>
           <Typography>Giá</Typography>
         </Box>
       </Stack>

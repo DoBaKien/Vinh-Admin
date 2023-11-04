@@ -20,7 +20,7 @@ const CreateBill = () => {
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState("");
   const id = localStorage.getItem("id");
-  console.log(select);
+
   const handleFind = () => {
     if (customer !== "") {
       axios
@@ -42,19 +42,20 @@ const CreateBill = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const orderData = {
-      note,
-      customer: {
-        id: customerD.id,
-      },
-      employee: { id: id },
-      orderDetails: select.map((item) => ({
-        quantity: item.quantity,
-        product: {
-          id: item.product.id,
-        },
-      })),
-    };
+
+    // const orderData = {
+    //   note,
+    //   customer: {
+    //     id: customerD.id,
+    //   },
+    //   employee: { id: id },
+    //   orderDetails: select.map((item) => ({
+    //     quantity: item.quantity,
+    //     product: {
+    //       id: item.product.id,
+    //     },
+    //   })),
+    // };
     // axios
     //   .post(
     //     `/api/v1/orders/saveOrUpdate/${dataUser.shoppingCart.id}`,

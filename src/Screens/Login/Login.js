@@ -30,7 +30,7 @@ function Login() {
     console.log(userName, password);
     axios
       .post("/api/v1/auth/login", {
-        email: "kien@gmail.com",
+        email: "kien123@gmail.com",
         passWordA: "123",
       })
       .then(function (response) {

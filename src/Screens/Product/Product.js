@@ -104,20 +104,16 @@ const Product = () => {
         sx={{
           width: "100%",
 
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
         }}
       >
-        <Button
-          size="small"
-          startIcon={<AddIcon />}
-          onClick={() => navigate("/ProductCreate")}
-        >
-          Thêm sản phẩm
-        </Button>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
-        <GridToolbarExport />
+        <Stack direction={"row"} gap={2}>
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+          <GridToolbarExport />
+        </Stack>
+
         <GridToolbarQuickFilter />
       </GridToolbarContainer>
     );

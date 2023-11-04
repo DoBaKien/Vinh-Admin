@@ -4,8 +4,21 @@ import { useState } from "react";
 function SplitArray(props) {
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState(false);
-  console.log(props);
+
   const [id, name, price, slg] = props.item?.split("/") || [];
+  // const orderDetails = Object.values(select).map((item, index) => {
+  //   const itemDetails = item.split("/");
+  //   return {
+  //     quantity: parseInt(itemDetails[0]),
+  //     product: {
+  //       id: index, // Assuming the index to be the ID
+  //       name: itemDetails[1],
+  //       price: parseInt(itemDetails[2]),
+  //       anotherProperty: parseInt(itemDetails[3]),
+  //     },
+  //   };
+  // });
+  // console.log(orderDetails);
   const inputQuantity = (e) => {
     if (e < 0) {
       const removeItem = props.select.filter((todo) => {
@@ -27,7 +40,7 @@ function SplitArray(props) {
       <Box sx={{ flex: 1, display: "flex", alignItems: "center" }}>
         <Typography>{name}</Typography>
       </Box>
-      <Box sx={{ width: 80, display: "flex", justifyContent: "center" }}>
+      <Box sx={{ width: 70, display: "flex", justifyContent: "center" }}>
         <OutlinedInput
           type="number"
           id="outlined-adornment-weight"
@@ -39,7 +52,7 @@ function SplitArray(props) {
       </Box>
       <Box
         sx={{
-          width: 100,
+          width: 150,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

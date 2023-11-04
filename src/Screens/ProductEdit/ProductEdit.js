@@ -26,8 +26,7 @@ function ProductEdit() {
   const [brand, setBrand] = useState("");
   const [brands, setBrands] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [ncc, setNcc] = useState("");
-  const [nccs, setNccs] = useState("");
+
   const [price, setPrice] = useState("");
   const [importPrice, setImportPrice] = useState("");
   const [checkQ, setCheckQ] = useState(false);
@@ -50,14 +49,7 @@ function ProductEdit() {
       .catch(function (error) {
         console.log(error);
       });
-    axios
-      .get("/api/v1/suppliers/getAll")
-      .then(function (response) {
-        setNccs(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
     axios
       .get(`/api/v1/products/getById/${id.id}`)
       .then(function (response) {
@@ -68,7 +60,7 @@ function ProductEdit() {
         setDescription(response.data.description);
         setPrice(response.data.price);
         setImportPrice(response.data.priceImport);
-        setNcc(response.data.supplier.id);
+
         setLoai(response.data.category.id);
       })
       .catch(function (error) {
@@ -93,9 +85,6 @@ function ProductEdit() {
         category: {
           id: loai,
         },
-        supplier: {
-          id: ncc,
-        },
       })
       .then(function (response) {
         console.log(response);
@@ -118,9 +107,6 @@ function ProductEdit() {
   };
   const handleChange2 = (event) => {
     setBrand(event.target.value);
-  };
-  const handleChange3 = (event) => {
-    setNcc(event.target.value);
   };
 
   return (
@@ -199,31 +185,11 @@ function ProductEdit() {
                     </Select>
                   </FormControl>
                 </Stack>
-                <FormControl fullWidth sx={{ marginTop: 3 }}>
-                  <InputLabel id="demo-simple-select-label">
-                    Nhà cung cấp
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={ncc}
-                    label="Age"
-                    onChange={handleChange3}
-                  >
-                    {nccs !== ""
-                      ? nccs.map((item, index) => (
-                          <MenuItem key={index} value={item.id}>
-                            {item.name}
-                          </MenuItem>
-                        ))
-                      : null}
-                  </Select>
-                </FormControl>
                 <TextInputAd
                   label="Mô tả"
                   rows={3}
                   multiline
-                  value={description}
+                  value={description || ""}
                   fullWidth
                   variant="outlined"
                   onChange={(e) => setDescription(e.target.value)}
@@ -233,14 +199,14 @@ function ProductEdit() {
                   label="Giá"
                   variant="outlined"
                   fullWidth
-                  value={price}
+                  value={price || ""}
                   onChange={(e) => setPrice(e.target.value)}
                 />
                 <TextInputAd
                   label="Giá nhập"
                   variant="outlined"
                   fullWidth
-                  value={importPrice}
+                  value={importPrice || ""}
                   onChange={(e) => setImportPrice(e.target.value)}
                 />
 

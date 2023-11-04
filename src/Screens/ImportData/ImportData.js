@@ -1,31 +1,53 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-
-import { dataOrder } from "../../Component/data";
+import axios from "axios";
+import { ValueDate } from "../../Component/Style";
 const ImportData = () => {
   const [show, setShow] = useState(true);
+  const [data, setData] = useState("");
+  useEffect(() => {
+    axios
+      .get(`/api/v1/importOrders/getAll`)
+      .then(function (response) {
+        console.log(response.data);
+        setData(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   const handleOnCellClick = (params) => {};
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "nv", headerName: "Người lập", flex: 1 },
-    { field: "name", headerName: "Nhà cung cấp", flex: 1 },
-    { field: "date", headerName: "Ngày lập", flex: 1 },
+    { field: "employee", headerName: "Người lập", flex: 1 },
+    { field: "supplier", headerName: "Nhà cung cấp", flex: 1 },
+    {
+      field: "date",
+      headerName: "Ngày lập",
+      flex: 1,
+      renderCell: (params) => <ValueDate {...params} />,
+    },
   ];
 
   const datatable = () => {
-    if (Array.isArray(dataOrder) && dataOrder.length !== 0) {
+    if (Array.isArray(data) && data.length !== 0) {
       return (
         <Box height="80vh" width="99%">
           <DataGrid
             rowHeight={50}
-            rows={dataOrder}
+            rows={data.map((item) => ({
+              id: item.id,
+              employee: item.employee.lastName + " " + item.employee.firstName,
+              date: item.date,
+              supplier: item.supplier.name,
+            }))}
             localeText={{
               toolbarColumns: "Cột",
               toolbarDensity: "Khoảng cách",
@@ -35,7 +57,7 @@ const ImportData = () => {
             columns={columns}
             pageSizeOptions={[10, 50, 100]}
             initialState={{
-              ...dataOrder.initialState,
+              ...data.initialState,
               pagination: { paginationModel: { pageSize: 10 } },
             }}
             componentsProps={{
