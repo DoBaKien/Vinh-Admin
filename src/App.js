@@ -9,6 +9,7 @@ import InvoiceDetails from "./Screens/InvoiceDetails/InvoiceDetails";
 import CreateBill from "./Screens/CreateBill/CreateBill";
 import ProductCreate from "./Screens/ProductCreate/ProductCreate";
 import ProductEdit from "./Screens/ProductEdit/ProductEdit";
+import ImportExcel from "./Screens/ImportExcel/ImportExcel";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/CheckOut/:id" element={<InvoiceDetails />} />
       <Route path="/CreateBill" element={<CreateBill />} />
       <Route path="/ProductCreate" element={<ProductCreate />} />
+      <Route path="/ImportExcel" element={<ImportExcel />} />
       <Route path="/ProductEdit/:id" element={<ProductEdit />} />
       <Route path="/" element={<Login />} />
     </Routes>

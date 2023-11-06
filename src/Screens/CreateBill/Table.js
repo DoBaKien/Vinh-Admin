@@ -44,6 +44,22 @@ const Table = (props) => {
     },
   ];
 
+  const handleSelect = (e) => {
+    const orderDetails = Object.values(e).map((item, index) => {
+      const itemDetails = item.split("\\");
+      return {
+        quantity: 1,
+        product: {
+          id: itemDetails[0],
+          name: itemDetails[1],
+          price: parseInt(itemDetails[2]),
+          maxQuantity: parseInt(itemDetails[3]),
+        },
+      };
+    });
+    props.setSelect(orderDetails);
+  };
+
   function CustomToolbar() {
     return (
       <GridToolbarContainer
@@ -61,7 +77,7 @@ const Table = (props) => {
     );
   }
   return (
-    <Box sx={{ height: "80vh", width: "100%" }}>
+    <Box sx={{ height: "90vh", width: "100%" }}>
       {data !== "" ? (
         <DataGrid
           rowHeight={100}
@@ -70,29 +86,29 @@ const Table = (props) => {
             toolbarDensity: "Khoảng cách",
             toolbarFilters: "Lọc",
           }}
-          rows={data.map((item) => ({
-            id:
-              item.id +
-              "/" +
-              item.productName +
-              "/" +
-              item.price +
-              "/" +
-              item.quantity,
-            name: item.productName,
-            description: item.description,
-            quantity: item.quantity,
-            category: item.category.categoryName,
-            price: item.price,
-            importPrice: item.priceImport,
-          }))}
+          rows={
+            data.map((item) => ({
+              id:
+                item.id +
+                "\\" +
+                item.productName +
+                "\\" +
+                item.price +
+                "\\" +
+                item.quantity,
+              name: item.productName,
+              quantity: item.quantity,
+              category: item.category.categoryName,
+              price: item.price,
+            })) || []
+          }
           slots={{
             toolbar: CustomToolbar,
           }}
           checkboxSelection
           columns={columns}
           onRowSelectionModelChange={(id) => {
-            props.setSelect(id);
+            handleSelect(id);
           }}
           initialState={{
             ...data.initialState,

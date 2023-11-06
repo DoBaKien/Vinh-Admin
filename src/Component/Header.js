@@ -10,6 +10,7 @@ import {
   MenuItem,
   Stack,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { StackHeader, Search } from "./Style";
 import SearchIcon from "@mui/icons-material/Search";
@@ -19,7 +20,7 @@ import { memo, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 
-function Header({ show, setShow }) {
+function Header({ show, setShow, text }) {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -45,9 +46,10 @@ function Header({ show, setShow }) {
       <IconButton onClick={() => setShow(!show)}>
         <MenuIcon />
       </IconButton>
+      <Typography variant="h5">{text}</Typography>
       <Search>
         <InputBase
-          sx={{ ml: 2, flex: 1, fontSize: 22 }}
+          sx={{ ml: 2, width: "90%", fontSize: 22 }}
           fullWidth
           placeholder="Tìm kiếm..."
           startAdornment={

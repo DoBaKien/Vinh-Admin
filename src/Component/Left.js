@@ -60,6 +60,10 @@ function LeftAdmin() {
     navigate("/ImportOrderData");
   };
 
+  const handleExcel = () => {
+    navigate("/ImportExcel");
+  };
+
   return (
     <BoxSide>
       <Box p={1} sx={{ width: 250 }}>
@@ -146,6 +150,14 @@ function LeftAdmin() {
                     <NoteAddIcon />
                   </ListItemIcon>
                   <ListItemText primary="Phiếu nhập" />
+                </ListItemButton>
+                <Divider />
+                <Divider />
+                <ListItemButton sx={{ pl: 3 }} onClick={handleExcel}>
+                  <ListItemIcon>
+                    <NoteAddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Phiếu nhập excel" />
                 </ListItemButton>
                 <Divider />
                 <Divider />

@@ -14,12 +14,6 @@ const Table = (props) => {
 
   const columns = [
     {
-      field: "id",
-      headerName: "ID",
-      width: 50,
-      editable: true,
-    },
-    {
       field: "name",
       headerName: "Tên",
       flex: 1,
@@ -28,6 +22,12 @@ const Table = (props) => {
     {
       field: "quantity",
       headerName: "Số lượng",
+      width: 80,
+      editable: true,
+    },
+    {
+      field: "importPrice",
+      headerName: "Giá nhập",
       width: 80,
       editable: true,
     },
@@ -70,7 +70,7 @@ const Table = (props) => {
           toolbarFilters: "Lọc",
           toolbarExport: "Xuất ",
         }}
-        rows={props.products}
+        rows={props.products || []}
         columns={columns}
         editMode="row"
         pageSizeOptions={[5, 10, 20]}

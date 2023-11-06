@@ -42,6 +42,7 @@ const ImportData = () => {
         <Box height="80vh" width="99%">
           <DataGrid
             rowHeight={50}
+            density="comfortable"
             rows={data.map((item) => ({
               id: item.id,
               employee: item.employee.lastName + " " + item.employee.firstName,

@@ -35,7 +35,11 @@ function ModalNcc({ setModal, modal }) {
         <Box
           sx={{ display: "flex", justifyContent: "center", marginBottom: 2 }}
         >
-          <Typography id="modal-modal-title" variant="h6">
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            sx={{ textAlign: "center" }}
+          >
             Không tồn tại nhà cung cấp này, bạn có muốn thêm
           </Typography>
         </Box>

@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import axios from "axios";
 
-function TableProduct() {
+function TableProduct(props) {
   const [data, setData] = useState("");
   useEffect(() => {
     axios
@@ -60,46 +60,68 @@ function TableProduct() {
       </GridToolbarContainer>
     );
   }
+
+  const handlePick = (e) => {
+    props.setBrand(e.row.brandId);
+    props.setLoai(e.row.categoryId);
+    props.setProduct(e.row.name);
+  };
   return (
-    <Box sx={{ height: "45vh", width: "100%" }}>
-      {data !== "" ? (
-        <DataGrid
-          rowHeight={100}
-          localeText={{
-            toolbarColumns: "Cột",
-            toolbarDensity: "Khoảng cách",
-            toolbarFilters: "Lọc",
-          }}
-          rows={data.map((item) => ({
-            id: item.id,
-            name: item.productName,
-            category: item.category.categoryName,
-            brand: item.brand.name,
-          }))}
-          slots={{
-            toolbar: CustomToolbar,
-          }}
-          columns={columns}
-          initialState={{
-            ...data.initialState,
-          }}
-          getRowHeight={() => "auto"}
-          sx={{
-            "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
-              py: 1,
-            },
-            "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
-              py: "10px",
-            },
-            "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
-              py: "16px",
-            },
-          }}
-          hideFooter
-        />
-      ) : (
-        <></>
-      )}
+    <Box
+      sx={{
+        height: "44vh",
+        width: "100%",
+        border: "1px solid black",
+        backgroundColor: "white",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 5,
+      }}
+    >
+      <Box sx={{ height: "42vh", width: "95%" }}>
+        {data !== "" ? (
+          <DataGrid
+            rowHeight={100}
+            localeText={{
+              toolbarColumns: "Cột",
+              toolbarDensity: "Khoảng cách",
+              toolbarFilters: "Lọc",
+            }}
+            rows={data.map((item) => ({
+              id: item.id,
+              name: item.productName,
+              category: item.category.categoryName,
+              brand: item.brand.name,
+              brandId: item.brand.id,
+              categoryId: item.category.id,
+            }))}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
+            isRowSelectable={(e) => handlePick(e)}
+            columns={columns}
+            initialState={{
+              ...data.initialState,
+            }}
+            getRowHeight={() => "auto"}
+            sx={{
+              "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
+                py: 1,
+              },
+              "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
+                py: "10px",
+              },
+              "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
+                py: "16px",
+              },
+            }}
+            hideFooter
+          />
+        ) : (
+          <></>
+        )}
+      </Box>
     </Box>
   );
 }

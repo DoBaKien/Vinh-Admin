@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   CircularProgress,
   IconButton,
   Stack,
@@ -8,19 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import AddIcon from "@mui/icons-material/Add";
+
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
-import {
-  DataGrid,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-  GridToolbarQuickFilter,
-} from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect } from "react";
 import { ExpandableCell } from "../../Component/Style";
@@ -56,20 +47,23 @@ const Product = () => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "category", headerName: "Loại", flex: 0.5 },
-    { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
-
     {
       field: "name",
       headerName: "Tên",
       flex: 1,
     },
+    { field: "category", headerName: "Loại", flex: 0.5 },
+    { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
+    { field: "price", headerName: "Giá", flex: 0.5 },
     {
       field: "description",
       headerName: "Mô tả",
       flex: 2,
-      renderCell: (params) => <ExpandableCell {...params} />,
+      renderCell: (params) => {
+        params !== null ? <ExpandableCell {...params} /> : <></>;
+      },
     },
+
     {
       field: "actions",
       headerName: "Chức năng",
@@ -98,26 +92,6 @@ const Product = () => {
       },
     },
   ];
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer
-        sx={{
-          width: "100%",
-
-          justifyContent: "space-between",
-        }}
-      >
-        <Stack direction={"row"} gap={2}>
-          <GridToolbarColumnsButton />
-          <GridToolbarFilterButton />
-          <GridToolbarDensitySelector />
-          <GridToolbarExport />
-        </Stack>
-
-        <GridToolbarQuickFilter />
-      </GridToolbarContainer>
-    );
-  }
 
   const datatable = () => {
     if (Array.isArray(tags) && tags.length !== 0) {
@@ -133,7 +107,6 @@ const Product = () => {
               brand: item.brand.name,
               quantity: item.quantity,
               price: item.price,
-              importPrice: item.priceImport,
             }))}
             localeText={{
               toolbarColumns: "Cột",
@@ -154,12 +127,11 @@ const Product = () => {
                 csvOptions: {
                   fields: [
                     "id",
+                    "name",
                     "category",
                     "brand",
-                    "name",
-                    "description",
                     "price",
-                    "importPrice",
+                    "description",
                   ],
                   utf8WithBom: true,
                   fileName: "Table-Product-Data",
@@ -167,7 +139,7 @@ const Product = () => {
               },
             }}
             slots={{
-              toolbar: CustomToolbar,
+              toolbar: GridToolbar,
             }}
             onCellDoubleClick={handleOnCellClick}
             getRowHeight={() => "auto"}

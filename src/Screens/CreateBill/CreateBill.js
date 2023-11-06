@@ -1,8 +1,6 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
-
 import { useState } from "react";
-
 import Left from "../../Component/Left";
 import Header from "../../Component/Header";
 import { TextInputAd } from "../../Component/Style";
@@ -43,30 +41,30 @@ const CreateBill = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const orderData = {
-    //   note,
-    //   customer: {
-    //     id: customerD.id,
-    //   },
-    //   employee: { id: id },
-    //   orderDetails: select.map((item) => ({
-    //     quantity: item.quantity,
-    //     product: {
-    //       id: item.product.id,
-    //     },
-    //   })),
-    // };
-    // axios
-    //   .post(
-    //     `/api/v1/orders/saveOrUpdate/${dataUser.shoppingCart.id}`,
-    //     orderData
-    //   )
-    //   .then(function (response) {
-    //     console.log(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    const orderData = {
+      note,
+      customer: {
+        id: customerD.id,
+      },
+      employee: { id: id },
+      orderDetails: select.map((item) => ({
+        quantity: item.quantity,
+        product: {
+          id: item.product.id,
+        },
+      })),
+    };
+    console.log(orderData);
+
+    axios
+      .post(`/api/v1/orders/createNow`, orderData)
+      .then(function (response) {
+        console.log(response.data);
+        console.log("asd");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -75,25 +73,29 @@ const CreateBill = () => {
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%" }}>
-          <Header setShow={setShow} show={show} />
+          <Header setShow={setShow} show={show} text="Thêm hóa đơn" />
           <Box
             sx={{
               paddingLeft: 2,
               paddingRight: 2,
             }}
           >
-            <Box sx={{ padding: "5px 5px 5px" }}>
-              <Typography variant="h5">Tạo hóa đơn</Typography>
-            </Box>
             <Stack direction={"row"} spacing={5}>
-              <Box sx={{ flex: 1 }}>
+              <Box
+                sx={{
+                  flex: 1,
+                  border: "1px solid black",
+                  padding: 2,
+                  borderRadius: 5,
+                }}
+              >
                 <form noValidate onSubmit={handleSubmit}>
                   <Stack
                     direction={"row"}
                     spacing={2}
                     sx={{
                       display: "flex",
-                      marginTop: 2.5,
+
                       alignItems: "center",
                     }}
                   >

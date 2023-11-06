@@ -1,25 +1,29 @@
 import {
   Box,
   Button,
+  FormControl,
+  InputLabel,
   Paper,
+  Select,
   Stack,
-  TextField,
   Typography,
+  MenuItem,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
-
+import { v4 as uuidv4 } from "uuid";
 import { TextInputAd } from "../../Component/Style";
 import ModalNcc from "./ModalNcc";
 import Table from "./Table";
 import axios from "axios";
 import TableProduct from "./TableProduct";
+import Swal from "sweetalert2";
 
 const ImportOrder = () => {
   const [show, setShow] = useState(true);
-  const [idP, setP] = useState("");
+
   const [checkQ, setCheckQ] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [open, setOpen] = useState(false);
@@ -27,10 +31,30 @@ const ImportOrder = () => {
   const [ncc, setNcc] = useState("");
   const [nccD, setNccD] = useState("");
   const [products, setProducts] = useState("");
-  const [price, setPrice] = useState("");
   const [priceImport, setPriceImport] = useState("");
   const [checkP, setCheckP] = useState(false);
-  console.log(products);
+  const [loai, setLoai] = useState("");
+  const [loais, setLoais] = useState("");
+  const [brand, setBrand] = useState("");
+  const [brands, setBrands] = useState("");
+  useEffect(() => {
+    axios
+      .get("/api/v1/category/getAll")
+      .then(function (response) {
+        setLoais(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    axios
+      .get("/api/v1/brands/getAllBrand")
+      .then(function (response) {
+        setBrands(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -45,13 +69,23 @@ const ImportOrder = () => {
         importOrderDetail: products.map((item) => ({
           quantity: item.quantity,
           product: {
-            id: item.id,
             productName: item.name,
+            importPrice: item.importPrice,
+            category: {
+              id: item.loai,
+            },
+            brand: {
+              id: item.hang,
+            },
           },
         })),
       })
       .then(function (response) {
         console.log(response.data);
+        Swal.fire({
+          title: "Thành công",
+          icon: "success",
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -59,20 +93,26 @@ const ImportOrder = () => {
   };
 
   const handleFind = () => {
-    axios
-      .get(`/api/v1/suppliers/getByEmailOrPhone/${ncc}`)
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data !== `${ncc} not found!!`) {
-          setNccD(response.data);
-        } else {
-          setOpen(!open);
-          setNccD("");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
+    if (ncc !== "") {
+      axios
+        .get(`/api/v1/suppliers/getByEmailOrPhone/${ncc}`)
+        .then(function (response) {
+          if (response.data !== `${ncc} not found!!`) {
+            setNccD(response.data);
+          } else {
+            setOpen(!open);
+            setNccD("");
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      Swal.fire({
+        title: "Vui lòng nhập thông tin",
+        icon: "error",
       });
+    }
   };
 
   const checkQuantity = (e) => {
@@ -84,47 +124,67 @@ const ImportOrder = () => {
     }
   };
 
-  const checkPrice = (e, v) => {
+  const checkPrice = (e) => {
     if (e < 0) {
       setCheckP(true);
     } else {
       setCheckP(false);
-      if (v === "gia") {
-        setPrice(e);
-      } else {
-        setPriceImport(e);
-      }
+      setPriceImport(e);
     }
   };
 
   const handleAdd = (e) => {
     e.preventDefault();
     setProducts((prev) => {
-      const newJob = [...prev, { id: idP, name: product, quantity: quantity }];
+      const newJob = [
+        ...prev,
+        {
+          id: uuidv4(),
+          name: product,
+          quantity: quantity,
+          importPrice: priceImport,
+          loai: loai,
+          hang: brand,
+        },
+      ];
       return newJob;
     });
 
     setProduct("");
     setQuantity("");
-    setPrice("");
     setPriceImport("");
+  };
+  const handleChange = (event) => {
+    setLoai(event.target.value);
+  };
+  const handleChange2 = (event) => {
+    setBrand(event.target.value);
   };
 
   return (
-    <Box sx={{ justifyContent: "center" }}>
+    <Box sx={{ justifyContent: "center", backgroundColor: "#F0F2F5" }}>
       <ModalNcc setModal={setOpen} modal={open} />
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%", minWidth: "70%" }}>
-          <Header setShow={setShow} show={show} />
+          <Header setShow={setShow} show={show} text="Thêm phiếu nhập" />
           <Box
             sx={{
               paddingLeft: 2,
               paddingRight: 2,
+              paddingTop: 1,
             }}
           >
-            <Stack direction={"row"} spacing={10}>
-              <Box sx={{ flex: 1 }}>
+            <Stack direction={"row"} spacing={5}>
+              <Box
+                sx={{
+                  flex: 1,
+                  backgroundColor: "white",
+                  padding: "20px 20px 0 20px",
+                  border: "1px solid black",
+                  borderRadius: 5,
+                }}
+              >
                 <form noValidate onSubmit={handleSubmit}>
                   <Stack
                     direction={"row"}
@@ -144,7 +204,7 @@ const ImportOrder = () => {
                     />
                     <Button
                       variant="contained"
-                      sx={{ width: 120, height: 50 }}
+                      sx={{ width: 120, height: 40 }}
                       onClick={handleFind}
                     >
                       Tìm
@@ -166,11 +226,9 @@ const ImportOrder = () => {
                   ) : (
                     <></>
                   )}
-                  {products !== "" ? (
-                    <Table products={products} setProducts={setProducts} />
-                  ) : (
-                    <></>
-                  )}
+
+                  <Table products={products} setProducts={setProducts} />
+
                   <Stack
                     direction="row"
                     spacing={10}
@@ -193,19 +251,12 @@ const ImportOrder = () => {
               <Box sx={{ flex: 1 }}>
                 <Paper
                   sx={{
-                    padding: "10px 10px 10px",
-                    borderTop: "1px solid black",
+                    padding: 2,
+                    border: "1px solid black",
+                    borderRadius: 5,
                   }}
                 >
                   <form noValidate onSubmit={handleAdd}>
-                    <TextField
-                      label="ID"
-                      variant="outlined"
-                      fullWidth
-                      value={idP}
-                      size="small"
-                      onChange={(e) => setP(e.target.value)}
-                    />
                     <TextInputAd
                       label="Tên sản phẩm"
                       variant="outlined"
@@ -214,7 +265,48 @@ const ImportOrder = () => {
                       size="small"
                       onChange={(e) => setProduct(e.target.value)}
                     />
-
+                    <Stack direction={"row"} gap={2} sx={{ marginTop: 2 }}>
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="demo-simple-select-label">
+                          Loại
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={loai}
+                          label="Age"
+                          onChange={handleChange}
+                        >
+                          {loais !== ""
+                            ? loais.map((item, index) => (
+                                <MenuItem key={index} value={item.id}>
+                                  {item.categoryName}
+                                </MenuItem>
+                              ))
+                            : null}
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="demo-simple-select-label">
+                          Hãng
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={brand}
+                          label="Age"
+                          onChange={handleChange2}
+                        >
+                          {brands !== ""
+                            ? brands.map((item, index) => (
+                                <MenuItem key={index} value={item.id}>
+                                  {item.name}
+                                </MenuItem>
+                              ))
+                            : null}
+                        </Select>
+                      </FormControl>
+                    </Stack>
                     <TextInputAd
                       label="Số lượng"
                       variant="outlined"
@@ -234,7 +326,7 @@ const ImportOrder = () => {
                       type="number"
                       value={priceImport}
                       size="small"
-                      onChange={(e) => checkPrice(e.target.value, "giaNhap")}
+                      onChange={(e) => checkPrice(e.target.value)}
                     />
 
                     <Stack
@@ -263,8 +355,13 @@ const ImportOrder = () => {
                     </Stack>
                   </form>
                 </Paper>
-                <Box sx={{ marginTop: 5 }}>
-                  <TableProduct />
+                <Box sx={{ marginTop: 2 }}>
+                  <TableProduct
+                    setBrand={setBrand}
+                    setPriceImport={setPriceImport}
+                    setProduct={setProduct}
+                    setLoai={setLoai}
+                  />
                 </Box>
               </Box>
             </Stack>

@@ -20,13 +20,13 @@ export const StackHeader = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#F8F9F9" : "#292929",
   justifyContent: "space-between",
   alignItems: "center",
-  paddingTop: 10,
+
   paddingBottom: 10,
 }));
 export const Search = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#3A3B3C" : "#E8E8E8",
   borderRadius: 20,
-  width: "50%",
+  width: "30%",
   height: 40,
   "&:hover": {
     border: "1px solid currentColor",
@@ -178,3 +178,15 @@ export const ValueDate2 = (value) => {
   const date = `${hours}:${minutes} - ${day}/${month}/${year}`;
   return date;
 };
+
+export const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});

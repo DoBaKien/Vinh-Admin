@@ -26,9 +26,7 @@ function ProductEdit() {
   const [brand, setBrand] = useState("");
   const [brands, setBrands] = useState("");
   const [quantity, setQuantity] = useState("");
-
   const [price, setPrice] = useState("");
-  const [importPrice, setImportPrice] = useState("");
   const [checkQ, setCheckQ] = useState(false);
   const id = useParams();
   const navigate = useNavigate();
@@ -53,13 +51,11 @@ function ProductEdit() {
     axios
       .get(`/api/v1/products/getById/${id.id}`)
       .then(function (response) {
-        console.log(response.data);
         setName(response.data.productName);
         setQuantity(response.data.quantity);
         setBrand(response.data.brand.id);
         setDescription(response.data.description);
         setPrice(response.data.price);
-        setImportPrice(response.data.priceImport);
 
         setLoai(response.data.category.id);
       })
@@ -80,7 +76,6 @@ function ProductEdit() {
           id: brand,
         },
         description,
-        priceImport: importPrice,
         price,
         category: {
           id: loai,
@@ -141,6 +136,7 @@ function ProductEdit() {
                   <TextInputAd
                     label="Số lượng"
                     variant="outlined"
+                    disabled
                     type="number"
                     value={quantity}
                     error={checkQ}
@@ -201,13 +197,6 @@ function ProductEdit() {
                   fullWidth
                   value={price || ""}
                   onChange={(e) => setPrice(e.target.value)}
-                />
-                <TextInputAd
-                  label="Giá nhập"
-                  variant="outlined"
-                  fullWidth
-                  value={importPrice || ""}
-                  onChange={(e) => setImportPrice(e.target.value)}
                 />
 
                 <Stack
