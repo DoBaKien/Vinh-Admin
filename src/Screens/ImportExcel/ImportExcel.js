@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
@@ -21,6 +21,28 @@ function ImportExcel() {
   const [rows, setRows] = useState([]);
   const [ncc, setNcc] = useState("");
   const [open, setOpen] = useState(false);
+  const userId = localStorage.getItem("id");
+  const [brands, setBrands] = useState("");
+  const [loais, setLoais] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("/api/v1/brands/getAllBrand")
+      .then(function (response) {
+        setBrands(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    axios
+      .get("/api/v1/category/getAll")
+      .then(function (response) {
+        setLoais(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   const fileHandler = (event) => {
     const fileObj = event.target.files[0];
@@ -55,17 +77,39 @@ function ImportExcel() {
           if (row && row !== "undefined") {
             newRows.push({
               key: index,
-              id: row[0],
+              id: index,
+              productId: row[0],
               name: row[1],
-              category: row[2],
-              brand: row[3],
-              price: row[4],
-              description: row[5],
+              quantity: row[2],
+              category: row[3],
+              categoryId: row[3],
+              brand: row[4],
+              brandId: row[4],
+              price: row[5],
+              description: row[6],
             });
           }
           return null;
         });
-        console.log(newRows);
+        let typeMap = {};
+        brands.forEach((item) => {
+          typeMap[item.name] = item.id; // index + 1 để bắt đầu từ 1
+        });
+        newRows.forEach((item) => {
+          if (typeMap[item.brandId]) {
+            item.brandId = typeMap[item.brandId];
+          }
+        });
+        let typeMap2 = {};
+        loais.forEach((item) => {
+          typeMap2[item.categoryName] = item.id; // index + 1 để bắt đầu từ 1
+        });
+        newRows.forEach((item) => {
+          if (typeMap2[item.categoryId]) {
+            item.categoryId = typeMap2[item.categoryId];
+          }
+        });
+
         if (newRows.length === 0) {
           Swal.fire({
             title: "Không tìm thấy dữ liệu",
@@ -112,16 +156,71 @@ function ImportExcel() {
 
     { field: "category", headerName: "Loại", flex: 0.5 },
     { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
-    { field: "price", headerName: "Giá", flex: 0.5 },
+    { field: "price", headerName: "Giá nhập", flex: 0.5 },
     {
       field: "description",
       headerName: "Mô tả",
       flex: 2,
-      renderCell: (params) => {
-        params !== null ? <ExpandableCell {...params} /> : <></>;
-      },
+      renderCell: (params) => <ExpandableCell {...params} />,
     },
   ];
+
+  const handleSubmit = () => {
+    const importOrderDetail = rows.map((item) => {
+      if (item.productId === undefined) {
+        return {
+          quantity: item.quantity,
+          importPrice: item.price,
+          product: {
+            productName: item.name,
+            category: {
+              id: item.categoryId,
+            },
+            quantity: item.quantity,
+            brand: {
+              id: item.brandId,
+            },
+          },
+        };
+      } else {
+        return {
+          quantity: item.quantity,
+          importPrice: item.price,
+          product: {
+            id: item.productId,
+            productName: item.name,
+            category: {
+              id: item.categoryId,
+            },
+            brand: {
+              id: item.brandId,
+            },
+          },
+        };
+      }
+    });
+    console.log(importOrderDetail);
+    axios
+      .post(`/api/v1/importOrders/saveOrUpdate`, {
+        supplier: {
+          id: nccD.id,
+        },
+        employee: {
+          id: userId,
+        },
+        importOrderDetail: importOrderDetail,
+      })
+      .then(function (response) {
+        console.log(response.data);
+        Swal.fire({
+          title: "Thành công",
+          icon: "success",
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%" }}>
@@ -202,6 +301,7 @@ function ImportExcel() {
                     component="label"
                     variant="outlined"
                     startIcon={<AddCircleIcon />}
+                    onClick={handleSubmit}
                   >
                     Tạo Phiếu nhập
                   </Button>

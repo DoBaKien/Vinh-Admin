@@ -65,6 +65,7 @@ function TableProduct(props) {
     props.setBrand(e.row.brandId);
     props.setLoai(e.row.categoryId);
     props.setProduct(e.row.name);
+    props.setProductId(e.row.id);
   };
   return (
     <Box

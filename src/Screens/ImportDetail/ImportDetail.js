@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ValueDate2 } from "../../Component/Style";
 
-const InvoiceDetails = () => {
+function ImportDetail() {
   const [show, setShow] = useState(true);
   const [data, setData] = useState("");
   const [sum, setSum] = useState("");
@@ -25,16 +25,16 @@ const InvoiceDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/v1/orders/getOrderById/${id.id}`)
+      .get(`/api/v1/importOrders/getById/${id.id}`)
       .then((res) => {
+        console.log(res.data);
         setData(res.data);
-
         setSum(
-          res.data.orderDetails.reduce(
-            (acc, item) => acc + item.product.price * item.quantity,
+          res.data.importOrderDetail.reduce(
+            (acc, item) => acc + item.importPrice * item.quantity,
             0
           )
-        );
+        ).toFixed(2);
       })
       .catch((error) => console.log(error));
   }, [id.id]);
@@ -47,6 +47,17 @@ const InvoiceDetails = () => {
       headerName: "Tên sản phẩm",
       flex: 1,
     },
+    {
+      field: "loai",
+      headerName: "Loại",
+      flex: 0.5,
+    },
+    {
+      field: "brand",
+      headerName: "Hãng",
+      flex: 0.5,
+    },
+
     {
       field: "quantity",
       headerName: "Số lượng",
@@ -81,10 +92,7 @@ const InvoiceDetails = () => {
           <Stack direction="column" spacing={1} sx={{ height: 1 }}>
             <Typography variant="h6">{`Hóa đơn ${id.id}`}</Typography>
             <Stack direction={"row"} sx={{ gap: 20 }}>
-              {checkS(data.statusOrder)}
-              <Typography variant="subtitle1">
-                Tổng hóa đơn: {sum.toFixed(2)}
-              </Typography>
+              <Typography variant="subtitle1">Tổng: {sum}</Typography>
               <Typography variant="subtitle1">
                 Ngày lập: {ValueDate2(data.date)}
               </Typography>
@@ -93,34 +101,26 @@ const InvoiceDetails = () => {
             <Grid container sx={{ paddingLeft: 2, paddingRight: 2 }}>
               <Grid item md={6}>
                 <Typography variant="body2" color="textSecondary">
-                  Thông tin khách hàng
+                  Thông tin nhân viên
                 </Typography>
                 <Typography variant="body1">
-                  {data.customer.lastName + " " + data.customer.firstName}
+                  {data.employee.lastName + " " + data.employee.firstName}
                 </Typography>
-                <Typography variant="body1">{data.customer.email}</Typography>
-                <Typography variant="body1">{data.customer.phone}</Typography>
-                <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="body2" color="textSecondary">
-                    Ghi chú
-                  </Typography>
-                  <Typography>{data.note}</Typography>
-                </Box>
+                <Typography variant="body1">{data.employee.email}</Typography>
+                <Typography variant="body1">{data.employee.phone}</Typography>
               </Grid>
               <Grid item md={6}>
                 <Typography variant="body2" align="right" color="textSecondary">
-                  Nhân viên
+                  Nhà cung cấp
                 </Typography>
                 <Typography variant="body1" align="right">
-                  {data.employee === "" ? data.employee.id : "Id"}
+                  {data.supplier.name}
                 </Typography>
                 <Typography variant="body1" align="right">
-                  {data.employee === ""
-                    ? data.employee.lastName + " " + data.employee.firstName
-                    : "Tên"}
+                  {data.supplier.email}
                 </Typography>
                 <Typography align="right" variant="body1">
-                  {data.employee === "" ? data.employee.email : "Email"}
+                  {data.supplier.phone}
                 </Typography>
               </Grid>
             </Grid>
@@ -132,11 +132,13 @@ const InvoiceDetails = () => {
                   toolbarFilters: "Lọc",
                   toolbarExport: "Xuất ",
                 }}
-                rows={data.orderDetails.map((item) => ({
+                rows={data.importOrderDetail.map((item) => ({
                   id: item.id,
                   name: item.product.productName,
-                  price: item.product.price,
+                  price: item.importPrice,
                   quantity: item.quantity,
+                  brand: item.product.brand.name,
+                  loai: item.product.category.categoryName,
                 }))}
                 columns={columns}
                 sx={{ flex: 1 }}
@@ -175,6 +177,6 @@ const InvoiceDetails = () => {
       </Stack>
     </Box>
   );
-};
+}
 
-export default InvoiceDetails;
+export default ImportDetail;

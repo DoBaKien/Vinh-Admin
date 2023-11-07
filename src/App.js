@@ -10,6 +10,7 @@ import CreateBill from "./Screens/CreateBill/CreateBill";
 import ProductCreate from "./Screens/ProductCreate/ProductCreate";
 import ProductEdit from "./Screens/ProductEdit/ProductEdit";
 import ImportExcel from "./Screens/ImportExcel/ImportExcel";
+import ImportDetail from "./Screens/ImportDetail/ImportDetail";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/Product" element={<Product />} />
       <Route path="/ImportOrder" element={<ImportOrder />} />
       <Route path="/ImportOrderData" element={<ImportOrderData />} />
+      <Route path="/ImportOrderData/:id" element={<ImportDetail />} />
       <Route path="/CheckOut" element={<CheckOut />} />
       <Route path="/CheckOut/:id" element={<InvoiceDetails />} />
       <Route path="/CreateBill" element={<CreateBill />} />

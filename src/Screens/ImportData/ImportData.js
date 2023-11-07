@@ -22,8 +22,6 @@ const ImportData = () => {
       });
   }, []);
 
-  const handleOnCellClick = (params) => {};
-
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "employee", headerName: "Người lập", flex: 1 },
@@ -35,6 +33,10 @@ const ImportData = () => {
       renderCell: (params) => <ValueDate {...params} />,
     },
   ];
+  const handleOnCellClick = (params) => {
+    // navigate(`/CheckOut/${params.id}`);
+    window.open(`/DoAnTotNghiep/#/ImportOrderData/${params.id}`, "_blank");
+  };
 
   const datatable = () => {
     if (Array.isArray(data) && data.length !== 0) {

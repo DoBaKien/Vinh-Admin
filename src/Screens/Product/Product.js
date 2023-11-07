@@ -52,6 +52,7 @@ const Product = () => {
       headerName: "Tên",
       flex: 1,
     },
+    { field: "quantity", headerName: "Số lượng", flex: 0.5 },
     { field: "category", headerName: "Loại", flex: 0.5 },
     { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
     { field: "price", headerName: "Giá", flex: 0.5 },

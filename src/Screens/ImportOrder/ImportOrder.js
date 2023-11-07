@@ -23,7 +23,6 @@ import Swal from "sweetalert2";
 
 const ImportOrder = () => {
   const [show, setShow] = useState(true);
-
   const [checkQ, setCheckQ] = useState(false);
   const [quantity, setQuantity] = useState("");
   const [open, setOpen] = useState(false);
@@ -37,6 +36,8 @@ const ImportOrder = () => {
   const [loais, setLoais] = useState("");
   const [brand, setBrand] = useState("");
   const [brands, setBrands] = useState("");
+  const [productId, setProductId] = useState("");
+  const userId = localStorage.getItem("id");
   useEffect(() => {
     axios
       .get("/api/v1/category/getAll")
@@ -58,27 +59,49 @@ const ImportOrder = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios
-      .post(`/api/v1/importOrders/saveOrUpdate`, {
-        supplier: {
-          id: 1,
-        },
-        employee: {
-          id: "NV7545",
-        },
-        importOrderDetail: products.map((item) => ({
+    const importOrderDetail = products.map((item) => {
+      if (item.id.length > 30) {
+        return {
           quantity: item.quantity,
+          importPrice: item.importPrice,
           product: {
             productName: item.name,
-            importPrice: item.importPrice,
             category: {
               id: item.loai,
             },
+            quantity: item.quantity,
             brand: {
               id: item.hang,
             },
           },
-        })),
+        };
+      } else {
+        return {
+          quantity: item.quantity,
+          importPrice: item.importPrice,
+          product: {
+            id: item.id,
+            category: {
+              id: item.loai,
+            },
+            quantity: item.quantity,
+            brand: {
+              id: item.hang,
+            },
+          },
+        };
+      }
+    });
+
+    axios
+      .post(`/api/v1/importOrders/saveOrUpdate`, {
+        supplier: {
+          id: nccD.id,
+        },
+        employee: {
+          id: userId,
+        },
+        importOrderDetail: importOrderDetail,
       })
       .then(function (response) {
         console.log(response.data);
@@ -99,6 +122,7 @@ const ImportOrder = () => {
         .then(function (response) {
           if (response.data !== `${ncc} not found!!`) {
             setNccD(response.data);
+            console.log(response.data);
           } else {
             setOpen(!open);
             setNccD("");
@@ -139,7 +163,7 @@ const ImportOrder = () => {
       const newJob = [
         ...prev,
         {
-          id: uuidv4(),
+          id: productId || uuidv4(),
           name: product,
           quantity: quantity,
           importPrice: priceImport,
@@ -149,7 +173,7 @@ const ImportOrder = () => {
       ];
       return newJob;
     });
-
+    setProductId("");
     setProduct("");
     setQuantity("");
     setPriceImport("");
@@ -361,6 +385,7 @@ const ImportOrder = () => {
                     setPriceImport={setPriceImport}
                     setProduct={setProduct}
                     setLoai={setLoai}
+                    setProductId={setProductId}
                   />
                 </Box>
               </Box>

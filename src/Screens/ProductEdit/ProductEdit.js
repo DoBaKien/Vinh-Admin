@@ -16,6 +16,7 @@ import { TextInputAd } from "../../Component/Style";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function ProductEdit() {
   const [show, setShow] = useState(true);
@@ -82,7 +83,10 @@ function ProductEdit() {
         },
       })
       .then(function (response) {
-        console.log(response);
+        Swal.fire({
+          title: "Thành công",
+          icon: "success",
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -136,7 +140,7 @@ function ProductEdit() {
                   <TextInputAd
                     label="Số lượng"
                     variant="outlined"
-                    disabled
+                    // disabled
                     type="number"
                     value={quantity}
                     error={checkQ}
@@ -209,7 +213,6 @@ function ProductEdit() {
                   }}
                 >
                   <Button
-                    type="submit"
                     variant="contained"
                     color="error"
                     sx={{ width: 150 }}

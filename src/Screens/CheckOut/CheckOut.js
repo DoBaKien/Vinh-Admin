@@ -65,6 +65,7 @@ function CheckOut() {
               status: item.statusOrder,
               date: item.date,
             }))}
+            density="comfortable"
             columns={columns}
             pageSizeOptions={[10, 50, 100]}
             initialState={{
