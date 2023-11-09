@@ -24,7 +24,7 @@ function TableChoose(props) {
       </Stack>
       <Divider />
       <Divider />
-      <Box sx={{ height: 330, overflow: "scroll", width: "100%" }}>
+      <Box sx={{ height: 330, overflow: "auto", width: "100%" }}>
         {props.select.map((item, i) => (
           <Box key={i}>
             <SplitArray

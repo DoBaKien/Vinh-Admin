@@ -69,21 +69,6 @@ function ImportDetail() {
       flex: 0.5,
     },
   ];
-  const checkS = (value) => {
-    if (value === "1") {
-      return (
-        <Typography variant="subtitle1">Trạng thái: Đang xử lý </Typography>
-      );
-    } else if (value === "2") {
-      return (
-        <Typography variant="subtitle1">Trạng thái: Đang vận chuyển</Typography>
-      );
-    } else if (value === "3") {
-      return (
-        <Typography variant="subtitle1">Trạng thái: Hoàn thành</Typography>
-      );
-    }
-  };
 
   const checkData = () => {
     if (data !== "") {

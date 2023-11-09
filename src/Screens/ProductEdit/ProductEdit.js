@@ -1,11 +1,16 @@
 import {
   Box,
   Button,
+  Card,
+  CardActionArea,
+  CardMedia,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   Stack,
+  Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
 
@@ -17,9 +22,12 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { v4 as uuidv4 } from "uuid";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 function ProductEdit() {
   const [show, setShow] = useState(true);
+  const [imageP, setImage] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [loai, setLoai] = useState("");
@@ -28,7 +36,12 @@ function ProductEdit() {
   const [brands, setBrands] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
+
   const [checkQ, setCheckQ] = useState(false);
+
+  const [arr, setArr] = useState([
+    { id: uuidv4(), specificationName: "", specificationValue: "" },
+  ]);
   const id = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -52,12 +65,12 @@ function ProductEdit() {
     axios
       .get(`/api/v1/products/getById/${id.id}`)
       .then(function (response) {
+        setImage(response.data.imageProducts);
         setName(response.data.productName);
         setQuantity(response.data.quantity);
         setBrand(response.data.brand.id);
         setDescription(response.data.description);
         setPrice(response.data.price);
-
         setLoai(response.data.category.id);
       })
       .catch(function (error) {
@@ -67,7 +80,6 @@ function ProductEdit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name, description, quantity, brand);
     axios
       .post("/api/v1/products/saveOrUpdate", {
         id: id.id,
@@ -81,8 +93,12 @@ function ProductEdit() {
         category: {
           id: loai,
         },
+        specifications: arr.map((item) => ({
+          specificationValue: item.specificationValue,
+          specificationName: item.specificationName,
+        })),
       })
-      .then(function (response) {
+      .then(function () {
         Swal.fire({
           title: "Thành công",
           icon: "success",
@@ -91,6 +107,12 @@ function ProductEdit() {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const handleFileSelect = (event) => {
+    const selectedFile = event.target.files[0];
+    // Xử lý tệp đã chọn ở đây
+    console.log("Đã chọn tệp:", selectedFile);
   };
 
   const checkQuantity = (e) => {
@@ -108,20 +130,126 @@ function ProductEdit() {
     setBrand(event.target.value);
   };
 
+  const handleAdd = (e) => {
+    setArr([...arr, { id: uuidv4(), title: e, content: "" }]);
+  };
+  function handleInputChange(event, index, key) {
+    const updatedUsers = [...arr];
+    updatedUsers[index][key] = event;
+    setArr(updatedUsers);
+  }
+
+  function deleteUser(id) {
+    const newPost = arr.filter((user) => user.id !== id);
+    setArr(newPost);
+  }
+
+  const Arrttkt = (id, i) => {
+    return (
+      <Stack direction={"row"} gap={2}>
+        <TextInputAd
+          label="Tên sản phẩm"
+          variant="outlined"
+          sx={{ width: 250 }}
+          multiline
+          // value={language || ""}
+          rows={2}
+          onChange={(e) =>
+            handleInputChange(e.target.value, i, "specificationName")
+          }
+        />
+        <TextInputAd
+          label="Tên sản phẩm"
+          variant="outlined"
+          fullWidth
+          multiline
+          // value={language || ""}
+          rows={2}
+          onChange={(e) =>
+            handleInputChange(e.target.value, i, "specificationValue")
+          }
+        />
+        {arr.length !== 1 ? (
+          <Box sx={{ alignItems: "center", display: "flex", marginTop: 2 }}>
+            <IconButton sx={{ height: 50 }} onClick={() => deleteUser(id)}>
+              <RemoveCircleIcon fontSize="large" color="primary" />
+            </IconButton>
+          </Box>
+        ) : null}
+      </Stack>
+    );
+  };
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%" }}>
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%", minWidth: "70%" }}>
           <Header setShow={setShow} show={show} />
-          <Box
+          <Stack
+            direction={"row"}
+            gap={2}
             sx={{
               paddingLeft: 2,
               paddingRight: 2,
             }}
           >
-            <Box>
+            <Box
+              sx={{
+                flex: 1,
+                border: "1px solid black",
+                borderRadius: 10,
+                padding: 2,
+              }}
+            >
+              <Typography variant="h4">Thông tin sản phẩm #{id.id}</Typography>
               <form noValidate onSubmit={handleSubmit}>
+                <Stack direction={"row"} gap={2}>
+                  <Stack
+                    direction={"row"}
+                    gap={1}
+                    sx={{ overflow: "auto", width: "60%" }}
+                  >
+                    {imageP !== ""
+                      ? imageP.map((item) => (
+                          <Card key={item.id} sx={{ width: 200 }}>
+                            <CardActionArea
+                              onClick={() =>
+                                window.open(item.imageLink, "_blank")
+                              }
+                            >
+                              <CardMedia
+                                sx={{ height: 200, width: 200 }}
+                                image={item.imageLink}
+                                title="product image"
+                              />
+                            </CardActionArea>
+                          </Card>
+                        ))
+                      : null}
+                  </Stack>
+                  <Card sx={{ width: 200 }}>
+                    <Box
+                      sx={{
+                        height: 200,
+                        flex: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#DDDDDD",
+                      }}
+                    >
+                      <IconButton aria-label="upload picture" component="label">
+                        <input
+                          hidden
+                          accept="image/*"
+                          type="file"
+                          onChange={handleFileSelect}
+                        />
+                        <AddCircleIcon sx={{ fontSize: 80 }} />
+                      </IconButton>
+                    </Box>
+                  </Card>
+                </Stack>
                 <TextInputAd
                   label="Tên sản phẩm"
                   variant="outlined"
@@ -226,7 +354,25 @@ function ProductEdit() {
                 </Stack>
               </form>
             </Box>
-          </Box>
+            <Box
+              sx={{
+                flex: 1,
+                border: "1px solid black",
+                borderRadius: 10,
+                padding: 2,
+              }}
+            >
+              <Typography variant="h4">Thông số kỹ thuật #{id.id}</Typography>
+              <IconButton sx={{ height: 50 }} onClick={handleAdd}>
+                <AddCircleIcon fontSize="large" color="primary" />
+              </IconButton>
+              <Box sx={{ overflow: "auto", height: "60vh" }}>
+                {arr.map((data, i) => {
+                  return <Box key={i}>{Arrttkt(data.id, i, data.content)}</Box>;
+                })}
+              </Box>
+            </Box>
+          </Stack>
         </Box>
       </Stack>
     </Box>
