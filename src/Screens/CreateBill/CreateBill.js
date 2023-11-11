@@ -46,6 +46,7 @@ const CreateBill = () => {
       customer: {
         id: customerD.id,
       },
+      statusOrder: "3",
       employee: { id: id },
       orderDetails: select.map((item) => ({
         quantity: item.quantity,
@@ -54,13 +55,14 @@ const CreateBill = () => {
         },
       })),
     };
-    console.log(orderData);
 
     axios
       .post(`/api/v1/orders/createNow`, orderData)
       .then(function (response) {
-        console.log(response.data);
-        console.log("asd");
+        Swal.fire({
+          title: "Thành công",
+          icon: "success",
+        });
       })
       .catch(function (error) {
         console.log(error);

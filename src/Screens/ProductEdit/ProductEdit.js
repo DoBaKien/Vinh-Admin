@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
-
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
@@ -23,8 +22,8 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { v4 as uuidv4 } from "uuid";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import ThongSoKyThuat from "../../Component/TsoKyThuat";
+
 function ProductEdit() {
   const [show, setShow] = useState(true);
   const [imageP, setImage] = useState("");
@@ -36,12 +35,10 @@ function ProductEdit() {
   const [brands, setBrands] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
-
+  const [categoryName, setCategoryName] = useState("");
+  const [data, setData] = useState("");
   const [checkQ, setCheckQ] = useState(false);
 
-  const [arr, setArr] = useState([
-    { id: uuidv4(), specificationName: "", specificationValue: "" },
-  ]);
   const id = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -65,13 +62,18 @@ function ProductEdit() {
     axios
       .get(`/api/v1/products/getById/${id.id}`)
       .then(function (response) {
+        console.log(response.data.specifications);
         setImage(response.data.imageProducts);
         setName(response.data.productName);
         setQuantity(response.data.quantity);
         setBrand(response.data.brand.id);
+        setCategoryName(response.data.category.categoryName);
         setDescription(response.data.description);
         setPrice(response.data.price);
         setLoai(response.data.category.id);
+        if (response.data.specifications.length > 0) {
+          setData(response.data.specifications);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -80,6 +82,7 @@ function ProductEdit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(data);
     axios
       .post("/api/v1/products/saveOrUpdate", {
         id: id.id,
@@ -93,9 +96,9 @@ function ProductEdit() {
         category: {
           id: loai,
         },
-        specifications: arr.map((item) => ({
-          specificationValue: item.specificationValue,
-          specificationName: item.specificationName,
+        specifications: data.map((item) => ({
+          specificationValue: item.value,
+          specificationName: item.name,
         })),
       })
       .then(function () {
@@ -130,55 +133,6 @@ function ProductEdit() {
     setBrand(event.target.value);
   };
 
-  const handleAdd = (e) => {
-    setArr([...arr, { id: uuidv4(), title: e, content: "" }]);
-  };
-  function handleInputChange(event, index, key) {
-    const updatedUsers = [...arr];
-    updatedUsers[index][key] = event;
-    setArr(updatedUsers);
-  }
-
-  function deleteUser(id) {
-    const newPost = arr.filter((user) => user.id !== id);
-    setArr(newPost);
-  }
-
-  const Arrttkt = (id, i) => {
-    return (
-      <Stack direction={"row"} gap={2}>
-        <TextInputAd
-          label="Tên sản phẩm"
-          variant="outlined"
-          sx={{ width: 250 }}
-          multiline
-          // value={language || ""}
-          rows={2}
-          onChange={(e) =>
-            handleInputChange(e.target.value, i, "specificationName")
-          }
-        />
-        <TextInputAd
-          label="Tên sản phẩm"
-          variant="outlined"
-          fullWidth
-          multiline
-          // value={language || ""}
-          rows={2}
-          onChange={(e) =>
-            handleInputChange(e.target.value, i, "specificationValue")
-          }
-        />
-        {arr.length !== 1 ? (
-          <Box sx={{ alignItems: "center", display: "flex", marginTop: 2 }}>
-            <IconButton sx={{ height: 50 }} onClick={() => deleteUser(id)}>
-              <RemoveCircleIcon fontSize="large" color="primary" />
-            </IconButton>
-          </Box>
-        ) : null}
-      </Stack>
-    );
-  };
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%" }}>
       <Stack direction="row">
@@ -199,16 +153,13 @@ function ProductEdit() {
                 border: "1px solid black",
                 borderRadius: 10,
                 padding: 2,
+                width: "100%",
               }}
             >
               <Typography variant="h4">Thông tin sản phẩm #{id.id}</Typography>
               <form noValidate onSubmit={handleSubmit}>
-                <Stack direction={"row"} gap={2}>
-                  <Stack
-                    direction={"row"}
-                    gap={1}
-                    sx={{ overflow: "auto", width: "60%" }}
-                  >
+                <Stack direction={"row"} gap={1}>
+                  <Stack direction={"row"} sx={{ overflow: "auto" }} gap={1}>
                     {imageP !== ""
                       ? imageP.map((item) => (
                           <Card key={item.id} sx={{ width: 200 }}>
@@ -363,14 +314,12 @@ function ProductEdit() {
               }}
             >
               <Typography variant="h4">Thông số kỹ thuật #{id.id}</Typography>
-              <IconButton sx={{ height: 50 }} onClick={handleAdd}>
-                <AddCircleIcon fontSize="large" color="primary" />
-              </IconButton>
-              <Box sx={{ overflow: "auto", height: "60vh" }}>
-                {arr.map((data, i) => {
-                  return <Box key={i}>{Arrttkt(data.id, i, data.content)}</Box>;
-                })}
-              </Box>
+
+              <ThongSoKyThuat
+                categoryName={categoryName}
+                setData={setData}
+                data={data}
+              />
             </Box>
           </Stack>
         </Box>

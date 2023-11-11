@@ -28,7 +28,7 @@ const InvoiceDetails = () => {
       .get(`/api/v1/orders/getOrderById/${id.id}`)
       .then((res) => {
         setData(res.data);
-
+        console.log(res.data);
         setSum(
           res.data.orderDetails.reduce(
             (acc, item) => acc + item.product.price * item.quantity,
@@ -112,15 +112,15 @@ const InvoiceDetails = () => {
                   Nhân viên
                 </Typography>
                 <Typography variant="body1" align="right">
-                  {data.employee === "" ? data.employee.id : "Id"}
+                  {data.employee !== "" ? data.employee.id : "Id"}
                 </Typography>
                 <Typography variant="body1" align="right">
-                  {data.employee === ""
+                  {data.employee !== ""
                     ? data.employee.lastName + " " + data.employee.firstName
                     : "Tên"}
                 </Typography>
                 <Typography align="right" variant="body1">
-                  {data.employee === "" ? data.employee.email : "Email"}
+                  {data.employee !== "" ? data.employee.email : "Email"}
                 </Typography>
               </Grid>
             </Grid>
