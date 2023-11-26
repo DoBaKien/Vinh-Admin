@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   CircularProgress,
   Grid,
   Paper,
@@ -16,19 +17,21 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ValueDate2 } from "../../Component/Style";
+import { BoxBtn, GridBox, StackNav } from "./Style";
+import { StatusCheck } from "../../Component/data";
+import Swal from "sweetalert2";
 
 const InvoiceDetails = () => {
   const [show, setShow] = useState(true);
   const [data, setData] = useState("");
   const [sum, setSum] = useState("");
-  const id = useParams();
-
+  const idO = useParams();
+  const userId = localStorage.getItem("id");
   useEffect(() => {
     axios
-      .get(`/api/v1/orders/getOrderById/${id.id}`)
+      .get(`/api/v1/orders/getOrderById/${idO.id}`)
       .then((res) => {
         setData(res.data);
-        console.log(res.data);
         setSum(
           res.data.orderDetails.reduce(
             (acc, item) => acc + item.product.price * item.quantity,
@@ -37,7 +40,7 @@ const InvoiceDetails = () => {
         );
       })
       .catch((error) => console.log(error));
-  }, [id.id]);
+  }, [idO.id]);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -60,16 +63,125 @@ const InvoiceDetails = () => {
   ];
   const checkS = (value) => {
     if (value === "1") {
-      return (
-        <Typography variant="subtitle1">Trạng thái: Đang xử lý </Typography>
-      );
+      return "Đang xử lý ";
     } else if (value === "2") {
-      return (
-        <Typography variant="subtitle1">Trạng thái: Đang vận chuyển</Typography>
-      );
+      return "Đang vận chuyển";
     } else if (value === "3") {
+      return "Hoàn thành";
+    } else {
+      return "Đã hủy";
+    }
+  };
+
+  const handleSuccess = () => {
+    const stt = StatusCheck(data.statusOrder);
+    axios
+      .post(`/api/v1/orders/updateStatus/${userId}`, [
+        {
+          statusOrder: stt,
+          id: idO.id,
+        },
+      ])
+      .then(function (response) {
+        Swal.fire({
+          title: "Thành công",
+          icon: "success",
+        });
+        axios
+          .get(`/api/v1/orders/getOrderById/${idO.id}`)
+          .then((res) => {
+            setData(res.data);
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  const handleError = () => {
+    Swal.fire({
+      title: "Điền lý do hủy",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      reverseButtons: "true",
+      cancelButtonText: "Hủy",
+      preConfirm: async (login) => {
+        const stt = "0" + login;
+
+        if (login !== "") {
+          axios
+            .post(`/api/v1/orders/updateStatus/${userId}`, [
+              {
+                statusOrder: stt,
+                id: idO.id,
+              },
+            ])
+            .then(function (response) {
+              Swal.fire({
+                title: "Thành công",
+                icon: "success",
+              });
+              axios
+                .get(`/api/v1/orders/getOrderById/${idO.id}`)
+                .then((res) => {
+                  setData(res.data);
+                })
+                .catch((error) => console.log(error));
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
+          Swal.fire({
+            title: "Vui lòng điền lý do",
+            icon: "error",
+          });
+        }
+      },
+    });
+  };
+
+  const BoxNav = () => {
+    if (data.statusOrder.charAt(0) === "0") {
       return (
-        <Typography variant="subtitle1">Trạng thái: Hoàn thành</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <BoxBtn sx={{ display: "block", paddingLeft: 3 }}>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", textDecoration: "underline" }}
+            >
+              Lý do
+            </Typography>
+            <Typography>{data.statusOrder.substring(1)}</Typography>
+          </BoxBtn>
+        </Box>
+      );
+    } else if (data.statusOrder !== "3") {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <BoxBtn gap={10}>
+            <Button variant="contained" color="error" onClick={handleError}>
+              Báo lỗi
+            </Button>
+            <Button variant="contained" color="success" onClick={handleSuccess}>
+              Cập nhật trạng thái
+            </Button>
+          </BoxBtn>
+        </Box>
       );
     }
   };
@@ -77,22 +189,59 @@ const InvoiceDetails = () => {
   const checkData = () => {
     if (data !== "") {
       return (
-        <Paper sx={{ flex: 1, mx: "auto", width: "95%", p: 1 }}>
-          <Stack direction="column" spacing={1} sx={{ height: 1 }}>
-            <Typography variant="h6">{`Hóa đơn ${id.id}`}</Typography>
-            <Stack direction={"row"} sx={{ gap: 20 }}>
-              {checkS(data.statusOrder)}
-              <Typography variant="subtitle1">
-                Tổng hóa đơn: {sum.toFixed(2)}
-              </Typography>
-              <Typography variant="subtitle1">
-                Ngày lập: {ValueDate2(data.date)}
-              </Typography>
-            </Stack>
-
-            <Grid container sx={{ paddingLeft: 2, paddingRight: 2 }}>
-              <Grid item md={6}>
-                <Typography variant="body2" color="textSecondary">
+        <Paper
+          sx={{
+            flex: 1,
+            mx: "auto",
+            width: "97%",
+            p: 1,
+            backgroundColor: "#E3EFFD",
+          }}
+        >
+          <Box>
+            <Typography
+              variant="h4"
+              sx={{ textAlign: "center" }}
+            >{`Hóa đơn ${idO.id}`}</Typography>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <StackNav direction={"row"}>
+                <Typography variant="subtitle1">
+                  Trạng thái: {checkS(data.statusOrder)}
+                </Typography>
+                <Typography variant="subtitle1">
+                  Tổng hóa đơn:{" "}
+                  {sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                </Typography>
+                <Typography variant="subtitle1">
+                  Ngày lập: {ValueDate2(data.date)}
+                </Typography>
+              </StackNav>
+            </Box>
+            <BoxNav />
+            <Grid
+              container
+              sx={{
+                justifyContent: "space-between",
+                padding: 3,
+              }}
+            >
+              <GridBox
+                item
+                md={4}
+                sx={{
+                  paddingLeft: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: "bold", textDecoration: "underline" }}
+                >
                   Thông tin khách hàng
                 </Typography>
                 <Typography variant="body1">
@@ -101,29 +250,39 @@ const InvoiceDetails = () => {
                 <Typography variant="body1">{data.customer.email}</Typography>
                 <Typography variant="body1">{data.customer.phone}</Typography>
                 <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: "bold", textDecoration: "underline" }}
+                  >
                     Ghi chú
                   </Typography>
                   <Typography>{data.note}</Typography>
                 </Box>
-              </Grid>
-              <Grid item md={6}>
-                <Typography variant="body2" align="right" color="textSecondary">
-                  Nhân viên
-                </Typography>
-                <Typography variant="body1" align="right">
-                  {data.employee !== "" ? data.employee.id : "Id"}
-                </Typography>
-                <Typography variant="body1" align="right">
-                  {data.employee !== ""
-                    ? data.employee.lastName + " " + data.employee.firstName
-                    : "Tên"}
-                </Typography>
-                <Typography align="right" variant="body1">
-                  {data.employee !== "" ? data.employee.email : "Email"}
-                </Typography>
-              </Grid>
+              </GridBox>
+              {data.statusOrder !== "1" ? (
+                <GridBox item md={3} sx={{ paddingRight: 2 }}>
+                  <Typography
+                    variant="h6"
+                    align="right"
+                    sx={{ fontWeight: "bold", textDecoration: "underline" }}
+                  >
+                    Nhân viên
+                  </Typography>
+                  <Typography variant="body1" align="right">
+                    {data.employee.id || "Id"}
+                  </Typography>
+                  <Typography variant="body1" align="right">
+                    {data.employee !== ""
+                      ? data.employee.lastName + " " + data.employee.firstName
+                      : "Tên"}
+                  </Typography>
+                  <Typography align="right" variant="body1">
+                    {data.employee !== "" ? data.employee.email : "Email"}
+                  </Typography>
+                </GridBox>
+              ) : null}
             </Grid>
+
             {data !== "" ? (
               <DataGrid
                 localeText={{
@@ -135,17 +294,19 @@ const InvoiceDetails = () => {
                 rows={data.orderDetails.map((item) => ({
                   id: item.id,
                   name: item.product.productName,
-                  price: item.product.price,
+                  price: item.product.price
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, "."),
                   quantity: item.quantity,
                 }))}
                 columns={columns}
-                sx={{ flex: 1 }}
+                sx={{ flex: 1, backgroundColor: "white" }}
                 hideFooter
               />
             ) : (
               <></>
             )}
-          </Stack>
+          </Box>
         </Paper>
       );
     } else {

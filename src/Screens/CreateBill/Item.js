@@ -2,14 +2,16 @@ import { Box, OutlinedInput, Stack, Typography } from "@mui/material";
 
 function SplitArray(props) {
   const inputQuantity = (e) => {
-    const newArr = props.select.map((item) => {
-      if (item.id === props.item.id) {
-        props.item.quantity = e;
-      }
+    if (e > 0) {
+      const newArr = props.select.map((item) => {
+        if (item.id === props.item.id) {
+          props.item.quantity = e;
+        }
 
-      return item;
-    });
-    props.setSelect(newArr);
+        return item;
+      });
+      props.setSelect(newArr);
+    }
   };
 
   return (
@@ -41,7 +43,9 @@ function SplitArray(props) {
         }}
       >
         <Typography>
-          {(props.item.product.price * props.item.quantity).toFixed(2)}
+          {(props.item.product.price * props.item.quantity)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
         </Typography>
       </Box>
     </Stack>

@@ -61,7 +61,15 @@ const Table = (props) => {
   };
 
   return (
-    <Box sx={{ marginTop: 2, height: 400, width: "100%" }}>
+    <Box
+      sx={{
+        marginTop: 2,
+        height: 400,
+        width: "100%",
+        backgroundColor: "white",
+        borderRadius: 5,
+      }}
+    >
       <DataGrid
         rowHeight={50}
         localeText={{
@@ -80,6 +88,7 @@ const Table = (props) => {
         }}
         getRowHeight={() => "auto"}
         sx={{
+          borderRadius: 5,
           "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
             py: 1,
           },

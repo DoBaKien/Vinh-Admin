@@ -1,11 +1,7 @@
 import {
   Box,
   Button,
-  Card,
-  CardActionArea,
-  CardMedia,
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -21,9 +17,14 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import ThongSoKyThuat from "../../Component/TsoKyThuat";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import ModalDes from "./ModalDes";
+import ModalTk from "./ModalTk";
+import Quill from "quill";
+import ImageResize from "quill-image-resize";
 
+Quill.register("modules/imageResize", ImageResize);
 function ProductEdit() {
   const [show, setShow] = useState(true);
   const [imageP, setImage] = useState("");
@@ -35,9 +36,11 @@ function ProductEdit() {
   const [brands, setBrands] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
-  const [categoryName, setCategoryName] = useState("");
-  const [data, setData] = useState("");
+  const [spec, setSpec] = useState("");
   const [checkQ, setCheckQ] = useState(false);
+  const [modalDes, setModalDes] = useState(false);
+  const [modalTk, setModalTk] = useState(false);
+  const [data, setData] = useState("");
 
   const id = useParams();
   const navigate = useNavigate();
@@ -62,18 +65,16 @@ function ProductEdit() {
     axios
       .get(`/api/v1/products/getById/${id.id}`)
       .then(function (response) {
-        console.log(response.data.specifications);
+        console.log(response.data);
+        setData(response.data);
         setImage(response.data.imageProducts);
         setName(response.data.productName);
         setQuantity(response.data.quantity);
         setBrand(response.data.brand.id);
-        setCategoryName(response.data.category.categoryName);
         setDescription(response.data.description);
         setPrice(response.data.price);
         setLoai(response.data.category.id);
-        if (response.data.specifications.length > 0) {
-          setData(response.data.specifications);
-        }
+        setSpec(response.data.specifications);
       })
       .catch(function (error) {
         console.log(error);
@@ -82,7 +83,7 @@ function ProductEdit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+
     axios
       .post("/api/v1/products/saveOrUpdate", {
         id: id.id,
@@ -96,10 +97,7 @@ function ProductEdit() {
         category: {
           id: loai,
         },
-        specifications: data.map((item) => ({
-          specificationValue: item.value,
-          specificationName: item.name,
-        })),
+        specifications: spec,
       })
       .then(function () {
         Swal.fire({
@@ -112,12 +110,6 @@ function ProductEdit() {
       });
   };
 
-  const handleFileSelect = (event) => {
-    const selectedFile = event.target.files[0];
-    // Xử lý tệp đã chọn ở đây
-    console.log("Đã chọn tệp:", selectedFile);
-  };
-
   const checkQuantity = (e) => {
     if (e < 0) {
       setCheckQ(true);
@@ -127,14 +119,76 @@ function ProductEdit() {
     }
   };
   const handleChange = (event) => {
-    setLoai(event.target.value);
+    Swal.fire({
+      title: "Bạn có chắc chắn muốn đổi",
+      text: "Sau khi đổi toàn bộ thông số kỹ thuật cũ sẽ mất hết",
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      denyButtonText: `Hủy`,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoai(event.target.value);
+        axios
+          .delete(`/api/v1/productSpecifications/delete/${id.id}`)
+          .then(function (res) {
+            console.log(res);
+            Swal.fire({
+              title: "Thành công",
+              icon: "success",
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    });
   };
   const handleChange2 = (event) => {
     setBrand(event.target.value);
   };
 
+  const modules = {
+    clipboard: {
+      matchVisual: false,
+    },
+    imageResize: {
+      displaySize: true, // Hiển thị kích thước của hình ảnh
+    },
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image", "video"],
+    ],
+  };
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%" }}>
+      <ModalDes
+        modal={modalDes}
+        setModal={setModalDes}
+        imageP={imageP}
+        setImage={setImage}
+        id={id.id}
+      />
+      {spec !== "" ? (
+        <ModalTk
+          modal={modalTk}
+          setModal={setModalTk}
+          spec={spec}
+          id={id.id}
+          setSpec={setSpec}
+        />
+      ) : (
+        <></>
+      )}
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%", minWidth: "70%" }}>
@@ -145,6 +199,7 @@ function ProductEdit() {
             sx={{
               paddingLeft: 2,
               paddingRight: 2,
+              height: "90vh",
             }}
           >
             <Box
@@ -154,53 +209,37 @@ function ProductEdit() {
                 borderRadius: 10,
                 padding: 2,
                 width: "100%",
+                backgroundColor: "#E3EFFD",
               }}
             >
               <Typography variant="h4">Thông tin sản phẩm #{id.id}</Typography>
+              <Stack
+                direction="row"
+                spacing={10}
+                style={{
+                  textAlign: "center",
+                  marginTop: 30,
+                  backgroundColor: "white",
+                  padding: 20,
+                  borderRadius: 20,
+                }}
+              >
+                <Button
+                  variant="contained"
+                  sx={{ width: 150 }}
+                  onClick={() => setModalDes(true)}
+                >
+                  Hình ảnh
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{ width: 300 }}
+                  onClick={() => setModalTk(true)}
+                >
+                  Thông số kỹ thuật
+                </Button>
+              </Stack>
               <form noValidate onSubmit={handleSubmit}>
-                <Stack direction={"row"} gap={1}>
-                  <Stack direction={"row"} sx={{ overflow: "auto" }} gap={1}>
-                    {imageP !== ""
-                      ? imageP.map((item) => (
-                          <Card key={item.id} sx={{ width: 200 }}>
-                            <CardActionArea
-                              onClick={() =>
-                                window.open(item.imageLink, "_blank")
-                              }
-                            >
-                              <CardMedia
-                                sx={{ height: 200, width: 200 }}
-                                image={item.imageLink}
-                                title="product image"
-                              />
-                            </CardActionArea>
-                          </Card>
-                        ))
-                      : null}
-                  </Stack>
-                  <Card sx={{ width: 200 }}>
-                    <Box
-                      sx={{
-                        height: 200,
-                        flex: 1,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "#DDDDDD",
-                      }}
-                    >
-                      <IconButton aria-label="upload picture" component="label">
-                        <input
-                          hidden
-                          accept="image/*"
-                          type="file"
-                          onChange={handleFileSelect}
-                        />
-                        <AddCircleIcon sx={{ fontSize: 80 }} />
-                      </IconButton>
-                    </Box>
-                  </Card>
-                </Stack>
                 <TextInputAd
                   label="Tên sản phẩm"
                   variant="outlined"
@@ -208,6 +247,7 @@ function ProductEdit() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
+
                 <Stack
                   direction="row"
                   sx={{
@@ -219,33 +259,18 @@ function ProductEdit() {
                   <TextInputAd
                     label="Số lượng"
                     variant="outlined"
-                    // disabled
+                    disabled
                     type="number"
                     value={quantity}
                     error={checkQ}
-                    sx={{ width: 300, marginTop: 3 }}
+                    sx={{ width: 300, marginTop: 5 }}
                     onChange={(e) => checkQuantity(e.target.value)}
                   />
 
-                  <FormControl fullWidth sx={{ marginTop: 3 }}>
-                    <InputLabel id="demo-simple-select-label">Loại</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={loai}
-                      label="Age"
-                      onChange={handleChange}
-                    >
-                      {loais !== ""
-                        ? loais.map((item, index) => (
-                            <MenuItem key={index} value={item.id}>
-                              {item.categoryName}
-                            </MenuItem>
-                          ))
-                        : null}
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth sx={{ marginTop: 3 }}>
+                  <FormControl
+                    fullWidth
+                    sx={{ marginTop: 5, backgroundColor: "white" }}
+                  >
                     <InputLabel id="demo-simple-select-label">Hãng</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
@@ -264,15 +289,27 @@ function ProductEdit() {
                     </Select>
                   </FormControl>
                 </Stack>
-                <TextInputAd
-                  label="Mô tả"
-                  rows={3}
-                  multiline
-                  value={description || ""}
+                <FormControl
                   fullWidth
-                  variant="outlined"
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                  sx={{ marginTop: 5, backgroundColor: "white" }}
+                >
+                  <InputLabel id="demo-simple-select-label">Loại</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={loai}
+                    label="Age"
+                    onChange={handleChange}
+                  >
+                    {loais !== ""
+                      ? loais.map((item, index) => (
+                          <MenuItem key={index} value={item.id}>
+                            {item.categoryName}
+                          </MenuItem>
+                        ))
+                      : null}
+                  </Select>
+                </FormControl>
 
                 <TextInputAd
                   label="Giá"
@@ -288,7 +325,7 @@ function ProductEdit() {
                   style={{
                     justifyContent: "center",
                     textAlign: "center",
-                    marginTop: 20,
+                    marginTop: 50,
                   }}
                 >
                   <Button
@@ -310,16 +347,26 @@ function ProductEdit() {
                 flex: 1,
                 border: "1px solid black",
                 borderRadius: 10,
-                padding: 2,
+
+                backgroundColor: "#E3EFFD",
+                height: "90vh",
               }}
             >
-              <Typography variant="h4">Thông số kỹ thuật #{id.id}</Typography>
-
-              <ThongSoKyThuat
-                categoryName={categoryName}
-                setData={setData}
-                data={data}
-              />
+              <Box
+                sx={{
+                  margin: 3,
+                  backgroundColor: "white",
+                  height: "80vh",
+                }}
+              >
+                <ReactQuill
+                  theme="snow"
+                  value={description}
+                  modules={modules}
+                  style={{ height: 550 }}
+                  onChange={(newContent) => setDescription(newContent)}
+                />
+              </Box>
             </Box>
           </Stack>
         </Box>

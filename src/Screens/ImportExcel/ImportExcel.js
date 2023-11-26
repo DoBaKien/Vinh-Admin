@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
-import { Button, Stack, Box, Typography } from "@mui/material";
+import { Button, Stack, Box, Typography, TextField } from "@mui/material";
 import { ExcelRenderer } from "react-excel-renderer";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import ModalNcc from "../ImportOrder/ModalNcc";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Phanloai } from "../../Component/data";
 function ImportExcel() {
   const [show, setShow] = useState(true);
   const [nccD, setNccD] = useState("");
@@ -24,6 +25,7 @@ function ImportExcel() {
   const userId = localStorage.getItem("id");
   const [brands, setBrands] = useState("");
   const [loais, setLoais] = useState("");
+  const [file, setFile] = useState("");
 
   useEffect(() => {
     axios
@@ -45,6 +47,7 @@ function ImportExcel() {
   }, []);
 
   const fileHandler = (event) => {
+    setFile(event.target.files[0].name);
     const fileObj = event.target.files[0];
     if (!fileObj) {
       Swal.fire({
@@ -172,14 +175,15 @@ function ImportExcel() {
           quantity: item.quantity,
           importPrice: item.price,
           product: {
+            quantity: item.quantity,
             productName: item.name,
             category: {
               id: item.categoryId,
             },
-            quantity: item.quantity,
             brand: {
               id: item.brandId,
             },
+            specifications: Phanloai(item.categoryId),
           },
         };
       } else {
@@ -188,18 +192,11 @@ function ImportExcel() {
           importPrice: item.price,
           product: {
             id: item.productId,
-            productName: item.name,
-            category: {
-              id: item.categoryId,
-            },
-            brand: {
-              id: item.brandId,
-            },
           },
         };
       }
     });
-    console.log(importOrderDetail);
+
     axios
       .post(`/api/v1/importOrders/saveOrUpdate`, {
         supplier: {
@@ -219,33 +216,49 @@ function ImportExcel() {
       })
       .catch(function (error) {
         console.log(error);
+        Swal.fire({
+          title: "Lỗi",
+          icon: "error",
+        });
       });
   };
 
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%" }}>
       <ModalNcc setModal={setOpen} modal={open} />
-
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%", minWidth: "70%" }}>
-          <Header setShow={setShow} show={show} />
+          <Header
+            text={"Thêm phiếu nhập bằng Excel"}
+            setShow={setShow}
+            show={show}
+          />
           <Box
             sx={{
               paddingLeft: 2,
               paddingRight: 2,
+              backgroundColor: "#E3EFFD",
             }}
           >
             <Box>
-              <Box sx={{ padding: "5px 5px 5px" }}>
-                <Typography variant="h5">Thêm phiếu nhập bằng Excel</Typography>
-              </Box>
-              <Stack direction={"row"}>
-                <Box sx={{ flex: 1 }}>
+              <Stack direction={"row"} gap={10} sx={{ paddingTop: 2 }}>
+                <Box
+                  sx={{
+                    flex: 1,
+                    backgroundColor: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    borderRadius: 5,
+                    padding: 2,
+                    border: "1px solid black",
+                  }}
+                >
                   <Stack
                     direction={"row"}
                     spacing={5}
                     sx={{
+                      flex: 1,
                       display: "flex",
                       alignItems: "center",
                     }}
@@ -266,13 +279,27 @@ function ImportExcel() {
                       Tìm
                     </Button>
                   </Stack>
-                  <Stack sx={{ marginTop: 1, gap: 1 }}>
+                </Box>
+                <Box
+                  sx={{
+                    flex: 2,
+                  }}
+                >
+                  <Stack
+                    sx={{
+                      gap: 1,
+                      border: "1px solid black",
+                      padding: "10px 10px 10px 30px",
+                      borderRadius: 5,
+                      backgroundColor: "white",
+                    }}
+                  >
                     <Typography variant="body1">
                       Tên: {nccD.name || ""}
                     </Typography>
                     <Stack direction="row" gap={5}>
                       <Typography variant="body1">
-                        Email: {nccD.email || " "}
+                        Email: {nccD.email || ""}
                       </Typography>
                       <Typography variant="body1">
                         SDT: {nccD.phone || ""}
@@ -281,34 +308,43 @@ function ImportExcel() {
                     <Typography>Địa chỉ: {nccD.address || ""}</Typography>
                   </Stack>
                 </Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "end",
-                  }}
+              </Stack>
+              <Stack
+                direction={"row"}
+                sx={{
+                  marginTop: 2,
+                  backgroundColor: "white",
+                  padding: 1,
+
+                  borderRadius: 5,
+                  flex: 1,
+                }}
+              >
+                <TextField size="small" value={file} variant="outlined" />
+                <Button
+                  component="label"
+                  variant="outlined"
+                  startIcon={<CloudUploadIcon />}
                 >
-                  <Button
-                    component="label"
-                    variant="outlined"
-                    startIcon={<CloudUploadIcon />}
-                  >
-                    Thêm File
-                    <VisuallyHiddenInput type="file" onChange={fileHandler} />
-                  </Button>
-                  <Button
-                    component="label"
-                    variant="outlined"
-                    startIcon={<AddCircleIcon />}
-                    onClick={handleSubmit}
-                  >
-                    Tạo Phiếu nhập
-                  </Button>
-                </Box>
+                  Thêm File
+                  <VisuallyHiddenInput type="file" onChange={fileHandler} />
+                </Button>
+                <Button
+                  sx={{ marginLeft: 5 }}
+                  component="label"
+                  variant="outlined"
+                  startIcon={<AddCircleIcon />}
+                  onClick={handleSubmit}
+                >
+                  Tạo Phiếu nhập
+                </Button>
               </Stack>
             </Box>
-            <Box height={520} width="99%" sx={{ marginTop: 1 }}>
+            <Box
+              height={490}
+              width="99%"
+              sx={{ marginTop: 2, backgroundColor: "white" }}
+            >
               <DataGrid
                 // density="comfortable"
                 rowHeight={50}
@@ -346,7 +382,6 @@ function ImportExcel() {
                 slots={{
                   toolbar: GridToolbar,
                 }}
-                // onCellDoubleClick={handleOnCellClick}
                 getRowHeight={() => "auto"}
                 sx={{
                   "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {

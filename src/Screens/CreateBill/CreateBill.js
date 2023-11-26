@@ -1,9 +1,9 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, InputBase, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import Left from "../../Component/Left";
 import Header from "../../Component/Header";
-import { TextInputAd } from "../../Component/Style";
+import { NoteDiv } from "../../Component/Style";
 import Table from "./Table";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -13,7 +13,7 @@ import ModalUser from "./ModalUser";
 const CreateBill = () => {
   const [show, setShow] = useState(true);
   const [select, setSelect] = useState("");
-  const [customer, setCustomer] = useState("");
+  const [customer, setCustomer] = useState(" ");
   const [customerD, setCustomerD] = useState("");
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState("");
@@ -89,6 +89,7 @@ const CreateBill = () => {
                   border: "1px solid black",
                   padding: 2,
                   borderRadius: 5,
+                  backgroundColor: "#E3EFFD",
                 }}
               >
                 <form noValidate onSubmit={handleSubmit}>
@@ -97,17 +98,17 @@ const CreateBill = () => {
                     spacing={2}
                     sx={{
                       display: "flex",
-
                       alignItems: "center",
                     }}
                   >
-                    <TextInputAd
-                      size="small"
-                      label="Thông tin khách hàng"
-                      variant="outlined"
-                      fullWidth
-                      onChange={(e) => setCustomer(e.target.value)}
-                    />
+                    <NoteDiv>
+                      <InputBase
+                        sx={{ ml: 2, width: "90%" }}
+                        fullWidth
+                        placeholder="Thông tin khách hàng"
+                        onChange={(e) => setCustomer(e.target.value)}
+                      />
+                    </NoteDiv>
                     <Button
                       variant="contained"
                       sx={{ width: 120, height: 42 }}
@@ -116,39 +117,52 @@ const CreateBill = () => {
                       Tìm
                     </Button>
                   </Stack>
-                  {customerD !== "" ? (
-                    <Stack sx={{ marginTop: 2, gap: 1 }}>
+
+                  <Stack
+                    sx={{
+                      marginTop: 3,
+                      gap: 1,
+                      border: "1px solid black",
+                      padding: "10px 10px 10px 30px",
+                      borderRadius: 5,
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      Họ tên:
+                      {customerD.lastName || ""} {customerD.firstName || ""}
+                    </Typography>
+                    <Stack direction="row" gap={5}>
                       <Typography variant="body1">
-                        Họ tên: {customerD.lastName + " " + customerD.firstName}
+                        Email: {customerD.email || ""}
                       </Typography>
-                      <Stack direction="row" gap={5}>
-                        <Typography variant="body1">
-                          Email: {customerD.email}
-                        </Typography>
-                        <Typography variant="body1">
-                          SDT: {customerD.phone}
-                        </Typography>
-                      </Stack>
-                      <Typography>Địa chỉ: {customerD.address}</Typography>
+                      <Typography variant="body1">
+                        SDT: {customerD.phone}
+                      </Typography>
                     </Stack>
-                  ) : (
-                    <></>
-                  )}
+                    <Typography>Địa chỉ: {customerD.address || ""}</Typography>
+                  </Stack>
 
                   {select !== "" ? (
-                    <Box sx={{ marginTop: 1 }}>
+                    <Box sx={{ marginTop: 3 }}>
                       <TableChoose setSelect={setSelect} select={select} />
                     </Box>
                   ) : (
                     <></>
                   )}
-                  <TextInputAd
-                    size="small"
-                    label="Ghi chú"
-                    variant="outlined"
-                    fullWidth
-                    onChange={(e) => setNote(e.target.value)}
-                  />
+                  <Box sx={{ marginTop: 3 }}>
+                    <NoteDiv>
+                      <InputBase
+                        sx={{
+                          ml: 2,
+                          width: "90%",
+                        }}
+                        fullWidth
+                        placeholder="Ghi chú ...."
+                        onChange={(e) => setNote(e.target.value)}
+                      />
+                    </NoteDiv>
+                  </Box>
                   <Stack
                     direction="row"
                     spacing={10}

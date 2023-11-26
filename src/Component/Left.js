@@ -4,7 +4,6 @@ import {
   Divider,
   List,
   ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   styled,
@@ -21,6 +20,7 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import InputIcon from "@mui/icons-material/Input";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import { MenuBtn } from "./Style";
 function LeftAdmin() {
   const navigate = useNavigate();
   const BoxSide = styled(Box)(() => ({
@@ -91,103 +91,89 @@ function LeftAdmin() {
             </Box>
             <Divider />
             <ListItem disablePadding>
-              <ListItemButton onClick={handleDB}>
+              <MenuBtn onClick={handleDB}>
                 <ListItemIcon>
-                  <DashboardIcon />
+                  <DashboardIcon sx={{ color: "#b9b9b9" }} />
                 </ListItemIcon>
-                <ListItemText primary="Bảng điều khiển" />
-              </ListItemButton>
+                <ListItemText primary="Trang chủ" />
+              </MenuBtn>
             </ListItem>
-            <Divider />
 
-            <Divider />
-
-            <Divider />
-            <Divider />
-            <ListItemButton onClick={handleClickA}>
+            <MenuBtn onClick={handleClickA}>
               <ListItemIcon>
-                <PaidIcon />
+                <PaidIcon sx={{ color: "#b9b9b9" }} />
               </ListItemIcon>
               <ListItemText primary="Quản lý hóa đơn" />
               {openA ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Divider />
-            <Divider />
+            </MenuBtn>
+
             <Collapse in={openA} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 3 }} onClick={handleQuestionA}>
+                <MenuBtn sx={{ pl: 4 }} onClick={handleQuestionA}>
                   <ListItemIcon>
-                    <NoteAddIcon />
+                    <NoteAddIcon sx={{ color: "#b9b9b9" }} />
                   </ListItemIcon>
                   <ListItemText primary="Tạo hóa đơn" />
-                </ListItemButton>
-                <Divider />
-                <Divider />
-                <ListItemButton sx={{ pl: 3 }} onClick={handleQuestion}>
+                </MenuBtn>
+
+                <MenuBtn sx={{ pl: 4 }} onClick={handleQuestion}>
                   <ListItemIcon>
-                    <RequestQuoteIcon />
+                    <RequestQuoteIcon sx={{ color: "#b9b9b9" }} />
                   </ListItemIcon>
                   <ListItemText primary="Danh sách hóa đơn" />
-                </ListItemButton>
+                </MenuBtn>
               </List>
             </Collapse>
 
-            <Divider />
-            <Divider />
-            <ListItemButton onClick={handleClick}>
+            <MenuBtn onClick={handleClick}>
               <ListItemIcon>
-                <InputIcon />
+                <InputIcon sx={{ color: "#b9b9b9" }} />
               </ListItemIcon>
               <ListItemText primary="Quản lý nhập hàng" />
               {open ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Divider />
-            <Divider />
+            </MenuBtn>
+
             <Collapse in={open} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 3 }} onClick={handleUser}>
+                <MenuBtn sx={{ pl: 4 }} onClick={handleUser}>
                   <ListItemIcon>
-                    <NoteAddIcon />
+                    <NoteAddIcon sx={{ color: "#b9b9b9" }} />
                   </ListItemIcon>
                   <ListItemText primary="Phiếu nhập" />
-                </ListItemButton>
-                <Divider />
-                <Divider />
-                <ListItemButton sx={{ pl: 3 }} onClick={handleExcel}>
+                </MenuBtn>
+
+                <MenuBtn sx={{ pl: 4 }} onClick={handleExcel}>
                   <ListItemIcon>
-                    <NoteAddIcon />
+                    <NoteAddIcon sx={{ color: "#b9b9b9" }} />
                   </ListItemIcon>
                   <ListItemText primary="Phiếu nhập excel" />
-                </ListItemButton>
-                <Divider />
-                <Divider />
-                <ListItemButton sx={{ pl: 3 }} onClick={handleReportC}>
+                </MenuBtn>
+
+                <MenuBtn sx={{ pl: 3 }} onClick={handleReportC}>
                   <ListItemIcon>
-                    <Inventory2Icon />
+                    <Inventory2Icon sx={{ color: "#b9b9b9" }} />
                   </ListItemIcon>
                   <ListItemText primary="Danh sách đơn nhập" />
-                </ListItemButton>
+                </MenuBtn>
               </List>
             </Collapse>
-            <Divider />
-            <Divider />
+
             <ListItem disablePadding>
-              <ListItemButton onClick={handleSP}>
+              <MenuBtn onClick={handleSP}>
                 <ListItemIcon>
-                  <CategoryIcon />
+                  <CategoryIcon sx={{ color: "#b9b9b9" }} />
                 </ListItemIcon>
                 <ListItemText primary="Quản lý sản phẩm" />
-              </ListItemButton>
+              </MenuBtn>
             </ListItem>
-            <Divider />
-            <Divider />
+
             <ListItem disablePadding>
-              <ListItemButton>
+              <MenuBtn>
                 <ListItemIcon>
-                  <ReportIcon />
+                  <ReportIcon sx={{ color: "#b9b9b9" }} />
                 </ListItemIcon>
                 <ListItemText primary="Quản lý phản hồi" />
-              </ListItemButton>
+              </MenuBtn>
             </ListItem>
           </List>
         </Box>

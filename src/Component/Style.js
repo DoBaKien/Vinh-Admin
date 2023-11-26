@@ -6,6 +6,7 @@ import {
 import {
   Box,
   Link,
+  ListItemButton,
   Paper,
   Stack,
   TextField,
@@ -110,7 +111,11 @@ export const ExpandableCell = ({ value }) => {
 };
 
 export const TextInputAd = styled(TextField)(() => ({
-  marginTop: 20,
+  marginTop: 30,
+  backgroundColor: "white",
+  "& .MuiInputBase-input.Mui-disabled": {
+    WebkitTextFillColor: "#000000",
+  },
 }));
 export const style = {
   position: "absolute",
@@ -125,6 +130,7 @@ export const style = {
   p: 4,
   borderRadius: 5,
 };
+
 export const styleProduct = {
   position: "absolute",
   top: "50%",
@@ -136,19 +142,9 @@ export const styleProduct = {
   boxShadow: 24,
   color: "text.primary",
   p: 4,
+  borderRadius: 10,
 };
-export const styleDetail = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  bgcolor: "background.default",
-  border: "2px solid gray",
-  boxShadow: 24,
-  color: "text.primary",
-  p: 4,
-};
+
 export const ValueDate = ({ value }) => {
   const dateObject = new Date(value);
   const day = dateObject.getDate(); // Lấy ngày
@@ -166,6 +162,8 @@ export const CheckStatus = ({ value }) => {
     return <div>Đang vận chuyển</div>;
   } else if (value === "3") {
     return <div>Hoàn thành</div>;
+  } else {
+    return <div>Đã hủy</div>;
   }
 };
 export const ValueDate2 = (value) => {
@@ -190,3 +188,22 @@ export const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+
+export const MenuBtn = styled(ListItemButton)(() => ({
+  borderRadius: 20,
+  backgroundColor: "#4989D5",
+  color: "white",
+  marginTop: 10,
+  ":hover": {
+    backgroundColor: "#2c6fbf",
+  },
+}));
+export const NoteDiv = styled("div")(() => ({
+  width: "100%",
+  backgroundColor: "white",
+  borderRadius: 20,
+  height: 40,
+  border: "1px solid black",
+  display: "flex",
+  justifyContent: "center",
+}));

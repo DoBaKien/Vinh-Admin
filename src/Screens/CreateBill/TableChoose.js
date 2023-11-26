@@ -10,8 +10,23 @@ function TableChoose(props) {
   );
 
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
-      <Stack direction={"row"}>
+    <Box
+      sx={{
+        // height: "90%",
+        width: "98%",
+      }}
+    >
+      <Stack
+        direction={"row"}
+        sx={{
+          backgroundColor: "white",
+          width: "100%",
+          paddingRight: 1,
+          paddingLeft: 1,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+        }}
+      >
         <Box sx={{ width: 230, display: "flex", justifyContent: "center" }}>
           <Typography>Tên</Typography>
         </Box>
@@ -24,7 +39,17 @@ function TableChoose(props) {
       </Stack>
       <Divider />
       <Divider />
-      <Box sx={{ height: 330, overflow: "auto", width: "100%" }}>
+      <Box
+        sx={{
+          height: 240,
+          overflow: "auto",
+          width: "100%",
+          backgroundColor: "white",
+          padding: 1,
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
+        }}
+      >
         {props.select.map((item, i) => (
           <Box key={i}>
             <SplitArray
@@ -35,13 +60,24 @@ function TableChoose(props) {
           </Box>
         ))}
       </Box>
+
       <Stack
         direction={"row"}
-        sx={{ marginTop: 2, display: "flex", justifyContent: "space-between" }}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: 3,
+          backgroundColor: "white",
+          padding: 1,
+          width: "100%",
+          borderRadius: 3,
+        }}
       >
         <Typography>Tổng hóa đơn: </Typography>
         <Box sx={{ width: 180, display: "flex", justifyContent: "center" }}>
-          <Typography>{sum}</Typography>
+          <Typography>
+            {sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+          </Typography>
         </Box>
       </Stack>
     </Box>

@@ -1,15 +1,22 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import Header from "../../Component/Header";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
 
+import {
+  DataGrid,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
+} from "@mui/x-data-grid";
+import React, { useEffect, useState } from "react";
 import { CheckStatus, ValueDate } from "../../Component/Style";
 import Left from "../../Component/Left";
 import axios from "axios";
 
 function CheckOut() {
   const [show, setShow] = useState(true);
-
   const [data, setData] = useState("");
 
   useEffect(() => {
@@ -47,21 +54,56 @@ function CheckOut() {
     },
   ];
 
+  // const handleChangeStatus = () => {
+  //   if (choose !== "") {
+  //     const outputArray = choose.map((id) => ({
+  //       id: id,
+  //       status: CheckStatus(1),
+  //     }));
+  //     console.log(outputArray);
+  //   }
+
+  // };
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer
+        sx={{
+          width: "100%",
+          justifyContent: "space-around",
+        }}
+      >
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+        {/* <Button
+          variant="text"
+          startIcon={<DoneAllIcon />}
+          onClick={handleChangeStatus}
+        >
+          Đổi trạng thái
+        </Button> */}
+        <GridToolbarQuickFilter />
+      </GridToolbarContainer>
+    );
+  }
   const datatable = () => {
     if (Array.isArray(data) && data.length !== 0) {
       return (
-        <Box height="80vh" width="99%">
+        <Box height="80vh" width="99%" bgcolor={"#ffffff"}>
           <DataGrid
             localeText={{
               toolbarColumns: "Cột",
               toolbarDensity: "Khoảng cách",
               toolbarFilters: "Lọc",
-              toolbarExport: "Xuất ",
+              toolbarExport: "Xuất",
             }}
+            checkboxSelection
             rowHeight={50}
             rows={data.map((item) => ({
               id: item.id,
-              name: item.customer.firstName + " " + item.customer.lastName,
+              name: item.customer.lastName + " " + item.customer.firstName,
               status: item.statusOrder,
               date: item.date,
             }))}
@@ -83,8 +125,11 @@ function CheckOut() {
                 },
               },
             }}
+            onRowSelectionModelChange={(id, status) => {
+              console.log(id);
+            }}
             slots={{
-              toolbar: GridToolbar,
+              toolbar: CustomToolbar,
             }}
             onCellDoubleClick={handleOnCellClick}
             getRowHeight={() => "auto"}
@@ -125,8 +170,9 @@ function CheckOut() {
         <Box sx={{ width: "100%", minWidth: "70%" }}>
           <Header show={show} setShow={setShow} />
           <Box
-            bgcolor={"background.default"}
+            bgcolor={"#E3EFFD"}
             sx={{
+              height: "91vh",
               paddingLeft: 2,
               paddingRight: 2,
             }}

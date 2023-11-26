@@ -8,18 +8,20 @@ import {
   Stack,
   Typography,
   MenuItem,
+  InputBase,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
 import { v4 as uuidv4 } from "uuid";
-import { TextInputAd } from "../../Component/Style";
+import { NoteDiv, TextInputAd } from "../../Component/Style";
 import ModalNcc from "./ModalNcc";
 import Table from "./Table";
 import axios from "axios";
 import TableProduct from "./TableProduct";
 import Swal from "sweetalert2";
+import { Phanloai } from "../../Component/data";
 
 const ImportOrder = () => {
   const [show, setShow] = useState(true);
@@ -58,7 +60,6 @@ const ImportOrder = () => {
   }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const importOrderDetail = products.map((item) => {
       if (item.id.length > 30) {
         return {
@@ -73,6 +74,7 @@ const ImportOrder = () => {
             brand: {
               id: item.hang,
             },
+            specifications: Phanloai(item.loai),
           },
         };
       } else {
@@ -92,27 +94,34 @@ const ImportOrder = () => {
         };
       }
     });
-
-    axios
-      .post(`/api/v1/importOrders/saveOrUpdate`, {
-        supplier: {
-          id: nccD.id,
-        },
-        employee: {
-          id: userId,
-        },
-        importOrderDetail: importOrderDetail,
-      })
-      .then(function (response) {
-        console.log(response.data);
-        Swal.fire({
-          title: "Thành công",
-          icon: "success",
+    if (product !== "" && ncc !== "") {
+      axios
+        .post(`/api/v1/importOrders/saveOrUpdate`, {
+          supplier: {
+            id: nccD.id,
+          },
+          employee: {
+            id: userId,
+          },
+          importOrderDetail: importOrderDetail,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          Swal.fire({
+            title: "Thành công",
+            icon: "success",
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
         });
-      })
-      .catch(function (error) {
-        console.log(error);
+    } else {
+      Swal.fire({
+        title: "Vui lòng nhập đầy đủ thông tin",
+
+        icon: "error",
       });
+    }
   };
 
   const handleFind = () => {
@@ -159,24 +168,38 @@ const ImportOrder = () => {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    setProducts((prev) => {
-      const newJob = [
-        ...prev,
-        {
-          id: productId || uuidv4(),
-          name: product,
-          quantity: quantity,
-          importPrice: priceImport,
-          loai: loai,
-          hang: brand,
-        },
-      ];
-      return newJob;
-    });
-    setProductId("");
-    setProduct("");
-    setQuantity("");
-    setPriceImport("");
+    if (
+      product !== "" &&
+      quantity !== "" &&
+      priceImport !== "" &&
+      loai !== "" &&
+      brand !== "" &&
+      quantity > 0
+    ) {
+      setProducts((prev) => {
+        const newJob = [
+          ...prev,
+          {
+            id: productId || uuidv4(),
+            name: product,
+            quantity: quantity,
+            importPrice: priceImport,
+            loai: loai,
+            hang: brand,
+          },
+        ];
+        return newJob;
+      });
+      setProductId("");
+      setProduct("");
+      setQuantity("");
+      setPriceImport("");
+    } else {
+      Swal.fire({
+        title: "Vui lòng nhập đầy đủ",
+        icon: "error",
+      });
+    }
   };
   const handleChange = (event) => {
     setLoai(event.target.value);
@@ -186,7 +209,7 @@ const ImportOrder = () => {
   };
 
   return (
-    <Box sx={{ justifyContent: "center", backgroundColor: "#F0F2F5" }}>
+    <Box sx={{ backgroundColor: "white" }}>
       <ModalNcc setModal={setOpen} modal={open} />
       <Stack direction="row">
         {show && <Left />}
@@ -196,36 +219,36 @@ const ImportOrder = () => {
             sx={{
               paddingLeft: 2,
               paddingRight: 2,
-              paddingTop: 1,
             }}
           >
             <Stack direction={"row"} spacing={5}>
               <Box
                 sx={{
                   flex: 1,
-                  backgroundColor: "white",
+
                   padding: "20px 20px 0 20px",
                   border: "1px solid black",
                   borderRadius: 5,
+                  backgroundColor: "#E3EFFD",
                 }}
               >
                 <form noValidate onSubmit={handleSubmit}>
                   <Stack
                     direction={"row"}
-                    spacing={5}
+                    spacing={2}
                     sx={{
                       display: "flex",
                       alignItems: "center",
                     }}
                   >
-                    <TextInputAd
-                      label="Nhà cung cấp"
-                      variant="outlined"
-                      fullWidth
-                      size="small"
-                      value={ncc}
-                      onChange={(e) => setNcc(e.target.value)}
-                    />
+                    <NoteDiv>
+                      <InputBase
+                        sx={{ ml: 2, width: "95%" }}
+                        fullWidth
+                        placeholder="Thông tin nhà cung cấp"
+                        onChange={(e) => setNcc(e.target.value)}
+                      />
+                    </NoteDiv>
                     <Button
                       variant="contained"
                       sx={{ width: 120, height: 40 }}
@@ -234,22 +257,30 @@ const ImportOrder = () => {
                       Tìm
                     </Button>
                   </Stack>
-                  {nccD !== "" ? (
-                    <Stack sx={{ marginTop: 2, gap: 1 }}>
-                      <Typography variant="body1">Tên: {nccD.name}</Typography>
-                      <Stack direction="row" gap={5}>
-                        <Typography variant="body1">
-                          Email: {nccD.email}
-                        </Typography>
-                        <Typography variant="body1">
-                          SDT: {nccD.phone}
-                        </Typography>
-                      </Stack>
-                      <Typography>Địa chỉ: {nccD.address}</Typography>
+
+                  <Stack
+                    sx={{
+                      gap: 1,
+                      marginTop: 3,
+                      border: "1px solid black",
+                      padding: "10px 10px 10px 30px",
+                      borderRadius: 5,
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      Tên: {nccD.name || ""}
+                    </Typography>
+                    <Stack direction="row" gap={5}>
+                      <Typography variant="body1">
+                        Email: {nccD.email || ""}
+                      </Typography>
+                      <Typography variant="body1">
+                        SDT: {nccD.phone || ""}
+                      </Typography>
                     </Stack>
-                  ) : (
-                    <></>
-                  )}
+                    <Typography>Địa chỉ: {nccD.address || ""}</Typography>
+                  </Stack>
 
                   <Table products={products} setProducts={setProducts} />
 
@@ -260,6 +291,7 @@ const ImportOrder = () => {
                       justifyContent: "center",
                       textAlign: "center",
                       marginTop: 20,
+                      marginBottom: 20,
                     }}
                   >
                     <Button
@@ -278,19 +310,25 @@ const ImportOrder = () => {
                     padding: 2,
                     border: "1px solid black",
                     borderRadius: 5,
+                    backgroundColor: "#E3EFFD",
                   }}
                 >
                   <form noValidate onSubmit={handleAdd}>
                     <TextInputAd
                       label="Tên sản phẩm"
                       variant="outlined"
+                      sx={{ marginTop: 0 }}
                       fullWidth
                       value={product}
                       size="small"
                       onChange={(e) => setProduct(e.target.value)}
                     />
-                    <Stack direction={"row"} gap={2} sx={{ marginTop: 2 }}>
-                      <FormControl fullWidth size="small">
+                    <Stack direction={"row"} gap={2} sx={{ marginTop: 4 }}>
+                      <FormControl
+                        fullWidth
+                        size="small"
+                        sx={{ backgroundColor: "white" }}
+                      >
                         <InputLabel id="demo-simple-select-label">
                           Loại
                         </InputLabel>
@@ -310,7 +348,12 @@ const ImportOrder = () => {
                             : null}
                         </Select>
                       </FormControl>
-                      <FormControl fullWidth size="small">
+
+                      <FormControl
+                        fullWidth
+                        size="small"
+                        sx={{ backgroundColor: "white" }}
+                      >
                         <InputLabel id="demo-simple-select-label">
                           Hãng
                         </InputLabel>

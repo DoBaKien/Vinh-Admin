@@ -17,7 +17,6 @@ const Table = (props) => {
       .get("api/v1/products/getAll")
       .then(function (response) {
         setData(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -41,6 +40,11 @@ const Table = (props) => {
     {
       field: "price",
       headerName: "Giá",
+      renderCell: (params) => (
+        <div>
+          {params.row.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+        </div>
+      ),
     },
   ];
 
@@ -76,8 +80,17 @@ const Table = (props) => {
       </GridToolbarContainer>
     );
   }
+
   return (
-    <Box sx={{ height: "90vh", width: "100%" }}>
+    <Box
+      sx={{
+        height: "90vh",
+        width: "100%",
+
+        borderRadius: 5,
+        // backgroundColor: "#fad9b3",
+      }}
+    >
       {data !== "" ? (
         <DataGrid
           rowHeight={100}
@@ -115,6 +128,8 @@ const Table = (props) => {
           }}
           getRowHeight={() => "auto"}
           sx={{
+            borderRadius: 5,
+
             "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
               py: 1,
             },

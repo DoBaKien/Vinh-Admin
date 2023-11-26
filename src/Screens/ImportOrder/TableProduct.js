@@ -16,7 +16,6 @@ function TableProduct(props) {
       .get("api/v1/products/getAll")
       .then(function (response) {
         setData(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -73,7 +72,7 @@ function TableProduct(props) {
         height: "44vh",
         width: "100%",
         border: "1px solid black",
-        backgroundColor: "white",
+        backgroundColor: "#E3EFFD",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

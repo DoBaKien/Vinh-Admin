@@ -1,6 +1,5 @@
 import {
   Box,
-  Divider,
   IconButton,
   InputAdornment,
   TextField,
@@ -85,8 +84,6 @@ function Login() {
           <Box sx={{ textAlign: "center", marginBottom: 5 }}>
             <Typography variant="h3">Đăng nhập</Typography>
           </Box>
-
-          <Divider sx={{ margin: 5 }}>Hoặc</Divider>
 
           <Box>
             <form noValidate onSubmit={handleSubmit}>

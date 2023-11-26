@@ -14,16 +14,16 @@ import Left from "../../Component/Left";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect } from "react";
-import { ExpandableCell } from "../../Component/Style";
+
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ModalBox from "./AddProduct";
+
 import ModalProduct from "./ModalProduct";
 import { useNavigate } from "react-router-dom";
 
 const Product = () => {
   const [show, setShow] = useState(true);
-  const [modal, setModal] = useState(false);
+
   const [modalP, setModalP] = useState(false);
   const [tags, setTags] = useState("");
   const [value, setValue] = useState("");
@@ -33,7 +33,6 @@ const Product = () => {
       .get("/api/v1/products/getAll")
       .then(function (response) {
         setTags(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -56,14 +55,6 @@ const Product = () => {
     { field: "category", headerName: "Loại", flex: 0.5 },
     { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
     { field: "price", headerName: "Giá", flex: 0.5 },
-    {
-      field: "description",
-      headerName: "Mô tả",
-      flex: 2,
-      renderCell: (params) => {
-        params !== null ? <ExpandableCell {...params} /> : <></>;
-      },
-    },
 
     {
       field: "actions",
@@ -103,7 +94,7 @@ const Product = () => {
             rows={tags.map((item) => ({
               id: item.id,
               name: item.productName,
-              description: item.description,
+
               category: item.category.categoryName,
               brand: item.brand.name,
               quantity: item.quantity,
@@ -175,7 +166,6 @@ const Product = () => {
   };
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%" }}>
-      <ModalBox setModal={setModal} modal={modal} />
       {value !== "" ? (
         <ModalProduct setModal={setModalP} modal={modalP} value={value} />
       ) : (

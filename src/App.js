@@ -7,7 +7,7 @@ import CheckOut from "./Screens/CheckOut/CheckOut";
 import Login from "./Screens/Login/Login";
 import InvoiceDetails from "./Screens/InvoiceDetails/InvoiceDetails";
 import CreateBill from "./Screens/CreateBill/CreateBill";
-import ProductCreate from "./Screens/ProductCreate/ProductCreate";
+
 import ProductEdit from "./Screens/ProductEdit/ProductEdit";
 import ImportExcel from "./Screens/ImportExcel/ImportExcel";
 import ImportDetail from "./Screens/ImportDetail/ImportDetail";
@@ -23,7 +23,7 @@ function Router() {
       <Route path="/CheckOut" element={<CheckOut />} />
       <Route path="/CheckOut/:id" element={<InvoiceDetails />} />
       <Route path="/CreateBill" element={<CreateBill />} />
-      <Route path="/ProductCreate" element={<ProductCreate />} />
+
       <Route path="/ImportExcel" element={<ImportExcel />} />
       <Route path="/ProductEdit/:id" element={<ProductEdit />} />
       <Route path="/" element={<Login />} />

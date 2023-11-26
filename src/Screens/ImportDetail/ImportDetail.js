@@ -16,6 +16,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ValueDate2 } from "../../Component/Style";
+import { GridBox, StackNav } from "../InvoiceDetails/Style";
 
 function ImportDetail() {
   const [show, setShow] = useState(true);
@@ -65,7 +66,7 @@ function ImportDetail() {
     },
     {
       field: "price",
-      headerName: "Giá",
+      headerName: "Giá nhập",
       flex: 0.5,
     },
   ];
@@ -73,19 +74,55 @@ function ImportDetail() {
   const checkData = () => {
     if (data !== "") {
       return (
-        <Paper sx={{ flex: 1, mx: "auto", width: "95%", p: 1 }}>
-          <Stack direction="column" spacing={1} sx={{ height: 1 }}>
-            <Typography variant="h6">{`Hóa đơn ${id.id}`}</Typography>
-            <Stack direction={"row"} sx={{ gap: 20 }}>
-              <Typography variant="subtitle1">Tổng: {sum}</Typography>
-              <Typography variant="subtitle1">
-                Ngày lập: {ValueDate2(data.date)}
-              </Typography>
-            </Stack>
-
-            <Grid container sx={{ paddingLeft: 2, paddingRight: 2 }}>
-              <Grid item md={6}>
-                <Typography variant="body2" color="textSecondary">
+        <Paper
+          sx={{
+            flex: 1,
+            mx: "auto",
+            width: "97%",
+            p: 1,
+            backgroundColor: "#E3EFFD",
+          }}
+        >
+          <Box>
+            <Typography
+              variant="h4"
+              sx={{ textAlign: "center" }}
+            >{`Phiếu nhập ${id.id}`}</Typography>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <StackNav direction={"row"}>
+                <Typography variant="subtitle1">
+                  Tổng giá trị:{" "}
+                  {sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VND
+                </Typography>
+                <Typography variant="subtitle1">
+                  Ngày lập: {ValueDate2(data.date)}
+                </Typography>
+              </StackNav>
+            </Box>
+            <Grid
+              container
+              sx={{
+                justifyContent: "space-between",
+                padding: 3,
+              }}
+            >
+              <GridBox
+                item
+                md={4}
+                sx={{
+                  paddingLeft: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: "bold", textDecoration: "underline" }}
+                >
                   Thông tin nhân viên
                 </Typography>
                 <Typography variant="body1">
@@ -93,9 +130,13 @@ function ImportDetail() {
                 </Typography>
                 <Typography variant="body1">{data.employee.email}</Typography>
                 <Typography variant="body1">{data.employee.phone}</Typography>
-              </Grid>
-              <Grid item md={6}>
-                <Typography variant="body2" align="right" color="textSecondary">
+              </GridBox>
+              <GridBox item md={4} sx={{ paddingRight: 2 }}>
+                <Typography
+                  variant="h6"
+                  align="right"
+                  sx={{ fontWeight: "bold", textDecoration: "underline" }}
+                >
                   Nhà cung cấp
                 </Typography>
                 <Typography variant="body1" align="right">
@@ -107,7 +148,7 @@ function ImportDetail() {
                 <Typography align="right" variant="body1">
                   {data.supplier.phone}
                 </Typography>
-              </Grid>
+              </GridBox>
             </Grid>
             {data !== "" ? (
               <DataGrid
@@ -120,19 +161,21 @@ function ImportDetail() {
                 rows={data.importOrderDetail.map((item) => ({
                   id: item.id,
                   name: item.product.productName,
-                  price: item.importPrice,
+                  price: item.importPrice
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, "."),
                   quantity: item.quantity,
                   brand: item.product.brand.name,
                   loai: item.product.category.categoryName,
                 }))}
                 columns={columns}
-                sx={{ flex: 1 }}
+                sx={{ flex: 1, backgroundColor: "white" }}
                 hideFooter
               />
             ) : (
               <></>
             )}
-          </Stack>
+          </Box>
         </Paper>
       );
     } else {

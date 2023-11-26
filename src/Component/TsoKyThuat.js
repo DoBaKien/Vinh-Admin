@@ -5,16 +5,17 @@ import { useEffect } from "react";
 import { dataLaptop, dataPhone } from "./data";
 import React from "react";
 
-const TsoKyThuat = (props) => {
+function TsoKyThuat(props) {
+  console.log("data", props.data);
   useEffect(() => {
     if (props.data === "") {
-      if (props.categoryName === "Laptop") {
+      if (props.categoryName === 1) {
         props.setData(dataLaptop);
-      } else if (props.categoryName === "Điện thoại di động") {
+      } else if (props.categoryName === 2) {
         props.setData(dataPhone);
       }
     }
-  }, [props]);
+  }, [props.categoryName, props]);
 
   function handleInputChange(event, index, key) {
     const updatedUsers = [...props.data];
@@ -67,7 +68,9 @@ const TsoKyThuat = (props) => {
                 multiline
                 rows={2}
                 value={item.specificationValue || ""}
-                onChange={(e) => handleInputChange(e.target.value, i, "value")}
+                onChange={(e) =>
+                  handleInputChange(e.target.value, i, "specificationValue")
+                }
               />
             </Box>
           </Stack>
@@ -75,6 +78,6 @@ const TsoKyThuat = (props) => {
       </Box>
     );
   }
-};
+}
 
 export default TsoKyThuat;

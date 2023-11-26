@@ -1,3 +1,44 @@
+export const Phanloai = (id) => {
+  switch (id) {
+    case 1:
+      return dataLaptop;
+    case 2:
+      return dataKeyboard;
+    case 3:
+      return dataMouse;
+    case 4:
+      return dataMonitor;
+    case 5:
+      return dataSSD;
+    case 6:
+      return dataRAM;
+    case 7:
+      return dataCPU;
+    case 8:
+      return dataCase;
+    case 9:
+      return dataNguon;
+    case 10:
+      return dataLoa;
+    case 11:
+      return dataVGA;
+    case 12:
+      return dataMain;
+    default:
+      return "";
+  }
+};
+export const StatusCheck = (id) => {
+  switch (id) {
+    case "1":
+      return "2";
+    case "2":
+      return "3";
+    default:
+      return "";
+  }
+};
+
 export const dataColumn = [
   { year: "2010", population: 2 },
   { year: "2011", population: 3 },
@@ -54,98 +95,233 @@ export const energyConsumption = [
   },
 ];
 
-export const dataOrder = [
-  {
-    id: "5eaf95dd",
-    date: "6/13/2099",
-    name: "Della Hamptonasd",
-    nv: "Lois Graham",
-  },
-  {
-    id: "b5d00ee1",
-    date: "5/1/2099",
-    name: "Mario Nealqwe",
-    nv: "Walter Gibson",
-  },
-  {
-    nv: "Leona Jefferson",
-    id: "46667d8a",
-    date: "1/23/2057",
-    name: "Justin Blackqwe",
-  },
-];
-
 export const dataLaptop = [
-  { id: 1, specificationName: "Loại card đồ họa", specificationValue: "" },
-  { id: 2, specificationName: "Loại CPU", specificationValue: "" },
-  { id: 3, specificationName: "Dung lượng RAM", specificationValue: "" },
-  { id: 4, specificationName: "Loại RAM", specificationValue: "" },
-  { id: 5, specificationName: "Số khe ram", specificationValue: "" },
-  { id: 6, specificationName: "Ổ cứng", specificationValue: "" },
-  { id: 7, specificationName: "Màn hình cảm ứng", specificationValue: "" },
-  { id: 8, specificationName: "Chất liệu tấm nền", specificationValue: "" },
-  { id: 9, specificationName: "Tần số quét", specificationValue: "" },
-  { id: 10, specificationName: "Kích thước màn hình", specificationValue: "" },
-  { id: 11, specificationName: "Công nghệ màn hình", specificationValue: "" },
+  { specificationName: "Loại card đồ họa", specificationValue: "" },
+  { specificationName: "Loại CPU", specificationValue: "" },
+  { specificationName: "Dung lượng RAM", specificationValue: "" },
+  { specificationName: "Loại RAM", specificationValue: "" },
+  { specificationName: "Số khe ram", specificationValue: "" },
+  { specificationName: "Ổ cứng", specificationValue: "" },
+  { specificationName: "Màn hình cảm ứng", specificationValue: "" },
+  { specificationName: "Chất liệu tấm nền", specificationValue: "" },
+  { specificationName: "Tần số quét", specificationValue: "" },
+  { specificationName: "Kích thước màn hình", specificationValue: "" },
+  { specificationName: "Công nghệ màn hình", specificationValue: "" },
   {
-    id: 12,
     specificationName: "Độ phân giải màn hình",
     specificationValue: "",
   },
-  { id: 13, specificationName: "Loại đèn bàn phím", specificationValue: "" },
-  { id: 14, specificationName: "Webcam", specificationValue: "" },
-  { id: 15, specificationName: "Hệ điều hành", specificationValue: "" },
-  { id: 16, specificationName: "Wi-Fi", specificationValue: "" },
-  { id: 17, specificationName: "Bluetooth", specificationValue: "" },
-  { id: 18, specificationName: "Công nghệ âm thanh", specificationValue: "" },
-  { id: 19, specificationName: "Bảo mật", specificationValue: "" },
-  { id: 20, specificationName: "Tính năng đặc biệt", specificationValue: "" },
-  { id: 21, specificationName: "Pin", specificationValue: "" },
-  { id: 22, specificationName: "Kích thước", specificationValue: "" },
-  { id: 23, specificationName: "Trọng lượng", specificationValue: "" },
-  { id: 24, specificationName: "Cổng giao tiếp", specificationValue: "" },
+  { specificationName: "Loại đèn bàn phím", specificationValue: "" },
+  { specificationName: "Webcam", specificationValue: "" },
+  { specificationName: "Hệ điều hành", specificationValue: "" },
+  { specificationName: "Wi-Fi", specificationValue: "" },
+  { specificationName: "Bluetooth", specificationValue: "" },
+  { specificationName: "Công nghệ âm thanh", specificationValue: "" },
+  { specificationName: "Bảo mật", specificationValue: "" },
+  { specificationName: "Tính năng đặc biệt", specificationValue: "" },
+  { specificationName: "Pin", specificationValue: "" },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+  { specificationName: "Cổng giao tiếp", specificationValue: "" },
 ];
-export const dataPhone = [
-  { id: 1, specificationName: "Kích thước màn hình", specificationValue: "" },
-  { id: 2, specificationName: "Công nghệ màn hình", specificationValue: "" },
-  { id: 3, specificationName: "Độ phân giải màn hình", specificationValue: "" },
-  { id: 4, specificationName: "Tính năng màn hình", specificationValue: "" },
-  { id: 5, specificationName: "Tần số quét", specificationValue: "" },
-  { id: 6, specificationName: "Kiểu màn hình", specificationValue: "" },
-  { id: 7, specificationName: "Camera sau", specificationValue: "" },
-  { id: 8, specificationName: "Quay video", specificationValue: "" },
-  { id: 9, specificationName: "Tính năng camera", specificationValue: "" },
-  { id: 10, specificationName: "Camera trước", specificationValue: "" },
-  { id: 11, specificationName: "Quay video trước", specificationValue: "" },
-  { id: 12, specificationName: "Chipset", specificationValue: "" },
-  { id: 13, specificationName: "Loại CPU", specificationValue: "" },
-  { id: 14, specificationName: "GPU", specificationValue: "" },
-  { id: 15, specificationName: "Dung lượng RAM", specificationValue: "" },
-  { id: 16, specificationName: "Bộ nhớ trong", specificationValue: "" },
-  { id: 17, specificationName: "Khe cắm thẻ nhớ", specificationValue: "" },
-  { id: 18, specificationName: "Pin", specificationValue: "" },
-  { id: 19, specificationName: "Công nghệ sạc", specificationValue: "" },
-  { id: 20, specificationName: "Cổng sạc", specificationValue: "" },
-  { id: 21, specificationName: "Thẻ SIM", specificationValue: "" },
-  { id: 22, specificationName: "Hệ điều hành", specificationValue: "" },
-  { id: 23, specificationName: "Công nghệ NFC", specificationValue: "" },
-  { id: 24, specificationName: "Hỗ trợ mạng", specificationValue: "" },
-  { id: 25, specificationName: "Wi-Fi", specificationValue: "" },
-  { id: 26, specificationName: "Bluetooth", specificationValue: "" },
-  { id: 27, specificationName: "GPS", specificationValue: "" },
-  { id: 28, specificationName: "Kích thước", specificationValue: "" },
-  { id: 29, specificationName: "Trọng lượng", specificationValue: "" },
-  { id: 30, specificationName: "Chất liệu mặt lưng", specificationValue: "" },
-  { id: 31, specificationName: "Chất liệu khung viền", specificationValue: "" },
+
+export const dataKeyboard = [
+  { specificationName: "Thiết kế", specificationValue: "" },
+  { specificationName: "Kết nối", specificationValue: "" },
+  { specificationName: "Keycap", specificationValue: "" },
+  { specificationName: "Loại switch", specificationValue: "" },
+  { specificationName: "Led", specificationValue: "" },
+  { specificationName: "Hỗ trợ", specificationValue: "" },
+  { specificationName: "Phụ kiện", specificationValue: "" },
+  { specificationName: "Tương thích", specificationValue: "" },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+];
+export const dataMonitor = [
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Tỷ lệ khung hình", specificationValue: "" },
+  { specificationName: "Tấm nền", specificationValue: "" },
+  { specificationName: "Góc nhìn", specificationValue: "" },
+  { specificationName: "Độ phân giải", specificationValue: "" },
+  { specificationName: "Độ sáng", specificationValue: "" },
+  { specificationName: "Tỷ lệ tương phản tĩnh", specificationValue: "" },
+  { specificationName: "Tỷ lệ tương phản động", specificationValue: "" },
+  { specificationName: "Màu sắc hiển thị", specificationValue: "" },
+  { specificationName: "Thời gian đáp ứng", specificationValue: "" },
+  { specificationName: "Tần số quét", specificationValue: "" },
   {
-    id: 32,
-    specificationName: "Chỉ số kháng nước, bụi",
+    specificationName: "Cổng kết nối",
     specificationValue: "",
   },
-  { id: 33, specificationName: "Tiện ích khác", specificationValue: "" },
-  { id: 34, specificationName: "Công nghệ âm thanh", specificationValue: "" },
-  { id: 35, specificationName: "Cảm biến vân tay", specificationValue: "" },
-  { id: 36, specificationName: "Các loại cảm biến", specificationValue: "" },
-  { id: 37, specificationName: "Tính năng đặc biệt", specificationValue: "" },
-  { id: 38, specificationName: "Thời điểm ra mắt", specificationValue: "" },
+  { specificationName: "Điện năng tiêu thụ", specificationValue: "" },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+];
+export const dataMouse = [
+  { specificationName: "Hãng sản xuất", specificationValue: "" },
+  { specificationName: "Model", specificationValue: "" },
+  { specificationName: "Màu", specificationValue: "" },
+  {
+    specificationName: "Tần suất gửi tín hiệu USB",
+    specificationValue: "",
+  },
+  { specificationName: "Bộ vi xử lý", specificationValue: "" },
+  { specificationName: "Chuyển động liên tục", specificationValue: "" },
+  { specificationName: "Tương thích", specificationValue: "" },
+  { specificationName: "Công nghệ không dây", specificationValue: "" },
+  { specificationName: "Chân", specificationValue: "" },
+  { specificationName: "Nút", specificationValue: "" },
+  { specificationName: "Cảm biến", specificationValue: "" },
+  {
+    specificationName: "Độ phân giải",
+    specificationValue: "",
+  },
+  { specificationName: "Tăng tốc tối đa", specificationValue: "" },
+  { specificationName: "Tốc độ tối đa", specificationValue: "" },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+];
+export const dataSSD = [
+  { specificationName: "Thương hiệu", specificationValue: "" },
+  { specificationName: "Bảo hành", specificationValue: "" },
+  { specificationName: "Màu", specificationValue: "" },
+  { specificationName: "Model", specificationValue: "" },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Giao diện", specificationValue: "" },
+  { specificationName: "Mức dung lượng", specificationValue: "" },
+  { specificationName: "Đọc/ghi tuần tự", specificationValue: "" },
+  { specificationName: "Độ bền", specificationValue: "" },
+  { specificationName: "Nhiệt độ vận hành", specificationValue: "" },
+  { specificationName: "Nhiệt độ bảo quản", specificationValue: "" },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+];
+export const dataRAM = [
+  { specificationName: "Thương hiệu", specificationValue: "" },
+  { specificationName: "Series", specificationValue: "" },
+  { specificationName: "Màu sắc", specificationValue: "" },
+  { specificationName: "Loại RAM", specificationValue: "" },
+  { specificationName: "Dung lượng", specificationValue: "" },
+  { specificationName: "Chuẩn Bus", specificationValue: "" },
+  { specificationName: "Kiểu dáng", specificationValue: "" },
+  { specificationName: "CAS", specificationValue: "" },
+  { specificationName: "Đọ trễ", specificationValue: "" },
+  { specificationName: "Kích thước", specificationValue: "" },
+  {
+    specificationName: "Khả năng tương thích hệ điều hành",
+    specificationValue: "",
+  },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+];
+export const dataCPU = [
+  { specificationName: "Model", specificationValue: "" },
+  { specificationName: "Số hiệu xử lý", specificationValue: "" },
+  { specificationName: "Số nhân", specificationValue: "" },
+  { specificationName: "Số luồng", specificationValue: "" },
+  {
+    specificationName: "Tốc độ của lõi hiệu năng",
+    specificationValue: "",
+  },
+  {
+    specificationName: "Tốc độ của lõi hiệu suất",
+    specificationValue: "",
+  },
+  { specificationName: "Cache", specificationValue: "" },
+  { specificationName: "Công suất cơ bản", specificationValue: "" },
+  { specificationName: "Công suất tối đa", specificationValue: "" },
+  { specificationName: "Socket", specificationValue: "" },
+  { specificationName: "Băng thông tối đa", specificationValue: "" },
+  {
+    specificationName: "Phiên bản PCI Express",
+    specificationValue: "",
+  },
+  { specificationName: "Cấu hình PCI Express", specificationValue: "" },
+  {
+    specificationName: "Số cổng PCI Express tối đa",
+    specificationValue: "",
+  },
+  { specificationName: "Kích thước", specificationValue: "" },
+];
+export const dataCase = [
+  { specificationName: "Thương hiệu", specificationValue: "" },
+  { specificationName: "Tên sản phẩm", specificationValue: "" },
+  { specificationName: "Kích cỡ case", specificationValue: "" },
+  { specificationName: "Hỗ trợ mainboard", specificationValue: "" },
+  { specificationName: "Màu sắc", specificationValue: "" },
+  { specificationName: "Khoang chứa ổ cứng", specificationValue: "" },
+  { specificationName: "Khe mở rộng", specificationValue: "" },
+  {
+    specificationName: "Độ cao tối đa tản khí CPU",
+    specificationValue: "",
+  },
+  { specificationName: "Độ dài tối đa GPU", specificationValue: "" },
+  {
+    specificationName: "Độ dài tối đa nguồn PSU",
+    specificationValue: "",
+  },
+  {
+    specificationName: "Không gian quản lý cáp tối đa",
+    specificationValue: "",
+  },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+];
+export const dataNguon = [
+  { specificationName: "Thương hiệu", specificationValue: "" },
+  { specificationName: "Công suất tối đa:", specificationValue: "" },
+  { specificationName: "Số cổng cắm:", specificationValue: "" },
+  { specificationName: "Hiệu suất:", specificationValue: "" },
+  { specificationName: "Quạt làm mát:", specificationValue: "" },
+  { specificationName: "Nguồn đầu vào:", specificationValue: "" },
+  { specificationName: "Chứng nhận bảo vệ:", specificationValue: "" },
+  { specificationName: "Hệ số công suất:", specificationValue: "" },
+  { specificationName: "Kích thước chuẩn:", specificationValue: "" },
+];
+export const dataLoa = [
+  { specificationName: "Hãng sản xuất", specificationValue: "" },
+  { specificationName: "Thời lượng pin", specificationValue: "" },
+  { specificationName: "Cổng sạc", specificationValue: "" },
+  { specificationName: "Công suất", specificationValue: "" },
+  { specificationName: "Cấu tạo", specificationValue: "" },
+  { specificationName: "Tính năng khác", specificationValue: "" },
+  { specificationName: "Bluetooth", specificationValue: "" },
+  { specificationName: "Cổng kết nối", specificationValue: "" },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Phạm vi kết nối", specificationValue: "" },
+  { specificationName: "Trọng lượng", specificationValue: "" },
+];
+export const dataVGA = [
+  { specificationName: "GPU:", specificationValue: "" },
+  { specificationName: "Chuẩn Bus:", specificationValue: "" },
+  { specificationName: "OpenGL:", specificationValue: "" },
+  { specificationName: "Bộ nhớ:", specificationValue: "" },
+  { specificationName: "Engine Clock:", specificationValue: "" },
+  { specificationName: "Cổng kết nối:", specificationValue: "" },
+  { specificationName: "Hiển thị tối đa:", specificationValue: "" },
+  { specificationName: "Kích thước:", specificationValue: "" },
+  { specificationName: "PSU đề nghị:", specificationValue: "" },
+  { specificationName: "Đầu cấp nguồn:", specificationValue: "" },
+  { specificationName: "Tản nhiệt:", specificationValue: "" },
+];
+export const dataMain = [
+  { specificationName: "CPU", specificationValue: "" },
+  { specificationName: "Chipset", specificationValue: "" },
+  { specificationName: "RAM", specificationValue: "" },
+  { specificationName: "Bộ nhớ:", specificationValue: "" },
+  { specificationName: "Đổ họa tích hợp", specificationValue: "" },
+  { specificationName: "Khe mở rộng", specificationValue: "" },
+  { specificationName: "Lưu trữ", specificationValue: "" },
+  { specificationName: "USB", specificationValue: "" },
+  { specificationName: "LAN", specificationValue: "" },
+  {
+    specificationName: "KHÔNG DÂY / BLUETOOTH",
+    specificationValue: "",
+  },
+  { specificationName: "Audio", specificationValue: "" },
+  { specificationName: "Kết nối nội bộ", specificationValue: "" },
+  {
+    specificationName: "Cổng kết nối phía sau",
+    specificationValue: "",
+  },
+  { specificationName: "Kích thước", specificationValue: "" },
+  { specificationName: "Hệ điều hành", specificationValue: "" },
 ];
