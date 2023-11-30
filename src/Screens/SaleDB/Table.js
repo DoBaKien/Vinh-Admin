@@ -12,16 +12,13 @@ import axios from "axios";
 
 const Table = (props) => {
   const [data, setData] = useState("");
-  const a = props.select.map((item) => {
-    return item.product.id;
-  });
 
   useEffect(() => {
     console.log("sd");
     axios
       .get("api/v1/products/getAll")
       .then(function (response) {
-        setData(response.data.filter((row) => !a.includes(row.id)));
+        setData(response.data.filter((item) => item.sale !== null));
       })
       .catch(function (error) {
         console.log(error);
