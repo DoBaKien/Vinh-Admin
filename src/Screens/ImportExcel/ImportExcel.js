@@ -89,7 +89,7 @@ function ImportExcel() {
               brand: row[4],
               brandId: row[4],
               price: row[5],
-              description: row[6],
+              description: row[6] || "",
             });
           }
           return null;
@@ -169,6 +169,7 @@ function ImportExcel() {
   ];
 
   const handleSubmit = () => {
+    console.log(rows);
     const importOrderDetail = rows.map((item) => {
       if (item.productId === undefined) {
         return {
@@ -184,6 +185,7 @@ function ImportExcel() {
               brand: {
                 id: item.brandId,
               },
+              description: item.description,
               specifications: Phanloai(item.categoryId),
             },
           },

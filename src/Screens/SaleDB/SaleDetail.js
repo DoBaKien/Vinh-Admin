@@ -25,6 +25,7 @@ import SplitArray from "./Item";
 const SaleDetails = () => {
   const [show, setShow] = useState(true);
   const [select, setSelect] = useState("");
+  const [select2, setSelect2] = useState("");
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState("");
   const [start, setStart] = useState(dayjs());
@@ -50,7 +51,10 @@ const SaleDetails = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(select);
+
+    const newasd = select2 !== "" ? select.concat(select2) : select;
+
+    console.log(newasd);
     axios
       .post(`/api/v1/sales/updateSale`, {
         id: id.id,
@@ -59,7 +63,7 @@ const SaleDetails = () => {
         end: end.format("YYYY-MM-DD"),
         discount: discount,
         type: "%",
-        saleDetails: select,
+        saleDetails: newasd,
       })
       .then(function (response) {
         console.log(response.data);
@@ -104,6 +108,7 @@ const SaleDetails = () => {
                   >
                     <OutlinedInput
                       fullWidth
+                      sx={{ backgroundColor: "white" }}
                       placeholder="Giảm giá"
                       id="outlined-adornment-weight"
                       value={discount}
@@ -123,7 +128,7 @@ const SaleDetails = () => {
                     label="Mô tả"
                     multiline
                     rows={4}
-                    sx={{ marginTop: 2 }}
+                    sx={{ marginTop: 2, backgroundColor: "white" }}
                     value={description}
                     fullWidth
                     variant="outlined"
@@ -133,7 +138,7 @@ const SaleDetails = () => {
                   <Stack direction={"row"} gap={2} style={{ marginTop: 20 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DesktopDatePicker
-                        sx={{ width: "100%" }}
+                        sx={{ width: "100%", backgroundColor: "white" }}
                         label="Ngày bắt đầu"
                         value={start}
                         openTo="year"
@@ -149,7 +154,7 @@ const SaleDetails = () => {
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DesktopDatePicker
-                        sx={{ width: "100%" }}
+                        sx={{ width: "100%", backgroundColor: "white" }}
                         label="Ngày kết thúc"
                         value={end}
                         openTo="year"
@@ -245,7 +250,13 @@ const SaleDetails = () => {
                 </form>
               </Box>
               <Box sx={{ flex: 1.5, marginTop: 2 }}>
-                <Table setSelect={setSelect} select={select} />
+                {select !== "" ? (
+                  <Table
+                    setSelect={setSelect2}
+                    select={select}
+                    select2={select2}
+                  />
+                ) : null}
               </Box>
             </Stack>
           </Box>

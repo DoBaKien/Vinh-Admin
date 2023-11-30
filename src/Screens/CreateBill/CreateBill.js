@@ -56,17 +56,17 @@ const CreateBill = () => {
       })),
     };
     console.log(orderData);
-    axios
-      .post(`/api/v1/orders/createNow`, orderData)
-      .then(function (response) {
-        Swal.fire({
-          title: "Thành công",
-          icon: "success",
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // axios
+    //   .post(`/api/v1/orders/createNow`, orderData)
+    //   .then(function (response) {
+    //     Swal.fire({
+    //       title: "Thành công",
+    //       icon: "success",
+    //     });
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
 
   return (

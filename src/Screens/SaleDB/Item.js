@@ -35,10 +35,6 @@ function SplitArray(props) {
         sx={{
           width: 230,
           display: "flex",
-          textAlign: "center",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
         }}
       >
         <Typography>{props.item.product.productName}</Typography>

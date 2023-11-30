@@ -1,8 +1,12 @@
 import { Box, OutlinedInput, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 
 function SplitArray(props) {
+  const [error, setError] = useState(false);
+
   const inputQuantity = (e) => {
-    if (e > 0) {
+    setError(false);
+    if (e > 0 && e < props.item.product.maxQuantity) {
       const newArr = props.select.map((item) => {
         if (item.id === props.item.id) {
           props.item.quantity = e;
@@ -11,6 +15,8 @@ function SplitArray(props) {
         return item;
       });
       props.setSelect(newArr);
+    } else {
+      setError(true);
     }
   };
 
@@ -29,6 +35,7 @@ function SplitArray(props) {
         <OutlinedInput
           type="number"
           id="outlined-adornment-weight"
+          error={error}
           value={props.item.quantity}
           sx={{ height: "40px" }}
           onChange={(e) => inputQuantity(Number(e.target.value))}

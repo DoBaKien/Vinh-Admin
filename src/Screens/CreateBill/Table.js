@@ -49,7 +49,7 @@ const Table = (props) => {
   ];
 
   const handleSelect = (e) => {
-    const orderDetails = Object.values(e).map((item, index) => {
+    const orderDetails = Object.values(e).map((item) => {
       const itemDetails = item.split("\\");
       return {
         quantity: 1,

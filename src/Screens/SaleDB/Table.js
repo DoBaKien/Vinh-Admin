@@ -12,17 +12,22 @@ import axios from "axios";
 
 const Table = (props) => {
   const [data, setData] = useState("");
+  const a = props.select.map((item) => {
+    return item.product.id;
+  });
 
   useEffect(() => {
+    console.log("sd");
     axios
       .get("api/v1/products/getAll")
       .then(function (response) {
-        setData(response.data);
+        setData(response.data.filter((row) => !a.includes(row.id)));
       })
       .catch(function (error) {
         console.log(error);
       });
   }, []);
+
   const columns = [
     {
       field: "name",
@@ -50,15 +55,17 @@ const Table = (props) => {
   ];
 
   const handleSelect = (e) => {
-    // const orderDetails = Object.values(e).map((item) => {
-    //   return {
-    //     enable: 1,
-    //     product: {
-    //       id: item,
-    //     },
-    //   };
-    // });
-    // props.setSelect(orderDetails);
+    const orderDetails = Object.values(e).map((item) => {
+      const itemDetails = item.split("\\");
+      return {
+        enable: 1,
+        product: {
+          id: itemDetails[0],
+          name: itemDetails[1],
+        },
+      };
+    });
+    props.setSelect(orderDetails);
   };
 
   function CustomToolbar() {
@@ -97,7 +104,7 @@ const Table = (props) => {
           }}
           rows={
             data.map((item) => ({
-              id: item.id,
+              id: item.id + "\\" + item.productName,
               name: item.productName,
               quantity: item.quantity,
               category: item.category.categoryName,
