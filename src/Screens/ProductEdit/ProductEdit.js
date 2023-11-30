@@ -355,7 +355,7 @@ function ProductEdit() {
                   style={{
                     justifyContent: "center",
                     textAlign: "center",
-                    marginTop: 50,
+                    marginTop: 20,
                   }}
                 >
                   <Button

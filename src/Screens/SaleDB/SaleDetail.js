@@ -30,14 +30,14 @@ const SaleDetails = () => {
   const [start, setStart] = useState(dayjs());
   const [end, setEnd] = useState(dayjs());
   const id = useParams();
-  const [enable, setEnable] = useState("");
+
   useEffect(() => {
     axios
       .get(`/api/v1/sales/getById/${id.id}`)
       .then(function (response) {
         console.log(response.data.saleDetails);
         setSelect(response.data.saleDetails);
-        setEnable(response.data.saleDetails === 1 ? true : false);
+
         setDescription(response.data.description);
         setDiscount(response.data.discount);
         setEnd(dayjs(response.data.end));
@@ -52,7 +52,7 @@ const SaleDetails = () => {
     e.preventDefault();
     console.log(select);
     axios
-      .post(`/api/v1/sales/saveOrUpdate`, {
+      .post(`/api/v1/sales/updateSale`, {
         id: id.id,
         description: description,
         start: start.format("YYYY-MM-DD"),
@@ -62,6 +62,7 @@ const SaleDetails = () => {
         saleDetails: select,
       })
       .then(function (response) {
+        console.log(response.data);
         Swal.fire({
           title: "Thành công",
           icon: "success",
