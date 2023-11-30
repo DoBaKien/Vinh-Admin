@@ -32,6 +32,7 @@ const InvoiceDetails = () => {
       .get(`/api/v1/orders/getOrderById/${idO.id}`)
       .then((res) => {
         setData(res.data);
+        console.log(res.data);
         setSum(
           res.data.orderDetails.reduce(
             (acc, item) => acc + item.product.price * item.quantity,
@@ -223,6 +224,7 @@ const InvoiceDetails = () => {
                 </Typography>
               </StackNav>
             </Box>
+
             <BoxNav />
             <Grid
               container

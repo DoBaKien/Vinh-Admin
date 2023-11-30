@@ -11,6 +11,11 @@ import CreateBill from "./Screens/CreateBill/CreateBill";
 import ProductEdit from "./Screens/ProductEdit/ProductEdit";
 import ImportExcel from "./Screens/ImportExcel/ImportExcel";
 import ImportDetail from "./Screens/ImportDetail/ImportDetail";
+import Sale from "./Screens/Sale/Sale";
+import SaleDB from "./Screens/SaleDB/SaleDB";
+import SaleDetails from "./Screens/SaleDB/SaleDetail";
+import Account from "./Screens/Account/Account";
+import AccountDetail from "./Screens/Account/AccountDetail";
 
 function Router() {
   return (
@@ -23,6 +28,11 @@ function Router() {
       <Route path="/CheckOut" element={<CheckOut />} />
       <Route path="/CheckOut/:id" element={<InvoiceDetails />} />
       <Route path="/CreateBill" element={<CreateBill />} />
+      <Route path="/Sale" element={<Sale />} />
+      <Route path="/SaleDB" element={<SaleDB />} />
+      <Route path="/SaleDetail/:id" element={<SaleDetails />} />
+      <Route path="/Account/" element={<Account />} />
+      <Route path="/Account/:id" element={<AccountDetail />} />
 
       <Route path="/ImportExcel" element={<ImportExcel />} />
       <Route path="/ProductEdit/:id" element={<ProductEdit />} />

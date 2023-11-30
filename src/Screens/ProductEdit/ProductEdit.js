@@ -23,6 +23,7 @@ import ModalDes from "./ModalDes";
 import ModalTk from "./ModalTk";
 import Quill from "quill";
 import ImageResize from "quill-image-resize";
+import ModalStt from "./ModalStt";
 
 Quill.register("modules/imageResize", ImageResize);
 function ProductEdit() {
@@ -40,11 +41,24 @@ function ProductEdit() {
   const [checkQ, setCheckQ] = useState(false);
   const [modalDes, setModalDes] = useState(false);
   const [modalTk, setModalTk] = useState(false);
-  const [data, setData] = useState("");
-
+  const [modalStt, setModalStt] = useState(false);
+  const [choose, setChoose] = useState("");
   const id = useParams();
   const navigate = useNavigate();
   useEffect(() => {
+    axios
+      .get(`/api/v1/loHangs/getByProduct/${id.id}`)
+      .then(function (response) {
+        response.data.map((item) => {
+          if (item.status === 1) {
+            setChoose(item.id);
+          }
+          return "";
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     axios
       .get("/api/v1/brands/getAllBrand")
       .then(function (response) {
@@ -66,7 +80,6 @@ function ProductEdit() {
       .get(`/api/v1/products/getById/${id.id}`)
       .then(function (response) {
         console.log(response.data);
-        setData(response.data);
         setImage(response.data.imageProducts);
         setName(response.data.productName);
         setQuantity(response.data.quantity);
@@ -178,6 +191,7 @@ function ProductEdit() {
         setImage={setImage}
         id={id.id}
       />
+      <ModalStt modal={modalStt} setModal={setModalStt} id={id.id} />
       {spec !== "" ? (
         <ModalTk
           modal={modalTk}
@@ -189,6 +203,7 @@ function ProductEdit() {
       ) : (
         <></>
       )}
+
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%", minWidth: "70%" }}>
@@ -215,27 +230,23 @@ function ProductEdit() {
               <Typography variant="h4">Thông tin sản phẩm #{id.id}</Typography>
               <Stack
                 direction="row"
-                spacing={10}
                 style={{
                   textAlign: "center",
                   marginTop: 30,
                   backgroundColor: "white",
                   padding: 20,
                   borderRadius: 20,
+                  display: "flex",
+                  justifyContent: "space-between",
                 }}
               >
-                <Button
-                  variant="contained"
-                  sx={{ width: 150 }}
-                  onClick={() => setModalDes(true)}
-                >
+                <Button variant="contained" onClick={() => setModalDes(true)}>
                   Hình ảnh
                 </Button>
-                <Button
-                  variant="contained"
-                  sx={{ width: 300 }}
-                  onClick={() => setModalTk(true)}
-                >
+                <Button variant="contained" onClick={() => setModalStt(true)}>
+                  Trạng thái
+                </Button>
+                <Button variant="contained" onClick={() => setModalTk(true)}>
                   Thông số kỹ thuật
                 </Button>
               </Stack>
@@ -247,7 +258,26 @@ function ProductEdit() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
+                <Stack
+                  direction="row"
+                  sx={{
+                    gap: 3,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography sx={{ marginTop: 3, width: 100 }}>
+                    Đang bán
+                  </Typography>
 
+                  <TextInputAd
+                    label="Lô hàng"
+                    variant="outlined"
+                    disabled
+                    fullWidth
+                    value={choose || "Chưa bán"}
+                  />
+                </Stack>
                 <Stack
                   direction="row"
                   sx={{

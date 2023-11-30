@@ -35,7 +35,7 @@ function ImportDetail() {
             (acc, item) => acc + item.importPrice * item.quantity,
             0
           )
-        ).toFixed(2);
+        );
       })
       .catch((error) => console.log(error));
   }, [id.id]);
@@ -48,6 +48,7 @@ function ImportDetail() {
       headerName: "Tên sản phẩm",
       flex: 1,
     },
+    { field: "loHang", headerName: "Lô Hàng", flex: 0.5 },
     {
       field: "loai",
       headerName: "Loại",
@@ -160,13 +161,14 @@ function ImportDetail() {
                 }}
                 rows={data.importOrderDetail.map((item) => ({
                   id: item.id,
-                  name: item.product.productName,
+                  name: item.loHang.product.productName,
                   price: item.importPrice
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, "."),
                   quantity: item.quantity,
-                  brand: item.product.brand.name,
-                  loai: item.product.category.categoryName,
+                  brand: item.loHang.product.brand.name,
+                  loai: item.loHang.product.category.categoryName,
+                  loHang: item.loHang.id,
                 }))}
                 columns={columns}
                 sx={{ flex: 1, backgroundColor: "white" }}

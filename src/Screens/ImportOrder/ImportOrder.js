@@ -60,41 +60,41 @@ const ImportOrder = () => {
   }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(products);
     const importOrderDetail = products.map((item) => {
       if (item.id.length > 30) {
         return {
-          quantity: item.quantity,
           importPrice: item.importPrice,
-          product: {
-            productName: item.name,
-            category: {
-              id: item.loai,
+          quantity: item.quantity,
+          loHang: {
+            product: {
+              quantity: item.quantity,
+              productName: item.name,
+              category: {
+                id: item.loai,
+              },
+              brand: {
+                id: item.hang,
+              },
+              specifications: Phanloai(item.loai),
             },
-            quantity: item.quantity,
-            brand: {
-              id: item.hang,
-            },
-            specifications: Phanloai(item.loai),
           },
         };
       } else {
         return {
-          quantity: item.quantity,
           importPrice: item.importPrice,
-          product: {
-            id: item.id,
-            category: {
-              id: item.loai,
-            },
-            quantity: item.quantity,
-            brand: {
-              id: item.hang,
+          quantity: item.quantity,
+          loHang: {
+            product: {
+              quantity: item.quantity,
+              id: item.id,
             },
           },
         };
       }
     });
-    if (product !== "" && ncc !== "") {
+    // console.log(importOrderDetail);
+    if (product !== "" || ncc !== "") {
       axios
         .post(`/api/v1/importOrders/saveOrUpdate`, {
           supplier: {
@@ -232,7 +232,7 @@ const ImportOrder = () => {
                   backgroundColor: "#E3EFFD",
                 }}
               >
-                <form noValidate onSubmit={handleSubmit}>
+                <form noValidate onSubmit={handleSubmit} autoComplete="true">
                   <Stack
                     direction={"row"}
                     spacing={2}

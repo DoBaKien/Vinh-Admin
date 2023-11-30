@@ -55,7 +55,7 @@ const CreateBill = () => {
         },
       })),
     };
-
+    console.log(orderData);
     axios
       .post(`/api/v1/orders/createNow`, orderData)
       .then(function (response) {
@@ -92,7 +92,7 @@ const CreateBill = () => {
                   backgroundColor: "#E3EFFD",
                 }}
               >
-                <form noValidate onSubmit={handleSubmit}>
+                <form noValidate onSubmit={handleSubmit} autoComplete="true">
                   <Stack
                     direction={"row"}
                     spacing={2}
@@ -120,7 +120,7 @@ const CreateBill = () => {
 
                   <Stack
                     sx={{
-                      marginTop: 3,
+                      marginTop: 2,
                       gap: 1,
                       border: "1px solid black",
                       padding: "10px 10px 10px 30px",
@@ -144,13 +144,13 @@ const CreateBill = () => {
                   </Stack>
 
                   {select !== "" ? (
-                    <Box sx={{ marginTop: 3 }}>
+                    <Box sx={{ marginTop: 2 }}>
                       <TableChoose setSelect={setSelect} select={select} />
                     </Box>
                   ) : (
                     <></>
                   )}
-                  <Box sx={{ marginTop: 3 }}>
+                  <Box sx={{ marginTop: 2 }}>
                     <NoteDiv>
                       <InputBase
                         sx={{

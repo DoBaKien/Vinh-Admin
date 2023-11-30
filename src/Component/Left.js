@@ -27,8 +27,9 @@ function LeftAdmin() {
     backgroundColor: "#F8F9F9",
   }));
 
-  const [open, setOpen] = useState(true);
-  const [openA, setOpenA] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [openA, setOpenA] = useState(false);
+  const [openB, setOpenB] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -63,6 +64,18 @@ function LeftAdmin() {
   const handleExcel = () => {
     navigate("/ImportExcel");
   };
+  const handleKM = () => {
+    navigate("/Sale");
+  };
+  const handleKmDB = () => {
+    navigate("/SaleDB");
+  };
+  const handleACc = () => {
+    navigate("/Account");
+  };
+  const handleClickB = () => {
+    setOpenB(!openB);
+  };
 
   return (
     <BoxSide>
@@ -80,9 +93,9 @@ function LeftAdmin() {
                 onClick={handleHome}
                 component="img"
                 sx={{
-                  height: 80,
+                  height: 60,
                   cursor: "pointer",
-                  marginBottom: 5,
+
                   marginTop: 2,
                 }}
                 alt="logo"
@@ -93,7 +106,7 @@ function LeftAdmin() {
             <ListItem disablePadding>
               <MenuBtn onClick={handleDB}>
                 <ListItemIcon>
-                  <DashboardIcon sx={{ color: "#b9b9b9" }} />
+                  <DashboardIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Trang chủ" />
               </MenuBtn>
@@ -101,7 +114,7 @@ function LeftAdmin() {
 
             <MenuBtn onClick={handleClickA}>
               <ListItemIcon>
-                <PaidIcon sx={{ color: "#b9b9b9" }} />
+                <PaidIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText primary="Quản lý hóa đơn" />
               {openA ? <ExpandLess /> : <ExpandMore />}
@@ -111,14 +124,14 @@ function LeftAdmin() {
               <List component="div" disablePadding>
                 <MenuBtn sx={{ pl: 4 }} onClick={handleQuestionA}>
                   <ListItemIcon>
-                    <NoteAddIcon sx={{ color: "#b9b9b9" }} />
+                    <NoteAddIcon sx={{ color: "white" }} />
                   </ListItemIcon>
                   <ListItemText primary="Tạo hóa đơn" />
                 </MenuBtn>
 
                 <MenuBtn sx={{ pl: 4 }} onClick={handleQuestion}>
                   <ListItemIcon>
-                    <RequestQuoteIcon sx={{ color: "#b9b9b9" }} />
+                    <RequestQuoteIcon sx={{ color: "white" }} />
                   </ListItemIcon>
                   <ListItemText primary="Danh sách hóa đơn" />
                 </MenuBtn>
@@ -127,7 +140,7 @@ function LeftAdmin() {
 
             <MenuBtn onClick={handleClick}>
               <ListItemIcon>
-                <InputIcon sx={{ color: "#b9b9b9" }} />
+                <InputIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText primary="Quản lý nhập hàng" />
               {open ? <ExpandLess /> : <ExpandMore />}
@@ -137,21 +150,21 @@ function LeftAdmin() {
               <List component="div" disablePadding>
                 <MenuBtn sx={{ pl: 4 }} onClick={handleUser}>
                   <ListItemIcon>
-                    <NoteAddIcon sx={{ color: "#b9b9b9" }} />
+                    <NoteAddIcon sx={{ color: "white" }} />
                   </ListItemIcon>
                   <ListItemText primary="Phiếu nhập" />
                 </MenuBtn>
 
                 <MenuBtn sx={{ pl: 4 }} onClick={handleExcel}>
                   <ListItemIcon>
-                    <NoteAddIcon sx={{ color: "#b9b9b9" }} />
+                    <NoteAddIcon sx={{ color: "white" }} />
                   </ListItemIcon>
                   <ListItemText primary="Phiếu nhập excel" />
                 </MenuBtn>
 
                 <MenuBtn sx={{ pl: 3 }} onClick={handleReportC}>
                   <ListItemIcon>
-                    <Inventory2Icon sx={{ color: "#b9b9b9" }} />
+                    <Inventory2Icon sx={{ color: "white" }} />
                   </ListItemIcon>
                   <ListItemText primary="Danh sách đơn nhập" />
                 </MenuBtn>
@@ -161,18 +174,42 @@ function LeftAdmin() {
             <ListItem disablePadding>
               <MenuBtn onClick={handleSP}>
                 <ListItemIcon>
-                  <CategoryIcon sx={{ color: "#b9b9b9" }} />
+                  <CategoryIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Quản lý sản phẩm" />
               </MenuBtn>
             </ListItem>
+            <MenuBtn onClick={handleClickB}>
+              <ListItemIcon>
+                <PaidIcon sx={{ color: "white" }} />
+              </ListItemIcon>
+              <ListItemText primary="Quản lý khuyến mãi" />
+              {openB ? <ExpandLess /> : <ExpandMore />}
+            </MenuBtn>
 
+            <Collapse in={openB} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <MenuBtn sx={{ pl: 4 }} onClick={handleKM}>
+                  <ListItemIcon>
+                    <NoteAddIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Tạo khuyến mãi" />
+                </MenuBtn>
+
+                <MenuBtn sx={{ pl: 4 }} onClick={handleKmDB}>
+                  <ListItemIcon>
+                    <RequestQuoteIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Danh sách khuyến mãi" />
+                </MenuBtn>
+              </List>
+            </Collapse>
             <ListItem disablePadding>
-              <MenuBtn>
+              <MenuBtn onClick={handleACc}>
                 <ListItemIcon>
-                  <ReportIcon sx={{ color: "#b9b9b9" }} />
+                  <ReportIcon sx={{ color: "white" }} />
                 </ListItemIcon>
-                <ListItemText primary="Quản lý phản hồi" />
+                <ListItemText primary="Quản lý tài khoản" />
               </MenuBtn>
             </ListItem>
           </List>

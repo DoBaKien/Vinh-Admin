@@ -106,6 +106,7 @@ function TableProduct(props) {
             }}
             getRowHeight={() => "auto"}
             sx={{
+              backgroundColor: "white",
               "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
                 py: 1,
               },

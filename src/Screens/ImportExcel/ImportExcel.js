@@ -172,26 +172,31 @@ function ImportExcel() {
     const importOrderDetail = rows.map((item) => {
       if (item.productId === undefined) {
         return {
-          quantity: item.quantity,
           importPrice: item.price,
-          product: {
-            quantity: item.quantity,
-            productName: item.name,
-            category: {
-              id: item.categoryId,
+          quantity: item.quantity,
+          loHang: {
+            product: {
+              quantity: item.quantity,
+              productName: item.name,
+              category: {
+                id: item.categoryId,
+              },
+              brand: {
+                id: item.brandId,
+              },
+              specifications: Phanloai(item.categoryId),
             },
-            brand: {
-              id: item.brandId,
-            },
-            specifications: Phanloai(item.categoryId),
           },
         };
       } else {
         return {
-          quantity: item.quantity,
           importPrice: item.price,
-          product: {
-            id: item.productId,
+          quantity: item.quantity,
+          loHang: {
+            product: {
+              quantity: item.quantity,
+              id: item.productId,
+            },
           },
         };
       }
