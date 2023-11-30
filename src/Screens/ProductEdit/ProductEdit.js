@@ -24,6 +24,7 @@ import ModalTk from "./ModalTk";
 import Quill from "quill";
 import ImageResize from "quill-image-resize";
 import ModalStt from "./ModalStt";
+import { Phanloai } from "../../Component/data";
 
 Quill.register("modules/imageResize", ImageResize);
 function ProductEdit() {
@@ -143,13 +144,23 @@ function ProductEdit() {
       if (result.isConfirmed) {
         setLoai(event.target.value);
         axios
-          .delete(`/api/v1/productSpecifications/delete/${id.id}`)
+          .post(
+            `/api/v1/productSpecifications/updateList/${id.id}`,
+            Phanloai(event.target.value)
+          )
           .then(function (res) {
-            console.log(res);
-            Swal.fire({
-              title: "Thành công",
-              icon: "success",
-            });
+            axios
+              .get(`/api/v1/products/getById/${id.id}`)
+              .then(function (response) {
+                setSpec(response.data.specifications);
+                Swal.fire({
+                  title: "Thành công",
+                  icon: "success",
+                });
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
           })
           .catch(function (error) {
             console.log(error);

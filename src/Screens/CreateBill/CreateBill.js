@@ -46,6 +46,8 @@ const CreateBill = () => {
       customer: {
         id: customerD.id,
       },
+      paymentType: "Mua ở cửa hàng",
+      statusPayment: 1,
       statusOrder: "3",
       employee: { id: id },
       orderDetails: select.map((item) => ({
@@ -56,17 +58,17 @@ const CreateBill = () => {
       })),
     };
     console.log(orderData);
-    // axios
-    //   .post(`/api/v1/orders/createNow`, orderData)
-    //   .then(function (response) {
-    //     Swal.fire({
-    //       title: "Thành công",
-    //       icon: "success",
-    //     });
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axios
+      .post(`/api/v1/orders/createNow`, orderData)
+      .then(function (response) {
+        Swal.fire({
+          title: "Thành công",
+          icon: "success",
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (

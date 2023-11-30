@@ -88,8 +88,9 @@ function ImportExcel() {
               categoryId: row[3],
               brand: row[4],
               brandId: row[4],
-              price: row[5],
-              description: row[6] || "",
+              importPrice: row[5],
+              price: row[6],
+              description: row[7] || "",
             });
           }
           return null;
@@ -159,7 +160,8 @@ function ImportExcel() {
 
     { field: "category", headerName: "Loại", flex: 0.5 },
     { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
-    { field: "price", headerName: "Giá nhập", flex: 0.5 },
+    { field: "importPrice", headerName: "Giá nhập", flex: 0.5 },
+    { field: "price", headerName: "Giá bán", flex: 0.5 },
     {
       field: "description",
       headerName: "Mô tả",
@@ -173,11 +175,12 @@ function ImportExcel() {
     const importOrderDetail = rows.map((item) => {
       if (item.productId === undefined) {
         return {
-          importPrice: item.price,
+          importPrice: item.importPrice,
           quantity: item.quantity,
           loHang: {
             product: {
               quantity: item.quantity,
+              price: item.price,
               productName: item.name,
               category: {
                 id: item.categoryId,
