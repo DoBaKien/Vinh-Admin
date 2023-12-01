@@ -34,7 +34,9 @@ const ImportOrder = () => {
   const [nccD, setNccD] = useState("");
   const [products, setProducts] = useState("");
   const [priceImport, setPriceImport] = useState("");
+  const [price, setPrice] = useState("");
   const [checkP, setCheckP] = useState(false);
+  const [checkPI, setCheckPI] = useState(false);
   const [loai, setLoai] = useState("");
   const [loais, setLoais] = useState("");
   const [brand, setBrand] = useState("");
@@ -71,6 +73,7 @@ const ImportOrder = () => {
           loHang: {
             product: {
               quantity: item.quantity,
+              price: item.price,
               productName: item.name,
               category: {
                 id: item.loai,
@@ -164,12 +167,20 @@ const ImportOrder = () => {
     }
   };
 
+  const checkPriceI = (e) => {
+    if (e < 0) {
+      setCheckPI(true);
+    } else {
+      setCheckPI(false);
+      setPriceImport(e);
+    }
+  };
   const checkPrice = (e) => {
     if (e < 0) {
       setCheckP(true);
     } else {
       setCheckP(false);
-      setPriceImport(e);
+      setPrice(e);
     }
   };
 
@@ -181,6 +192,7 @@ const ImportOrder = () => {
       priceImport !== "" &&
       loai !== "" &&
       brand !== "" &&
+      price !== "" &&
       quantity > 0
     ) {
       setProducts((prev) => {
@@ -189,6 +201,7 @@ const ImportOrder = () => {
           {
             id: productId || uuidv4(),
             name: product,
+            price: price,
             quantity: quantity,
             importPrice: priceImport,
             loai: loai,
@@ -200,6 +213,7 @@ const ImportOrder = () => {
       setProductId("");
       setProduct("");
       setQuantity("");
+      setPrice("");
       setPriceImport("");
     } else {
       Swal.fire({
@@ -208,6 +222,17 @@ const ImportOrder = () => {
       });
     }
   };
+
+  const handleWhite = () => {
+    setProductId("");
+    setProduct("");
+    setQuantity("");
+    setPrice("");
+    setPriceImport("");
+    setLoai("");
+    setBrand("");
+  };
+
   const handleChange = (event) => {
     setLoai(event.target.value);
   };
@@ -401,9 +426,19 @@ const ImportOrder = () => {
                       label="Giá nhập"
                       variant="outlined"
                       fullWidth
-                      error={checkP}
+                      error={checkPI}
                       type="number"
                       value={priceImport}
+                      size="small"
+                      onChange={(e) => checkPriceI(e.target.value)}
+                    />
+                    <TextInputAd
+                      label="Giá bán"
+                      error={checkP}
+                      variant="outlined"
+                      fullWidth
+                      type="number"
+                      value={price}
                       size="small"
                       onChange={(e) => checkPrice(e.target.value)}
                     />
@@ -421,6 +456,7 @@ const ImportOrder = () => {
                         variant="contained"
                         color="error"
                         sx={{ width: 150 }}
+                        onClick={handleWhite}
                       >
                         Xóa trắng
                       </Button>

@@ -38,7 +38,7 @@ function LeftAdmin() {
     setOpenA(!openA);
   };
   const handleHome = () => {
-    navigate("/");
+    navigate("/DashBoard");
   };
   const handleDB = () => {
     navigate("/DashBoard");
