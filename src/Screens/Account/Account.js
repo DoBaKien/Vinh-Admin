@@ -24,6 +24,7 @@ function Account() {
       .get(`/api/v1/customer/getListCustomer`)
       .then((res) => {
         setData(res.data);
+        console.log(res.data);
       })
       .catch((error) => console.log(error));
     // axios
@@ -52,7 +53,7 @@ function Account() {
       field: "status",
       headerName: "Trạng thái",
       renderCell: (params) => (
-        <>{params.row.status === true ? "Hoạt động" : "Tạm khóa"}</>
+        <>{params.row.status === "" ? "Tạm khóa" : "Hoạt động"}</>
       ),
       flex: 1,
     },
@@ -100,7 +101,7 @@ function Account() {
             rows={data.map((item) => ({
               id: item.id,
               name: item.lastName + " " + item.firstName,
-              status: item.account.enable,
+              status: item.account || "",
               email: item.email,
               phone: item.phone,
             }))}

@@ -9,18 +9,20 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import dayjs from "dayjs";
+import { format } from "date-fns";
 
 const AccountDetail = () => {
   const [show, setShow] = useState(true);
   const [data, setData] = useState("");
-
+  const [birth, setBirht] = useState("");
   const id = useParams();
   useEffect(() => {
     axios
       .get(`/api/v1/customer/getByPhoneOrEmail/${id.id}`)
       .then((res) => {
         setData(res.data);
+        console.log(res.data);
+        setBirht(format(new Date(res.data.dateOfBirth), "dd-MM-yyyy"));
       })
       .catch((error) => console.log(error));
   }, [id.id]);
@@ -103,18 +105,22 @@ const AccountDetail = () => {
                   value={data.sex === 1 ? "Nam" : "Nữ"}
                   disabled
                 />
-                {/* <TextInputAd
-                    label="Giới tính"
-                    variant="outlined"
-                    fullWidth
-                    value={data.dateofBirth.format("yyyy-mm-dd")}
-                    disabled
-                  /> */}
+                <TextInputAd
+                  label="Ngày sinh"
+                  variant="outlined"
+                  fullWidth
+                  value={birth}
+                  disabled
+                />
                 <TextInputAd
                   label="Role"
                   variant="outlined"
                   fullWidth
-                  value={data.customerType === "customer" ? "Khách hàng" : ""}
+                  value={
+                    data.customerType === "customer"
+                      ? "Khách hàng"
+                      : "Khách vãng lai"
+                  }
                   disabled
                 />
                 <TextInputAd
@@ -132,14 +138,14 @@ const AccountDetail = () => {
                   disabled
                 />
                 <TextInputAd
-                  label="Email"
+                  label="Số điện thoại"
                   variant="outlined"
                   fullWidth
                   value={data.phone || ""}
                   disabled
                 />
               </Box>
-              {data !== "" ? (
+              {data.account !== null ? (
                 <Box
                   sx={{
                     flex: 1,
@@ -154,14 +160,14 @@ const AccountDetail = () => {
                     label="ID"
                     variant="outlined"
                     fullWidth
-                    value={data.account.id || ""}
+                    value={data.account?.id || ""}
                     disabled
                   />
                   <TextInputAd
                     label="Tên đăng nhập"
                     variant="outlined"
                     fullWidth
-                    value={data.account.email || ""}
+                    value={data.account?.email || ""}
                   />
                   <Stack
                     direction={"row"}
@@ -175,7 +181,7 @@ const AccountDetail = () => {
                       variant="outlined"
                       sx={{ width: 400 }}
                       value={
-                        data.account.enable === true
+                        data.account?.enable === true
                           ? "Đang hoạt động"
                           : "Tạm khóa"
                       }
