@@ -5,7 +5,7 @@ import SplitArray from "./Item";
 
 function TableChoose(props) {
   const sum = props.select.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
+    (acc, item) => acc + item.product.salePrice * item.quantity,
     0
   );
 

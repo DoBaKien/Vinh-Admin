@@ -51,6 +51,7 @@ const Table = (props) => {
   const handleSelect = (e) => {
     const orderDetails = Object.values(e).map((item) => {
       const itemDetails = item.split("\\");
+      console.log(itemDetails[4]);
       return {
         quantity: 1,
         product: {
@@ -58,6 +59,12 @@ const Table = (props) => {
           name: itemDetails[1],
           price: parseInt(itemDetails[2]),
           maxQuantity: parseInt(itemDetails[3]),
+
+          salePrice:
+            itemDetails[4] === "undefined"
+              ? parseInt(itemDetails[2])
+              : parseInt(itemDetails[2]) -
+                parseInt(itemDetails[2]) * (parseInt(itemDetails[4]) / 100),
         },
       };
     });
@@ -108,8 +115,11 @@ const Table = (props) => {
                 "\\" +
                 item.price +
                 "\\" +
-                item.quantity,
+                item.quantity +
+                "\\" +
+                item.sale?.discount,
               name: item.productName,
+
               quantity: item.quantity,
               category: item.category.categoryName,
               price: item.price,

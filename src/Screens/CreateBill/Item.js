@@ -20,6 +20,19 @@ function SplitArray(props) {
     }
   };
 
+  const handlePrice = () => {
+    if (props.item.product.salePrice !== props.item.product.price) {
+      return (
+        <Typography sx={{ textDecoration: "line-through" }}>
+          {props.item.product.price
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+          đ
+        </Typography>
+      );
+    }
+  };
+
   return (
     <Stack direction={"row"} sx={{ marginTop: 2 }}>
       <Box sx={{ width: 230, display: "flex", alignItems: "center" }}>
@@ -49,11 +62,15 @@ function SplitArray(props) {
           alignItems: "center",
         }}
       >
-        <Typography>
-          {(props.item.product.price * props.item.quantity)
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-        </Typography>
+        <Box>
+          {handlePrice()}
+          <Typography>
+            {(props.item.product.salePrice * props.item.quantity)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            đ
+          </Typography>
+        </Box>
       </Box>
     </Stack>
   );

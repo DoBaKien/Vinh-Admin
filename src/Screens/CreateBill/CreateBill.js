@@ -61,13 +61,21 @@ const CreateBill = () => {
     axios
       .post(`/api/v1/orders/createNow`, orderData)
       .then(function (response) {
+        setCustomer("");
+        setCustomerD("");
+        setSelect("");
+        setNote("");
         Swal.fire({
           title: "Thành công",
           icon: "success",
         });
       })
       .catch(function (error) {
-        console.log(error);
+        Swal.fire({
+          title: "Lỗi",
+          text: "Hết hàng trong lô",
+          icon: "error",
+        });
       });
   };
 

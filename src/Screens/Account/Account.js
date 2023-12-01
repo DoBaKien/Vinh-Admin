@@ -27,13 +27,13 @@ function Account() {
         console.log(res.data);
       })
       .catch((error) => console.log(error));
-    // axios
-    //   .get(`/api/v1/employee/getAll`)
-    //   .then((res) => {
-    //     setData(res.data);
-    //     console.log(res.data);
-    //   })
-    //   .catch((error) => console.log(error));
+    axios
+      .get(`/api/v1/employee/getAll`)
+      .then((res) => {
+        // setData(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   const handleOnCellClick = (params) => {
