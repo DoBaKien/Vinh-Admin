@@ -22,6 +22,7 @@ import axios from "axios";
 import TableProduct from "./TableProduct";
 import Swal from "sweetalert2";
 import { Phanloai } from "../../Component/data";
+import { useRef } from "react";
 
 const ImportOrder = () => {
   const [show, setShow] = useState(true);
@@ -40,6 +41,7 @@ const ImportOrder = () => {
   const [brands, setBrands] = useState("");
   const [productId, setProductId] = useState("");
   const userId = localStorage.getItem("id");
+  const formRef = useRef(null);
   useEffect(() => {
     axios
       .get("/api/v1/category/getAll")
@@ -60,7 +62,7 @@ const ImportOrder = () => {
   }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(products);
+
     const importOrderDetail = products.map((item) => {
       if (item.id.length > 30) {
         return {
@@ -107,6 +109,11 @@ const ImportOrder = () => {
         })
         .then(function (response) {
           console.log(response.data);
+          formRef.current.reset();
+          setNccD("");
+          setNcc("");
+          setProducts("");
+
           Swal.fire({
             title: "Thành công",
             icon: "success",
@@ -232,7 +239,12 @@ const ImportOrder = () => {
                   backgroundColor: "#E3EFFD",
                 }}
               >
-                <form noValidate onSubmit={handleSubmit} autoComplete="true">
+                <form
+                  noValidate
+                  ref={formRef}
+                  onSubmit={handleSubmit}
+                  autoComplete="true"
+                >
                   <Stack
                     direction={"row"}
                     spacing={2}

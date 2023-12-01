@@ -12,13 +12,31 @@ import axios from "axios";
 
 const Table = (props) => {
   const [data, setData] = useState("");
+  // const a = props.select.map((item) => {
+  //   return item.product.id;
+  // });
 
   useEffect(() => {
-    console.log("sd");
     axios
       .get("api/v1/products/getAll")
       .then(function (response) {
-        setData(response.data.filter((item) => item.sale !== null));
+        // setData(response.data.filter((item) => item.sale !== null));
+        // setData(response.data.filter((row) => !a.includes(row.id)));
+
+        setData(
+          response.data.map((item) => ({
+            id:
+              item.id +
+              "\\" +
+              item.productName +
+              "\\" +
+              (item.sale ? item.sale.id : ""),
+            name: item.productName,
+            quantity: item.sale === null ? "Chưa có" : item.sale.id,
+            category: item.category.categoryName,
+            price: item.price,
+          }))
+        );
       })
       .catch(function (error) {
         console.log(error);
@@ -38,7 +56,7 @@ const Table = (props) => {
     },
     {
       field: "quantity",
-      headerName: "Số lượng",
+      headerName: "Khuyến mãi",
     },
     {
       field: "price",
@@ -99,15 +117,7 @@ const Table = (props) => {
             toolbarDensity: "Khoảng cách",
             toolbarFilters: "Lọc",
           }}
-          rows={
-            data.map((item) => ({
-              id: item.id + "\\" + item.productName,
-              name: item.productName,
-              quantity: item.quantity,
-              category: item.category.categoryName,
-              price: item.price,
-            })) || []
-          }
+          rows={data || []}
           slots={{
             toolbar: CustomToolbar,
           }}
@@ -119,6 +129,7 @@ const Table = (props) => {
           initialState={{
             ...data.initialState,
           }}
+          isRowSelectable={(params) => params.row.quantity === "Chưa có"}
           getRowHeight={() => "auto"}
           sx={{
             borderRadius: 5,

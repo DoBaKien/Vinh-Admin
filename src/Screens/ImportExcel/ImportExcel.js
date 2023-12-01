@@ -219,6 +219,10 @@ function ImportExcel() {
       })
       .then(function (response) {
         console.log(response.data);
+        setFile("");
+        setNccD("");
+        setNcc("");
+        setRows("");
         Swal.fire({
           title: "Thành công",
           icon: "success",

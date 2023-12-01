@@ -8,18 +8,52 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { TextInputAd, style } from "../../Component/Style";
-
+import axios from "axios";
+import Swal from "sweetalert2";
 function ModalUser({ setModal, modal }) {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
   const [sdt, setSdt] = useState("");
   const [dc, setDc] = useState("");
+
   const toggleModal = () => {
     setModal(false);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (last !== "" && first !== "") {
+      axios
+        .post(`/api/v1/customer/createKHVL`, {
+          firstName: first,
+          lastName: last,
+          customerType: "Khách hàng vãng lai",
+          phone: sdt,
+          email,
+          address: dc,
+        })
+        .then(function (response) {
+          setFirst("");
+          setLast("");
+          setSdt("");
+          setEmail("");
+          setDc("");
+          setModal(false);
+
+          Swal.fire({
+            title: "Thành công",
+            icon: "success",
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      Swal.fire({
+        title: "Vui lòng điền thông tin",
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -66,11 +100,12 @@ function ModalUser({ setModal, modal }) {
               label="Số điện thoại"
               variant="outlined"
               fullWidth
+              type="number"
               value={sdt}
               onChange={(e) => setSdt(e.target.value)}
             />
             <TextInputAd
-              label="Số điện thoại"
+              label="Địa chỉ"
               variant="outlined"
               fullWidth
               value={dc}

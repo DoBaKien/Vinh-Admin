@@ -1,6 +1,5 @@
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import EditIcon from "@mui/icons-material/Edit";
 function SplitArray(props) {
   const handleEdit = (id, stt) => {
@@ -24,11 +23,7 @@ function SplitArray(props) {
       );
     }
   };
-  const handleDel = (id) => {
-    props.setSelect((prevArray) =>
-      prevArray.filter((item) => item.product.id !== id)
-    );
-  };
+
   return (
     <Stack direction={"row"} sx={{ marginTop: 2 }}>
       <Box
@@ -66,12 +61,6 @@ function SplitArray(props) {
           onClick={() => handleEdit(props.item.product.id, props.item.enable)}
         >
           <EditIcon />
-        </IconButton>
-        <IconButton
-          aria-label="delete"
-          onClick={() => handleDel(props.item.product.id)}
-        >
-          <DeleteIcon sx={{ color: "red" }} />
         </IconButton>
       </Box>
     </Stack>

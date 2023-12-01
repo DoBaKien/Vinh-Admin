@@ -7,23 +7,18 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-
 import { useState } from "react";
 import Header from "../../Component/Header";
 import Left from "../../Component/Left";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect } from "react";
-
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import ModalProduct from "./ModalProduct";
 import { useNavigate } from "react-router-dom";
 
 const Product = () => {
   const [show, setShow] = useState(true);
-
   const [modalP, setModalP] = useState(false);
   const [tags, setTags] = useState("");
   const [value, setValue] = useState("");
@@ -54,7 +49,16 @@ const Product = () => {
     { field: "quantity", headerName: "Số lượng", flex: 0.5 },
     { field: "category", headerName: "Loại", flex: 0.5 },
     { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
-    { field: "price", headerName: "Giá", flex: 0.5 },
+    {
+      field: "price",
+      headerName: "Giá",
+      flex: 0.5,
+      renderCell: (params) => (
+        <div>
+          {params.row.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+        </div>
+      ),
+    },
 
     {
       field: "actions",
@@ -70,11 +74,6 @@ const Product = () => {
                 color="primary"
               >
                 <DriveFileRenameOutlineIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Xóa" placement="right">
-              <IconButton>
-                <DeleteIcon sx={{ color: "red" }} />
               </IconButton>
             </Tooltip>
           </>,

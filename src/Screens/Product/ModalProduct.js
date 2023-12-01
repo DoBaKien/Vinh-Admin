@@ -15,7 +15,7 @@ function ModalProduct({ setModal, modal, value }) {
       .get(`http://localhost:8521/api/v1/products/getById/${value}`)
       .then(function (response) {
         setData(response.data);
-        console.log(response.data);
+        console.log(response.data.specifications);
       })
       .catch(function (error) {
         console.log(error);
@@ -31,7 +31,7 @@ function ModalProduct({ setModal, modal, value }) {
     >
       <Box sx={styleProduct}>
         <Stack direction={"row"}>
-          <Box sx={{ width: 500 }}>
+          <Box sx={{ flex: 1 }}>
             {data.imageProducts?.map((item) => (
               <Box
                 key={item.id}
@@ -57,29 +57,31 @@ function ModalProduct({ setModal, modal, value }) {
               Loại: {data.category?.categoryName}
             </Typography>
             <Typography variant="subtitle1">Giá: {data.price}</Typography>
-            <Typography variant="subtitle1">Giá: {data.priceImport}</Typography>
           </Box>
 
-          <Box>
+          <Box sx={{ height: 400, overflow: "auto", flex: 1 }}>
             <Typography variant="h5">Thông số kỹ thuật</Typography>
-            <Typography variant="subtitle1">
-              Loại card đồ họa: 10 nhân GPU
-            </Typography>
-            <Typography variant="subtitle1">
-              Loại CPU: Apple M2 tám nhân CPU
-            </Typography>
-            <Typography variant="subtitle1">Dung lượng RAM 8GB</Typography>
-            <Typography variant="subtitle1">Loại RAM 8GB</Typography>
-            <Typography variant="subtitle1">Ổ cứng 256GB SSD</Typography>
-            <Typography variant="subtitle1">Chất liệu Vỏ kim loại</Typography>
-            <Typography variant="subtitle1">Màn hình cảm ứng Không</Typography>
-            <Typography variant="subtitle1">
-              Kích thước màn hình 13 inches
-            </Typography>
-            <Typography variant="subtitle1">
-              Độ phân giải màn hình 2560 x 1664 pixels
-            </Typography>
-            <Typography variant="subtitle1">Pin 58.2Whrs</Typography>
+            {data.specifications !== null ? (
+              <>
+                {data.specifications?.map((item, index) => (
+                  <Stack
+                    key={index}
+                    direction={"row"}
+                    sx={{
+                      backgroundColor: index % 2 === 0 ? "#f0f0f0" : "white",
+                      padding: 1,
+                    }}
+                  >
+                    <Typography variant="subtitle1" sx={{ width: 200 }}>
+                      {item.specificationName}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      {item.specificationValue || "Đang chờ cập nhật"}
+                    </Typography>
+                  </Stack>
+                ))}
+              </>
+            ) : null}
           </Box>
         </Stack>
       </Box>

@@ -35,7 +35,7 @@ const Table = (props) => {
     },
     {
       field: "quantity",
-      headerName: "Số lượng",
+      headerName: "Khuyến mãi",
     },
     {
       field: "price",
@@ -99,11 +99,12 @@ const Table = (props) => {
             data.map((item) => ({
               id: item.id,
               name: item.productName,
-              quantity: item.quantity,
+              quantity: item.sale === null ? "Chưa có" : item.sale.id,
               category: item.category.categoryName,
               price: item.price,
             })) || []
           }
+          isRowSelectable={(params) => params.row.quantity === "Chưa có"}
           slots={{
             toolbar: CustomToolbar,
           }}

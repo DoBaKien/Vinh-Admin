@@ -27,10 +27,11 @@ const SaleDetails = () => {
   const [select, setSelect] = useState("");
   const [select2, setSelect2] = useState("");
   const [description, setDescription] = useState("");
-  const [discount, setDiscount] = useState("");
+  const [discount, setDiscount] = useState(0);
   const [start, setStart] = useState(dayjs());
   const [end, setEnd] = useState(dayjs());
   const id = useParams();
+  const [check, setCheck] = useState(false);
 
   useEffect(() => {
     axios
@@ -54,7 +55,6 @@ const SaleDetails = () => {
 
     const newasd = select2 !== "" ? select.concat(select2) : select;
 
-    console.log(newasd);
     axios
       .post(`/api/v1/sales/updateSale`, {
         id: id.id,
@@ -76,7 +76,18 @@ const SaleDetails = () => {
         console.log(error);
       });
   };
+  const handleDis = (e) => {
+    const discountValue = parseInt(e, 10);
 
+    // Kiểm tra nếu giá trị nằm trong khoảng từ 1 đến 99
+    if (!isNaN(discountValue) && discountValue > 0 && discountValue < 100) {
+      setDiscount(discountValue);
+      setCheck(false);
+    } else {
+      setDiscount(0);
+      setCheck(true);
+    }
+  };
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%", height: "100%" }}>
       <Stack direction="row">
@@ -108,12 +119,13 @@ const SaleDetails = () => {
                   >
                     <OutlinedInput
                       fullWidth
+                      error={check}
                       sx={{ backgroundColor: "white" }}
                       placeholder="Giảm giá"
                       id="outlined-adornment-weight"
                       value={discount}
                       type="number"
-                      onChange={(e) => setDiscount(e.target.value)}
+                      onChange={(e) => handleDis(e.target.value)}
                       endAdornment={
                         <InputAdornment position="end">%</InputAdornment>
                       }
@@ -203,7 +215,7 @@ const SaleDetails = () => {
                         textAlign: "center",
                       }}
                     >
-                      <Typography>Xóa</Typography>
+                      <Typography>Sửa</Typography>
                     </Box>
                   </Stack>
                   <Divider />

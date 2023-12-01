@@ -49,14 +49,6 @@ export const dataColumn = [
   { year: "2016", population: 6 },
 ];
 
-export const dataPie = [
-  { region: "Laptop", val: 100 },
-  { region: "PC", val: 120 },
-  { region: "PK", val: 130 },
-  { region: "Loa", val: 140 },
-  { region: "Storage", val: 300 },
-  { region: "Game", val: 180 },
-];
 export const energyConsumption = [
   {
     country: "2016",

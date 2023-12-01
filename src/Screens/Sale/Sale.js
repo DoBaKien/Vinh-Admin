@@ -21,34 +21,56 @@ import dayjs from "dayjs";
 
 const Sale = () => {
   const [show, setShow] = useState(true);
+  const [check, setCheck] = useState(false);
   const [select, setSelect] = useState("");
   const [description, setDescription] = useState("");
-  const [discount, setDiscount] = useState("");
+  const [discount, setDiscount] = useState(0);
   const [start, setStart] = useState(dayjs());
   const [end, setEnd] = useState(dayjs());
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(select);
-    axios
-      .post(`/api/v1/sales/saveOrUpdate`, {
-        description: description,
-        start: start.format("YYYY-MM-DD"),
-        end: end.format("YYYY-MM-DD"),
+    console.log(discount);
+    if (discount !== 0 && select !== "") {
+      axios
+        .post(`/api/v1/sales/saveOrUpdate`, {
+          description: description,
+          start: start.format("YYYY-MM-DD"),
+          end: end.format("YYYY-MM-DD"),
 
-        discount: discount,
-        type: "%",
-        saleDetails: select,
-      })
-      .then(function (response) {
-        Swal.fire({
-          title: "Thành công",
-          icon: "success",
+          discount: discount,
+          type: "%",
+          saleDetails: select,
+        })
+        .then(function (response) {
+          Swal.fire({
+            title: "Thành công",
+            icon: "success",
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
         });
-      })
-      .catch(function (error) {
-        console.log(error);
+    } else {
+      Swal.fire({
+        title: "Lỗi",
+        text: "Vui lòng nhập thông tin phù hợp",
+        icon: "error",
       });
+    }
+  };
+
+  const handleDis = (e) => {
+    const discountValue = parseInt(e, 10);
+
+    // Kiểm tra nếu giá trị nằm trong khoảng từ 1 đến 99
+    if (!isNaN(discountValue) && discountValue > 0 && discountValue < 100) {
+      setDiscount(discountValue);
+      setCheck(false);
+    } else {
+      setDiscount(0);
+      setCheck(true);
+    }
   };
 
   return (
@@ -83,10 +105,11 @@ const Sale = () => {
                   >
                     <OutlinedInput
                       fullWidth
+                      error={check}
                       placeholder="Giảm giá"
                       id="outlined-adornment-weight"
                       type="number"
-                      onChange={(e) => setDiscount(e.target.value)}
+                      onChange={(e) => handleDis(e.target.value)}
                       endAdornment={
                         <InputAdornment position="end">%</InputAdornment>
                       }
