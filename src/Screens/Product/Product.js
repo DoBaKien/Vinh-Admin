@@ -28,6 +28,7 @@ const Product = () => {
       .get("/api/v1/products/getAll")
       .then(function (response) {
         setTags(response.data);
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);

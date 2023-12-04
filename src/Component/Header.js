@@ -37,6 +37,7 @@ function Header({ show, setShow, text }) {
 
   const handlePf = () => {
     setAnchorEl(null);
+    navigate("/Profile");
   };
   const handleSetting = () => {
     setAnchorEl(null);

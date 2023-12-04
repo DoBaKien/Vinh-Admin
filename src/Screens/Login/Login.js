@@ -34,7 +34,7 @@ function Login() {
       })
       .then(function (response) {
         localStorage.setItem("id", response.data.id);
-
+        localStorage.setItem("key", response.data.phone);
         navigate("/DashBoard");
       })
       .catch(function (error) {

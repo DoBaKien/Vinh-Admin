@@ -37,24 +37,32 @@ export const SaleDis = ({ value }) => {
   const [data, setData] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`/api/v1/sales/getById/${value.sale}`)
-      .then((res) => {
-        setData(res.data.discount);
-      })
-      .catch((error) => console.log(error));
+    if (value.sale !== "Không có") {
+      axios
+        .get(`/api/v1/sales/getById/${value.sale}`)
+        .then((res) => {
+          setData(res.data.discount);
+        })
+        .catch((error) => console.log(error));
+    }
   }, [value]);
   return (
     <Stack direction={"column"}>
-      <Typography sx={{ textDecoration: "line-through" }}>
-        {value.price} đ
-      </Typography>
-      <Typography>
-        {(value.price - value.price * (data / 100))
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
-        đ
-      </Typography>
+      {value.sale !== "Không có" ? (
+        <>
+          <Typography sx={{ textDecoration: "line-through" }}>
+            {value.price} đ
+          </Typography>
+          <Typography>
+            {(value.price - value.price * (data / 100))
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+            đ
+          </Typography>
+        </>
+      ) : (
+        <Typography>{value.price} đ</Typography>
+      )}
     </Stack>
   );
 };

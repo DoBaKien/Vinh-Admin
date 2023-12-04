@@ -349,7 +349,7 @@ function InvoiceDetails() {
                   name: item.product.productName,
                   quantity: item.quantity,
                   price: item.product.price,
-                  sale: item.saleId,
+                  sale: item.saleId || "Không có",
                   loHang: item.loHangId,
                 }))}
                 columns={columns}

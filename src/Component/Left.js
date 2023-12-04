@@ -73,6 +73,9 @@ function LeftAdmin() {
   const handleACc = () => {
     navigate("/Account");
   };
+  const handleTk = () => {
+    navigate("/Statistics");
+  };
   const handleClickB = () => {
     setOpenB(!openB);
   };
@@ -210,6 +213,14 @@ function LeftAdmin() {
                   <ReportIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Quản lý tài khoản" />
+              </MenuBtn>
+            </ListItem>
+            <ListItem disablePadding>
+              <MenuBtn onClick={handleTk}>
+                <ListItemIcon>
+                  <ReportIcon sx={{ color: "white" }} />
+                </ListItemIcon>
+                <ListItemText primary="Thống kê" />
               </MenuBtn>
             </ListItem>
           </List>
