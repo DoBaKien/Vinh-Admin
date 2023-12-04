@@ -21,15 +21,20 @@ import {
   ValueAxis,
   Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
-function CheckOut() {
+function SaleStatistics() {
   const [show, setShow] = useState(true);
   const [dataIm, setDataIm] = useState("");
   const [monthI, setMonthI] = useState(new Date().getMonth() + 1);
   const [yearI, setYearI] = useState(new Date().getFullYear());
   const [dataaa, setData] = useState([]);
+  const [start, setStart] = useState(dayjs());
+  const [total, setTotal] = useState("");
 
-  const handleMonthI = (e, loai) => {
+  const handleMonthI = (e) => {
     setMonthI(e.target.value);
   };
   const handleYeaI = (e) => {
@@ -39,7 +44,7 @@ function CheckOut() {
   useEffect(() => {
     axios
       .get(
-        `/api/v1/shoppingCarts/thong_ke_product_import_by_month/${
+        `/api/v1/shoppingCarts/thong_ke_product_sale_by_moth/${
           monthI + "-" + yearI
         }`
       )
@@ -52,24 +57,25 @@ function CheckOut() {
           setDataIm("sd");
         }
       });
-    // axios
-    //   .get(
-    //     `/api/v1/shoppingCarts/thong_ke_product_sale_by_moth/${
-    //       monthS + "-" + yearS
-    //     }`
-    //   )
-    //   .then((res) => {
-    //     setDataSale(res.data);
-    //   })
-    //   .catch((error) => {
-    //     setDataSale("sd");
-    //   });
-  }, [monthI, yearI]);
+    console.log(start);
+    axios
+      .get(
+        `/api/v1/shoppingCarts/thong_ke_tt_date/${start.format("YYYY-MM-DD")}`
+      )
+      .then((res) => {
+        setTotal(res.data);
+      })
+      .catch((error) => {
+        if (error.response.data === "not found!!") {
+          setTotal("not found");
+        }
+      });
+  }, [monthI, yearI, start]);
 
   const dataImport = (data, loai, mon, yea) => {
     if (data !== "") {
       return (
-        <Box sx={{ backgroundColor: "white", padding: 2 }}>
+        <Box sx={{ backgroundColor: "white", padding: 2, borderRadius: 5 }}>
           <Stack direction={"row"} gap={5}>
             <FormControl fullWidth sx={{ backgroundColor: "white" }}>
               <InputLabel id="demo-simple-select-label">Tháng</InputLabel>
@@ -106,7 +112,7 @@ function CheckOut() {
           </Stack>
           <Box sx={{ marginTop: 2 }}>
             <Typography variant="h6">
-              Tổng số sản phẩm nhập: {dataIm.tongSP}
+              Tổng số sản phẩm bán được: {dataIm.tongSP}
             </Typography>
           </Box>
           {data !== "sd" ? (
@@ -158,9 +164,38 @@ function CheckOut() {
             </Box>
             <Stack
               direction={"row"}
-              sx={{ justifyContent: "space-between" }}
-            ></Stack>
-            {dataImport(dataIm, "nhập", monthI, yearI)}
+              gap={5}
+              sx={{
+                padding: 5,
+                backgroundColor: "white",
+                marginBottom: 5,
+                borderRadius: 5,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h5" sx={{ width: 270 }}>
+                Tổng hóa đơn theo ngày
+              </Typography>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                  sx={{ width: 200 }}
+                  label="Ngày"
+                  value={start}
+                  openTo="year"
+                  inputFormat="DD/MM/YYYY"
+                  views={["year", "month", "day"]}
+                  minDate={dayjs("2023-01-01")}
+                  onChange={(newValue) => {
+                    setStart(newValue);
+                  }}
+                />
+              </LocalizationProvider>
+              <Typography variant="h5" sx={{ width: 300 }}>
+                {total === "not found" ? "Không có dữ liệu" : total} VND
+              </Typography>
+            </Stack>
+            {dataImport(dataIm, "bán", monthI, yearI)}
           </Box>
         </Box>
       </Stack>
@@ -168,4 +203,4 @@ function CheckOut() {
   );
 }
 
-export default CheckOut;
+export default SaleStatistics;

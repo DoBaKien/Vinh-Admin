@@ -4,22 +4,17 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useState } from "react";
 
 import {
-  Chart,
-  BarSeries,
   Title,
   ArgumentAxis,
   ValueAxis,
-  Tooltip,
   Legend,
 } from "@devexpress/dx-react-chart-material-ui";
-import { dataColumn, dataPie, energyConsumption } from "../../Component/data";
+import { energyConsumption } from "../../Component/data";
 
 import { scalePoint } from "d3-scale";
 import {
   Animation,
-  EventTracker,
   LineSeries,
-  PieSeries,
   ArgumentScale,
 } from "@devexpress/dx-react-chart";
 import {
@@ -45,7 +40,6 @@ const DashBoard = () => {
     axios
       .get("/api/v1/orders/getAllOrder")
       .then(function (response) {
-        console.log(response.data);
         setData(response.data.filter((item) => item.statusOrder === "1"));
       })
       .catch(function (error) {
@@ -197,7 +191,6 @@ const DashBoard = () => {
               <Paper>
                 <StyledChart
                   height={500}
-                  width={550}
                   data={energyConsumption}
                   className={classes.chart}
                 >

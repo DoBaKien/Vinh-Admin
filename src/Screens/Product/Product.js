@@ -50,6 +50,7 @@ const Product = () => {
     { field: "quantity", headerName: "Số lượng", flex: 0.5 },
     { field: "category", headerName: "Loại", flex: 0.5 },
     { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
+    { field: "loHang", headerName: "Trạng thái", flex: 0.5 },
     {
       field: "price",
       headerName: "Giá",
@@ -97,6 +98,7 @@ const Product = () => {
               brand: item.brand.name,
               quantity: item.quantity,
               price: item.price,
+              loHang: item.loHang.id,
             }))}
             localeText={{
               toolbarColumns: "Cột",

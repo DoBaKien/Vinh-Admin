@@ -30,6 +30,7 @@ function LeftAdmin() {
   const [open, setOpen] = useState(false);
   const [openA, setOpenA] = useState(false);
   const [openB, setOpenB] = useState(false);
+  const [openC, setOpenC] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -76,8 +77,14 @@ function LeftAdmin() {
   const handleTk = () => {
     navigate("/Statistics");
   };
+  const handleSale = () => {
+    navigate("/SaleStatistics");
+  };
   const handleClickB = () => {
     setOpenB(!openB);
+  };
+  const handleClickC = () => {
+    setOpenC(!openC);
   };
 
   return (
@@ -216,13 +223,31 @@ function LeftAdmin() {
               </MenuBtn>
             </ListItem>
             <ListItem disablePadding>
-              <MenuBtn onClick={handleTk}>
+              <MenuBtn onClick={handleClickC}>
                 <ListItemIcon>
                   <ReportIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Thống kê" />
+                {openC ? <ExpandLess /> : <ExpandMore />}
               </MenuBtn>
             </ListItem>
+            <Collapse in={openC} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <MenuBtn sx={{ pl: 4 }} onClick={handleTk}>
+                  <ListItemIcon>
+                    <NoteAddIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Phiếu nhập" />
+                </MenuBtn>
+
+                <MenuBtn sx={{ pl: 4 }} onClick={handleSale}>
+                  <ListItemIcon>
+                    <RequestQuoteIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Hóa đơn" />
+                </MenuBtn>
+              </List>
+            </Collapse>
           </List>
         </Box>
       </Box>

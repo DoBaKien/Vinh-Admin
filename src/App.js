@@ -17,6 +17,7 @@ import Account from "./Screens/Account/Account";
 import AccountDetail from "./Screens/Account/AccountDetail";
 import Statistics from "./Screens/Statistics/Statistics";
 import Profile from "./Screens/Profile/Profile";
+import SaleStatistics from "./Screens/Statistics/Sale";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/Account/" element={<Account />} />
       <Route path="/Account/:id" element={<AccountDetail />} />
       <Route path="/Statistics/" element={<Statistics />} />
+      <Route path="/SaleStatistics/" element={<SaleStatistics />} />
       <Route path="/ImportExcel" element={<ImportExcel />} />
       <Route path="/Profile" element={<Profile />} />
       <Route path="/ProductEdit/:id" element={<ProductEdit />} />
