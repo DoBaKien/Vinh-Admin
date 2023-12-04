@@ -28,7 +28,7 @@ import { Phanloai } from "../../Component/data";
 
 Quill.register("modules/imageResize", ImageResize);
 function ProductEdit() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [imageP, setImage] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

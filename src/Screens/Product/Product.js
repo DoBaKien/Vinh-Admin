@@ -68,16 +68,14 @@ const Product = () => {
       flex: 0.6,
       getActions: (params) => {
         let actions = [
-          <>
-            <Tooltip title="Sửa" placement="left">
-              <IconButton
-                onClick={() => navigate(`/ProductEdit/${params.id}`)}
-                color="primary"
-              >
-                <DriveFileRenameOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </>,
+          <Tooltip title="Sửa" placement="left">
+            <IconButton
+              onClick={() => navigate(`/ProductEdit/${params.id}`)}
+              color="primary"
+            >
+              <DriveFileRenameOutlineIcon />
+            </IconButton>
+          </Tooltip>,
         ];
 
         return actions;
