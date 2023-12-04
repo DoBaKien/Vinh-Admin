@@ -60,7 +60,6 @@ function Login() {
       setPassword("");
       setPasswordError(true);
     }
-    setPassword(e);
   };
 
   return (
