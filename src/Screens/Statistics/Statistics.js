@@ -114,7 +114,7 @@ function CheckOut() {
               <ArgumentAxis />
               <ValueAxis />
               <BarSeries valueField="sl" argumentField="type" />
-              <Title text={`Danh sách ${loai} các loại hàng qua các năm`} />
+              <Title text={`Danh sách ${loai} các loại hàng năm ${yearI}`} />
               <EventTracker />
               <Tooltip />
             </Chart>
