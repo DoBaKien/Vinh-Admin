@@ -50,14 +50,22 @@ const Product = () => {
     { field: "quantity", headerName: "Số lượng", flex: 0.5 },
     { field: "category", headerName: "Loại", flex: 0.5 },
     { field: "brand", headerName: "Thương hiệu", flex: 0.5 },
-    { field: "loHang", headerName: "Trạng thái", flex: 0.5 },
+    {
+      field: "loHang",
+      headerName: "Trạng thái",
+      flex: 0.5,
+      renderCell: (params) => (
+        <div>{params.row.loHang ? params.row.loHang.id : "Chưa mở bán"}</div>
+      ),
+    },
     {
       field: "price",
       headerName: "Giá",
       flex: 0.5,
       renderCell: (params) => (
         <div>
-          {params.row.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+          {params.row.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+          VND
         </div>
       ),
     },
@@ -98,7 +106,7 @@ const Product = () => {
               brand: item.brand.name,
               quantity: item.quantity,
               price: item.price,
-              loHang: item.loHang.id,
+              loHang: item.loHang,
             }))}
             localeText={{
               toolbarColumns: "Cột",
@@ -164,6 +172,7 @@ const Product = () => {
       );
     }
   };
+
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%" }}>
       {value !== "" ? (
