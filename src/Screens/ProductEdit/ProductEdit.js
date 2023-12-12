@@ -46,6 +46,16 @@ function ProductEdit() {
   const [choose, setChoose] = useState("");
   const id = useParams();
   const navigate = useNavigate();
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
   useEffect(() => {
     axios
       .get(`/api/v1/loHangs/getByProduct/${id.id}`)
@@ -319,6 +329,7 @@ function ProductEdit() {
                       value={brand}
                       label="Age"
                       onChange={handleChange2}
+                      MenuProps={MenuProps}
                     >
                       {brands !== ""
                         ? brands.map((item, index) => (
