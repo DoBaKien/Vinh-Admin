@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.1cf03476.css",
-    "main.js": "/static/js/main.2a956fea.js",
-    "static/media/logo.png": "/static/media/logo.acdb74d8d5aabbbca821.png",
-    "index.html": "/index.html",
-    "main.1cf03476.css.map": "/static/css/main.1cf03476.css.map",
-    "main.2a956fea.js.map": "/static/js/main.2a956fea.js.map"
+    "main.css": "/Vinh-Admin/static/css/main.1cf03476.css",
+    "main.js": "/Vinh-Admin/static/js/main.a060d53d.js",
+    "static/media/logo.png": "/Vinh-Admin/static/media/logo.acdb74d8d5aabbbca821.png",
+    "index.html": "/Vinh-Admin/index.html",
+    "main.1cf03476.css.map": "/Vinh-Admin/static/css/main.1cf03476.css.map",
+    "main.a060d53d.js.map": "/Vinh-Admin/static/js/main.a060d53d.js.map"
   },
   "entrypoints": [
     "static/css/main.1cf03476.css",
-    "static/js/main.2a956fea.js"
+    "static/js/main.a060d53d.js"
   ]
 }
