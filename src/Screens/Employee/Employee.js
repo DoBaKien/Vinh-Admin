@@ -1,4 +1,10 @@
-import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Header from "../../Component/Header";
 
 import {
@@ -13,24 +19,27 @@ import {
 import React, { useEffect, useState } from "react";
 import Left from "../../Component/Left";
 import axios from "axios";
-
-function Account() {
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
+function Employee() {
   const [show, setShow] = useState(true);
   const [data, setData] = useState("");
+  const roleAcc = localStorage.getItem("asd");
 
+  const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`/api/v1/customer/getListCustomer`)
+      .get(`/api/v1/employee/getAll`)
       .then((res) => {
         setData(res.data);
+        console.log(res.data);
       })
       .catch((error) => console.log(error));
   }, []);
 
   const handleOnCellClick = (params) => {
-    // navigate(`/Account/${params.id}`);
-
-    window.open(`/DoAnTotNghiep/#/Account/${params.row.phone}`, "_blank");
+    // navigate(`/Employee/${params.id}`);
+    window.open(`/DoAnTotNghiep/#/Employee/${params.row.phone}`, "_blank");
   };
 
   const columns = [
@@ -68,6 +77,17 @@ function Account() {
           justifyContent: "space-around",
         }}
       >
+        {roleAcc === "123" ? (
+          <Button
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={() => navigate(`/CreateEmployee`)}
+          >
+            Thêm nhân viên
+          </Button>
+        ) : (
+          <></>
+        )}
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
@@ -92,7 +112,7 @@ function Account() {
             rows={data.map((item) => ({
               id: item.id,
               name: item.lastName + " " + item.firstName,
-              status: item.account || "",
+              status: item.account.enable || "",
               email: item.email,
               phone: item.phone,
             }))}
@@ -166,7 +186,7 @@ function Account() {
           >
             <Box sx={{ padding: "5px 5px 5px" }}>
               <Typography variant="h4">
-                Danh sách tài khoản khách hàng
+                Danh sách tài khoản nhân viên
               </Typography>
             </Box>
 
@@ -178,4 +198,4 @@ function Account() {
   );
 }
 
-export default Account;
+export default Employee;

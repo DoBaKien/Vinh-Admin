@@ -10,18 +10,23 @@ import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
+import ModalBox from "./Modal";
 
-const AccountDetail = () => {
+const EmployeeDetail = () => {
   const [show, setShow] = useState(true);
+  const [modal, setModal] = useState(false);
   const [data, setData] = useState("");
   const [birth, setBirht] = useState("");
+  const [role, setRole] = useState("");
   const id = useParams();
+  const roleAcc = localStorage.getItem("asd");
   useEffect(() => {
     axios
-      .get(`/api/v1/customer/getByPhoneOrEmail/${id.id}`)
+      .get(`/api/v1/employee/getByEmailOrPhone/${id.id}`)
       .then((res) => {
         setData(res.data);
-        console.log(res.data);
+        const roledata = res.data.account.roles;
+        setRole(roledata.map((item) => item.id));
         setBirht(format(new Date(res.data.dateOfBirth), "dd-MM-yyyy"));
       })
       .catch((error) => console.log(error));
@@ -35,7 +40,7 @@ const AccountDetail = () => {
         })
         .then((res) => {
           axios
-            .get(`/api/v1/customer/getByPhoneOrEmail/${id.id}`)
+            .get(`/api/v1/employee/getByEmailOrPhone/${id.id}`)
             .then((res) => {
               setData(res.data);
             })
@@ -54,7 +59,7 @@ const AccountDetail = () => {
         })
         .then((res) => {
           axios
-            .get(`/api/v1/customer/getByPhoneOrEmail/${id.id}`)
+            .get(`/api/v1/employee/getByEmailOrPhone/${id.id}`)
             .then((res) => {
               setData(res.data);
             })
@@ -70,6 +75,14 @@ const AccountDetail = () => {
 
   return (
     <Box sx={{ justifyContent: "center", minHeight: "100%", height: "100%" }}>
+      {data !== "" ? (
+        <ModalBox
+          setModal={setModal}
+          modal={modal}
+          roleData={role}
+          id={data.account.id}
+        />
+      ) : null}
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%" }}>
@@ -112,17 +125,7 @@ const AccountDetail = () => {
                   value={birth}
                   disabled
                 />
-                <TextInputAd
-                  label="Role"
-                  variant="outlined"
-                  fullWidth
-                  value={
-                    data.customerType === "customer"
-                      ? "Khách hàng"
-                      : "Khách vãng lai"
-                  }
-                  disabled
-                />
+
                 <TextInputAd
                   label="Địa chỉ"
                   variant="outlined"
@@ -171,6 +174,51 @@ const AccountDetail = () => {
                   />
                   <Stack
                     direction={"row"}
+                    gap={5}
+                    sx={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        marginTop: 3,
+                        backgroundColor: "white",
+                        width: "100%",
+                        height: 60,
+                        display: "flex",
+                        alignItems: "center",
+                        border: "1px solid gray",
+                        paddingLeft: 1,
+                        borderRadius: 2,
+                      }}
+                    >
+                      {data !== "" ? (
+                        data.account?.roles.map((item) => (
+                          <Typography key={item.id} sx={{ marginRight: 1 }}>
+                            {item.name.replace("ROLE_", "")},
+                          </Typography>
+                        ))
+                      ) : (
+                        <>asd</>
+                      )}
+                    </Box>
+                    {roleAcc === "123" ? (
+                      <Button
+                        variant="contained"
+                        sx={{ height: 55, marginTop: 4, width: 200 }}
+                        onClick={() => setModal(true)}
+                      >
+                        Thay Đổi
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                  </Stack>
+
+                  <Stack
+                    direction={"row"}
+                    gap={5}
                     sx={{
                       justifyContent: "space-between",
                       alignItems: "center",
@@ -179,7 +227,7 @@ const AccountDetail = () => {
                     <TextInputAd
                       label="Trạng thái"
                       variant="outlined"
-                      sx={{ width: 400 }}
+                      fullWidth
                       value={
                         data.account?.enable === true
                           ? "Đang hoạt động"
@@ -189,7 +237,7 @@ const AccountDetail = () => {
                     />
                     <Button
                       variant="contained"
-                      sx={{ height: 55, marginTop: 4 }}
+                      sx={{ height: 55, marginTop: 4, width: 200 }}
                       onClick={handleChangle}
                     >
                       Đổi trạng thái
@@ -205,4 +253,4 @@ const AccountDetail = () => {
   );
 };
 
-export default AccountDetail;
+export default EmployeeDetail;

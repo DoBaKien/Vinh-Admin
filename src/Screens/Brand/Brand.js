@@ -1,4 +1,10 @@
-import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Header from "../../Component/Header";
 
 import {
@@ -13,49 +19,45 @@ import {
 import React, { useEffect, useState } from "react";
 import Left from "../../Component/Left";
 import axios from "axios";
+import AddIcon from "@mui/icons-material/Add";
+import ModalBox from "./Add";
+import ModalEdit from "./Edit";
 
-function Account() {
+function Brand() {
   const [show, setShow] = useState(true);
   const [data, setData] = useState("");
-
+  const [modal, setModal] = useState(false);
+  const [modalE, setModalE] = useState(false);
+  const [id, setId] = useState("");
   useEffect(() => {
     axios
-      .get(`/api/v1/customer/getListCustomer`)
+      .get(`/api/v1/brands/getAllBrand`)
       .then((res) => {
         setData(res.data);
       })
       .catch((error) => console.log(error));
   }, []);
 
-  const handleOnCellClick = (params) => {
-    // navigate(`/Account/${params.id}`);
-
-    window.open(`/DoAnTotNghiep/#/Account/${params.row.phone}`, "_blank");
-  };
-
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     {
       field: "name",
-      headerName: "Khách hàng",
+      headerName: "Thương hiệu",
       flex: 1,
     },
     {
-      field: "status",
-      headerName: "Trạng thái",
-      renderCell: (params) => (
-        <>{params.row.status === "" ? "Tạm khóa" : "Hoạt động"}</>
-      ),
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
+      field: "fullName",
+      headerName: "Tên công ty",
       flex: 1,
     },
     {
       field: "phone",
-      headerName: "SDT",
+      headerName: "Số điện thoại",
+      flex: 1,
+    },
+    {
+      field: "address",
+      headerName: "Địa chỉ",
       flex: 1,
     },
   ];
@@ -68,6 +70,13 @@ function Account() {
           justifyContent: "space-around",
         }}
       >
+        <Button
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={() => setModal(!modal)}
+        >
+          Thêm thương hiệu
+        </Button>
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
@@ -77,6 +86,10 @@ function Account() {
       </GridToolbarContainer>
     );
   }
+  const handleOnCellClick = (params) => {
+    setModalE(true);
+    setId(params.row);
+  };
   const datatable = () => {
     if (Array.isArray(data) && data.length !== 0) {
       return (
@@ -91,11 +104,12 @@ function Account() {
             rowHeight={50}
             rows={data.map((item) => ({
               id: item.id,
-              name: item.lastName + " " + item.firstName,
-              status: item.account || "",
-              email: item.email,
-              phone: item.phone,
+              name: item.name,
+              phone: item.phone || "",
+              address: item.address || "",
+              fullName: item.fullName || "",
             }))}
+            onCellDoubleClick={handleOnCellClick}
             density="comfortable"
             columns={columns}
             pageSizeOptions={[10, 50, 100]}
@@ -108,17 +122,15 @@ function Account() {
                 showQuickFilter: true,
                 quickFilterProps: { debounceMs: 500 },
                 csvOptions: {
-                  fields: ["tid", "name", "description"],
+                  fields: ["tid", "name"],
                   utf8WithBom: true,
                   fileName: "TableTagData",
                 },
               },
             }}
-            onRowSelectionModelChange={(id) => {}}
             slots={{
               toolbar: CustomToolbar,
             }}
-            onCellDoubleClick={handleOnCellClick}
             getRowHeight={() => "auto"}
             sx={{
               "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
@@ -152,6 +164,14 @@ function Account() {
 
   return (
     <Box sx={{ justifyContent: "center" }}>
+      <ModalBox setModal={setModal} modal={modal} setTags={setData} />
+      <ModalEdit
+        setModal={setModalE}
+        modal={modalE}
+        setTags={setData}
+        id={id}
+        setId={setId}
+      />
       <Stack direction="row">
         {show && <Left />}
         <Box sx={{ width: "100%", minWidth: "70%" }}>
@@ -165,9 +185,7 @@ function Account() {
             }}
           >
             <Box sx={{ padding: "5px 5px 5px" }}>
-              <Typography variant="h4">
-                Danh sách tài khoản khách hàng
-              </Typography>
+              <Typography variant="h4">Quản lý thương hiệu</Typography>
             </Box>
 
             {datatable()}
@@ -178,4 +196,4 @@ function Account() {
   );
 }
 
-export default Account;
+export default Brand;

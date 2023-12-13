@@ -16,7 +16,7 @@ import { styleProduct, VisuallyHiddenInput } from "../../Component/Style";
 
 import React from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
+
 import { useState } from "react";
 import ModalTest from "./ModalTest";
 import { useEffect } from "react";

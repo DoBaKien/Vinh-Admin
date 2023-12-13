@@ -18,6 +18,10 @@ import AccountDetail from "./Screens/Account/AccountDetail";
 import Statistics from "./Screens/Statistics/Statistics";
 import Profile from "./Screens/Profile/Profile";
 import SaleStatistics from "./Screens/Statistics/Sale";
+import Brand from "./Screens/Brand/Brand";
+import Employee from "./Screens/Employee/Employee";
+import EmployeeDetail from "./Screens/Employee/EmployeeDetail";
+import CreateEm from "./Screens/Create/Create";
 
 function Router() {
   return (
@@ -39,7 +43,11 @@ function Router() {
       <Route path="/SaleStatistics/" element={<SaleStatistics />} />
       <Route path="/ImportExcel" element={<ImportExcel />} />
       <Route path="/Profile" element={<Profile />} />
+      <Route path="/Employee" element={<Employee />} />
+      <Route path="/Brand" element={<Brand />} />
       <Route path="/ProductEdit/:id" element={<ProductEdit />} />
+      <Route path="/Employee/:id" element={<EmployeeDetail />} />
+      <Route path="/CreateEmployee" element={<CreateEm />} />
       <Route path="/" element={<Login />} />
     </Routes>
   );

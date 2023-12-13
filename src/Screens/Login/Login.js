@@ -13,6 +13,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 var regEmail = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z]{2,4})+$/;
 var regpass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -26,19 +27,31 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userName, password);
+
     axios
       .post("/api/v1/auth/login", {
-        email: "kien123@gmail.com",
-        passWordA: "123",
+        email: userName,
+        passWordA: password,
       })
       .then(function (response) {
         localStorage.setItem("id", response.data.id);
         localStorage.setItem("key", response.data.phone);
+        const userRoles = response.data.account.roles;
+        const roleWithId3 = userRoles.find((role) => role.id === 3);
+        if (roleWithId3 === undefined) {
+          localStorage.setItem("asd", "asd");
+        } else {
+          localStorage.setItem("asd", "123");
+        }
         navigate("/DashBoard");
       })
       .catch(function (error) {
         console.log(error);
+        Swal.fire({
+          title: "Thất bại",
+          text: "Sai mật khẩu",
+          icon: "error",
+        });
       });
   };
 

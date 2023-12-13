@@ -21,6 +21,8 @@ import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import InputIcon from "@mui/icons-material/Input";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import { MenuBtn } from "./Style";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 function LeftAdmin() {
   const navigate = useNavigate();
   const BoxSide = styled(Box)(() => ({
@@ -31,6 +33,7 @@ function LeftAdmin() {
   const [openA, setOpenA] = useState(false);
   const [openB, setOpenB] = useState(false);
   const [openC, setOpenC] = useState(false);
+  const [openD, setOpenD] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -74,17 +77,26 @@ function LeftAdmin() {
   const handleACc = () => {
     navigate("/Account");
   };
+  const handleACc2 = () => {
+    navigate("/Employee");
+  };
   const handleTk = () => {
     navigate("/Statistics");
   };
   const handleSale = () => {
     navigate("/SaleStatistics");
   };
+  const handleBrand = () => {
+    navigate("/Brand");
+  };
   const handleClickB = () => {
     setOpenB(!openB);
   };
   const handleClickC = () => {
     setOpenC(!openC);
+  };
+  const handleClickD = () => {
+    setOpenD(!openD);
   };
 
   return (
@@ -180,7 +192,14 @@ function LeftAdmin() {
                 </MenuBtn>
               </List>
             </Collapse>
-
+            <ListItem disablePadding>
+              <MenuBtn onClick={handleBrand}>
+                <ListItemIcon>
+                  <CategoryIcon sx={{ color: "white" }} />
+                </ListItemIcon>
+                <ListItemText primary="Quản lý thương hiệu" />
+              </MenuBtn>
+            </ListItem>
             <ListItem disablePadding>
               <MenuBtn onClick={handleSP}>
                 <ListItemIcon>
@@ -215,13 +234,31 @@ function LeftAdmin() {
               </List>
             </Collapse>
             <ListItem disablePadding>
-              <MenuBtn onClick={handleACc}>
+              <MenuBtn onClick={handleClickD}>
                 <ListItemIcon>
                   <ReportIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary="Quản lý tài khoản" />
+                {openD ? <ExpandLess /> : <ExpandMore />}
               </MenuBtn>
             </ListItem>
+            <Collapse in={openD} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <MenuBtn sx={{ pl: 4 }} onClick={handleACc}>
+                  <ListItemIcon>
+                    <SupervisorAccountIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Khách hàng" />
+                </MenuBtn>
+
+                <MenuBtn sx={{ pl: 4 }} onClick={handleACc2}>
+                  <ListItemIcon>
+                    <SupportAgentIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Nhân viên" />
+                </MenuBtn>
+              </List>
+            </Collapse>
             <ListItem disablePadding>
               <MenuBtn onClick={handleClickC}>
                 <ListItemIcon>
